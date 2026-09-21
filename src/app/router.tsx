@@ -7,7 +7,6 @@ import {
   NotebookPen,
   Route as RouteIcon,
   Settings,
-  Wind,
 } from 'lucide-react';
 import { createHashRouter, type RouteObject } from 'react-router-dom';
 import { TodayPage } from '../features/today/TodayPage';
@@ -50,7 +49,7 @@ const routes: RouteObject[] = [
       },
       {
         path: 'shift/:toolId?',
-        element: <ComingSoon title="מעבר" text="ארגז הכלים: מאיפה אני בא, לפי טריגר, ולפי תחום חיים." milestone="M5" Icon={Wind} />,
+        lazy: async () => ({ Component: (await import('../features/shift/ShiftPage')).ShiftPage }),
       },
       {
         path: 'journey/:weekId?',

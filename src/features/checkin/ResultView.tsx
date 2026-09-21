@@ -84,7 +84,7 @@ export function ResultView({ checkin, score }: ResultViewProps) {
       <div className="flex flex-col gap-3 pt-6">
         {result.shiftGroup ? (
           <>
-            <Button variant="primary" size="lg" fullWidth onClick={() => navigate(`/shift?from=${result.shiftGroup}`)}>
+            <Button variant="primary" size="lg" fullWidth onClick={() => navigate(`/shift?from=${result.shiftGroup}&before=${dimsOf(checkin.result)[0]}`)}>
               לעבור מכאן
             </Button>
             <Button variant="ghost" fullWidth onClick={() => navigate('/')}>

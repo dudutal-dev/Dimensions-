@@ -10,6 +10,7 @@ export default defineConfig({
   // WebKit על Windows איטי; מעט workers וזמן נדיב מונעים כישלונות-שווא של עומס.
   workers: 3,
   timeout: 60_000,
+  expect: { timeout: 10_000 },
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
   reporter: [['list']],

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { audioEngine } from '../../audio/AudioEngine';
 import { loadContent } from '../../content';
-import { DimSchema, type Dim } from '../../content/schema';
+import { DimSchema, DomainSchema, type Dim } from '../../content/schema';
 import { repos } from '../../data/repositories';
 import { tracked } from '../../data/saveStatus';
 import { useSettings } from '../../data/settingsStore';
@@ -69,6 +69,10 @@ function SessionRunner({ session, source, autoStart }: { session: Session; sourc
 
   const logSource = source ?? SOURCES.find((s) => s === query.get('from')) ?? 'shift';
   const before = DimSchema.safeParse(query.get('before')).data;
+  // ההקשר שממנו הגיעו (מסך המעבר) נשמר ביומן — כך ההמלצה יודעת מה עבד באיזה טריגר ובאיזה תחום.
+  const domain = DomainSchema.safeParse(query.get('domain')).data;
+  const trigger = query.get('trigger') ?? undefined;
+  const context = { ...(before ? { before } : {}), ...(domain ? { domain } : {}), ...(trigger ? { trigger } : {}) };
 
   const begin = () => {
     startedAt.current = Date.now();
@@ -89,13 +93,13 @@ function SessionRunner({ session, source, autoStart }: { session: Session; sourc
   const exitEarly = async () => {
     // יציאה באמצע נרשמת בשקט — בלי אשמה, אבל "מה עובד לי" צריך לדעת מה לא הושלם.
     if (state.status !== 'idle' && Date.now() - startedAt.current > 5000) {
-      await repos.sessions.add({ toolId: session.id, source: logSource, completed: false, ...(before ? { before } : {}) });
+      await repos.sessions.add({ toolId: session.id, source: logSource, completed: false, ...context });
     }
     leave();
   };
 
   if (state.status === 'finished') {
-    return <FinishView session={session} source={logSource} before={before} fields={fields.value} onClearFields={fields.clear} onDone={leave} />;
+    return <FinishView session={session} source={logSource} context={context} fields={fields.value} onClearFields={fields.clear} onDone={leave} />;
   }
 
   if (state.status === 'idle') {
@@ -303,14 +307,15 @@ function Toggle({ pressed, icon, label, onToggle }: { pressed: boolean; icon: Re
 interface FinishViewProps {
   session: Session;
   source: SessionLog['source'];
-  before?: Dim;
+  context: Pick<SessionLog, 'before' | 'domain' | 'trigger'>;
   fields: Record<string, string>;
   onClearFields: () => Promise<void>;
   onDone: () => void;
 }
 
 /** "מה השתנה?" (SPEC 6.5): גליף לפני/אחרי והערה. מזין את "מה עובד לי" בתובנות. */
-function FinishView({ session, source, before: knownBefore, fields, onClearFields, onDone }: FinishViewProps) {
+function FinishView({ session, source, context, fields, onClearFields, onDone }: FinishViewProps) {
+  const knownBefore = context.before;
   const { tools } = loadContent();
   const [before, setBefore] = useState<Dim | undefined>(knownBefore);
   const [after, setAfter] = useState<Dim | undefined>();
@@ -330,6 +335,7 @@ function FinishView({ session, source, before: knownBefore, fields, onClearField
             toolId: session.id,
             source,
             completed: true,
+            ...context,
             ...(before ? { before } : {}),
             ...(after ? { after } : {}),
             ...(note.trim() ? { note: note.trim() } : {}),
