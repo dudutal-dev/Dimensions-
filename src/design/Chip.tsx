@@ -90,15 +90,17 @@ export function SegmentedControl<T extends string>({ label, value, onChange, opt
       onKeyDown={onKeyDown}
       className="flex gap-1 rounded-control border border-border bg-surface-2 p-1"
     >
-      {options.map((opt) => {
+      {options.map((opt, position) => {
         const checked = opt.value === value;
+        // כשעוד לא נבחר דבר, האפשרות הראשונה היא נקודת הכניסה של המקלדת.
+        const focusable = checked || (position === 0 && !options.some((o) => o.value === value));
         return (
           <button
             key={opt.value}
             type="button"
             role="radio"
             aria-checked={checked}
-            tabIndex={checked ? 0 : -1}
+            tabIndex={focusable ? 0 : -1}
             data-value={opt.value}
             onClick={() => onChange(opt.value)}
             className={cn(

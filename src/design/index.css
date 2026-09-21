@@ -15,6 +15,9 @@
   --color-d3: var(--d3);
   --color-d4: var(--d4);
   --color-d5: var(--d5);
+  --color-d3-fill: var(--d3-fill);
+  --color-d4-fill: var(--d4-fill);
+  --color-d5-fill: var(--d5-fill);
   --color-accent: var(--accent);
   --color-accent-fill: var(--accent-fill);
   --color-on-accent: var(--on-accent);

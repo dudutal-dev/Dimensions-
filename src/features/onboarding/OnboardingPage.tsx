@@ -94,7 +94,7 @@ export function OnboardingPage() {
                   <ListChecks aria-hidden size={26} strokeWidth={1.5} className="text-accent" />
                 )
               }
-              onSelect={() => void finish(option.id === 'checkin' ? '/checkin' : '/diagnosis')}
+              onSelect={() => void finish(option.id === 'checkin' ? '/checkin' : '/diagnosis/self')}
             >
               {option.title} <span className="text-sm font-normal text-muted">· {option.meta}</span>
             </OptionButton>

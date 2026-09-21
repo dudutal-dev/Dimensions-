@@ -3,7 +3,6 @@ import {
   ChartColumn,
   Compass,
   LifeBuoy,
-  ListChecks,
   NotebookPen,
   Route as RouteIcon,
   Settings,
@@ -45,7 +44,23 @@ const routes: RouteObject[] = [
       },
       {
         path: 'diagnosis',
-        element: <ComingSoon title="אבחון מלא" text="שתים-עשרה שאלות על הדפוס הדומיננטי שלך, בחמישה תחומים." milestone="M6" Icon={ListChecks} />,
+        lazy: async () => ({ Component: (await import('../features/diagnosis/DiagnosisHubPage')).DiagnosisHubPage }),
+      },
+      {
+        path: 'diagnosis/self',
+        lazy: async () => ({ Component: (await import('../features/diagnosis/QuestionnairePage')).QuestionnairePage }),
+      },
+      {
+        path: 'diagnosis/other',
+        lazy: async () => ({ Component: (await import('../features/diagnosis/AskOtherPage')).AskOtherPage }),
+      },
+      {
+        path: 'diagnosis/compare',
+        lazy: async () => ({ Component: (await import('../features/diagnosis/ComparePage')).ComparePage }),
+      },
+      {
+        path: 'diagnosis/result/:id',
+        lazy: async () => ({ Component: (await import('../features/diagnosis/DiagnosisResultPage')).DiagnosisResultPage }),
       },
       {
         path: 'shift/:toolId?',

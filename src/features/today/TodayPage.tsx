@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ChevronLeft, CircleUser, Compass, NotebookPen, Play } from 'lucide-react';
+import { ChevronLeft, CircleUser, Compass, ListChecks, NotebookPen, Play } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SECONDARY_NAV } from '../../app/nav';
@@ -158,6 +158,14 @@ export function TodayPage() {
       >
         <Play aria-hidden size={20} className="text-accent" />
         <span className="flex-1">כל התרגולים</span>
+        <ChevronLeft aria-hidden size={20} className="text-muted" />
+      </Link>
+      <Link
+        to="/diagnosis"
+        className="pressable mt-2 flex min-h-14 items-center gap-3 rounded-card border border-border bg-surface px-4 hover:bg-surface-2"
+      >
+        <ListChecks aria-hidden size={20} className="text-accent" />
+        <span className="flex-1">האבחון שלי</span>
         <ChevronLeft aria-hidden size={20} className="text-muted" />
       </Link>
 

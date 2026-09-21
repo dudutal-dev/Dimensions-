@@ -59,7 +59,7 @@ export function BreathCircle({ pattern, elapsedMs, running }: BreathCircleProps)
           {PHASE_LABEL[moment.phase]}… <span className="tabular">{moment.remainingSec}</span>
         </p>
         <div className="h-2 w-full overflow-hidden rounded-full border border-border-strong bg-surface-2">
-          <div className="h-full bg-d5" style={{ width: `${moment.fill * 100}%` }} />
+          <div className="h-full bg-d5-fill" style={{ width: `${moment.fill * 100}%` }} />
         </div>
       </div>
     );
@@ -71,7 +71,7 @@ export function BreathCircle({ pattern, elapsedMs, running }: BreathCircleProps)
       <div
         ref={circle}
         aria-hidden
-        className="absolute inset-0 rounded-full bg-d5/25 shadow-[0_0_60px_color-mix(in_oklab,var(--d5)_35%,transparent)] will-change-transform"
+        className="absolute inset-0 rounded-full bg-d5-fill/25 shadow-[0_0_60px_color-mix(in_oklab,var(--d5-fill)_35%,transparent)] will-change-transform"
         style={{ transform: `scale(${MIN_SCALE})` }}
       />
       <p className="relative font-display text-xl">{PHASE_LABEL[moment.phase]}</p>

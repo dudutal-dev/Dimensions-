@@ -19,9 +19,12 @@ import {
   OptionButton,
   RichText,
   SegmentedControl,
+  SharesBar,
+  SharesValues,
   Sheet,
   Slider,
   ToastProvider,
+  TrendChart,
 } from '../../src/design';
 import { greetingFor } from '../../src/lib/date';
 
@@ -124,6 +127,36 @@ describe('טקסט עשיר ואפשרות בחירה', () => {
     expect(option).toHaveTextContent('60 שניות');
     await userEvent.click(option);
     expect(onSelect).toHaveBeenCalledOnce();
+  });
+});
+
+describe('תרשימים', () => {
+  it('פס מפולח: הערכים נגישים כטקסט, מקטע של 0% לא מצויר, והסדר קבוע (3D, 4D, 5D)', () => {
+    const { container } = render(<SharesBar label="כסף וחומר" shares={{ d3: 0.5, d4: 0, d5: 0.5 }} />);
+    expect(screen.getByRole('img', { name: 'כסף וחומר: 3D 50%, 4D 0%, 5D 50%' })).toBeInTheDocument();
+    const segments = [...container.querySelectorAll('[role="img"] > span')];
+    expect(segments.map((el) => el.className.match(/bg-d[345]-fill/)?.[0])).toEqual(['bg-d3-fill', 'bg-d5-fill']);
+  });
+
+  it('בלי נתונים — פס ריק עם תיאור, לא 0/0', () => {
+    render(<SharesBar label="יחסים" shares={{ d3: 0, d4: 0, d5: 0 }} />);
+    expect(screen.getByRole('img', { name: 'יחסים: אין נתונים' })).toBeInTheDocument();
+  });
+
+  it('הערכים כתובים תמיד בטקסט, לצד גליף ותווית — הצבע אינו נושא מידע לבדו', () => {
+    render(<SharesValues shares={{ d3: 0.17, d4: 0, d5: 0.83 }} />);
+    for (const text of ['3D', '17%', '4D', '0%', '5D', '83%']) expect(screen.getByText(text)).toBeInTheDocument();
+  });
+
+  it('מגמה: נדרשות שתי מדידות; יש תיאור טקסטואלי וטבלה חלופית', () => {
+    const point = (id: string, d3: number) => ({ id, label: id, shares: { d3, d4: 0, d5: 1 - d3 } });
+    const { container, rerender } = render(<TrendChart title="מגמה" points={[point('שבוע 0', 0.6)]} />);
+    expect(container).toBeEmptyDOMElement();
+
+    rerender(<TrendChart title="מגמה" points={[point('שבוע 0', 0.6), point('שבוע 4', 0.25)]} />);
+    expect(screen.getByRole('img', { name: /^מגמה. שבוע 0: 3D 60%.*שבוע 4: 3D 25%/ })).toBeInTheDocument();
+    expect(screen.getAllByRole('row')).toHaveLength(3);
+    expect(container.querySelectorAll('polyline')).toHaveLength(3);
   });
 });
 

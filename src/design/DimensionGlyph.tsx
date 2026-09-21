@@ -7,7 +7,8 @@ import type { Dim } from '../content/schema';
 import { cn } from '../lib/cn';
 import { DIM_LABEL } from './dims';
 
-const DIM_TEXT_CLASS: Record<Dim, string> = { d3: 'text-d3', d4: 'text-d4', d5: 'text-d5' };
+// הגליף הוא גרפיקה (נדרש 3:1), ולכן הוא לובש את צבעי ה-fill — הרוויים יותר במצב הבהיר.
+const DIM_TEXT_CLASS: Record<Dim, string> = { d3: 'text-d3-fill', d4: 'text-d4-fill', d5: 'text-d5-fill' };
 
 interface DimensionGlyphProps {
   dim: Dim;

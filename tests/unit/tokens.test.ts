@@ -58,6 +58,14 @@ describe.each(Object.entries(THEMES))('ניגודיות — ערכה %s', (_name
     expect(contrast(t['on-danger']!, t.danger!)).toBeGreaterThanOrEqual(4.5);
   });
 
+  it('צבעי הגרפיקה של שלושת המצבים נראים על כל המשטחים (3:1)', () => {
+    for (const fill of ['d3-fill', 'd4-fill', 'd5-fill']) {
+      for (const surface of SURFACES) {
+        expect(contrast(t[fill]!, t[surface]!), `${fill} על ${surface}`).toBeGreaterThanOrEqual(3);
+      }
+    }
+  });
+
   it('גבול הפקדים נראה על כל המשטחים (3:1)', () => {
     for (const surface of SURFACES) {
       expect(contrast(t['border-strong']!, t[surface]!), `border-strong על ${surface}`).toBeGreaterThanOrEqual(3);
