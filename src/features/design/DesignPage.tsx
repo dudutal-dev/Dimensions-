@@ -21,6 +21,7 @@ import {
   useToast,
 } from '../../design';
 import { TEXT_SCALES, type TextScale, type ThemeChoice } from '../../domain/records';
+import { AudioCheck } from './AudioCheck';
 
 const DIMS: Dim[] = ['d3', 'd4', 'd5'];
 const LAYERS: Layer[] = ['established', 'speculative', 'metaphoric'];
@@ -241,6 +242,10 @@ export function DesignPage() {
             הצג Toast
           </Button>
         </div>
+      </Section>
+
+      <Section title="אודיו — בדיקת קבלה" note="לבדיקה על iPhone: אחרי ״פתח אודיו״ הפעמון חייב להישמע גם כשמתג השקט פועל.">
+        <AudioCheck />
       </Section>
 
       <Section title="עומק וצורה" note="שלוש דרגות הצללה · רדיוס 12 / 20 / 28 · ריווח על רשת של 4.">

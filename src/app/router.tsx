@@ -7,7 +7,6 @@ import {
   NotebookPen,
   Route as RouteIcon,
   Settings,
-  Timer,
   Wind,
 } from 'lucide-react';
 import { createHashRouter, type RouteObject } from 'react-router-dom';
@@ -21,6 +20,17 @@ import { Shell } from './Shell';
  * המסכים שעוד לא נבנו מוצגים כ-ComingSoon, ויוחלפו אחד-אחד באבני הדרך הבאות.
  */
 const routes: RouteObject[] = [
+  {
+    path: '/session/:id',
+    lazy: async () => ({ Component: (await import('../features/session/SessionPage')).SessionPage }),
+  },
+  {
+    path: '/sos',
+    lazy: async () => {
+      const { SessionPage } = await import('../features/session/SessionPage');
+      return { Component: () => <SessionPage sessionId="sos90" source="sos" autoStart /> };
+    },
+  },
   {
     path: '/welcome',
     lazy: async () => ({ Component: (await import('../features/onboarding/OnboardingPage')).OnboardingPage }),
@@ -51,8 +61,8 @@ const routes: RouteObject[] = [
         element: <ComingSoon title="תובנות" text="מפת החום האישית שלך, זמן התאוששות, ומה עובד לך." milestone="M8" Icon={ChartColumn} />,
       },
       {
-        path: 'sos',
-        element: <ComingSoon title="90 שניות" text="שם, גוף, רווח, לב, פעולה — המעבר המהיר." milestone="M4" Icon={Timer} />,
+        path: 'practice',
+        lazy: async () => ({ Component: (await import('../features/session/PracticeListPage')).PracticeListPage }),
       },
       {
         path: 'journal',

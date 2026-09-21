@@ -188,6 +188,8 @@ export const SettingsSchema = z
       })
       .strict()
       .optional(),
+    /** ברירת המחדל של מצב "עיניים עצומות" בנגן. */
+    eyesClosed: z.boolean().optional(),
     onboarded: z.boolean(),
     /** מתי יוצא גיבוי בפעם האחרונה — לתזכורת עדינה במסך הגיבוי. */
     lastBackupAt: Timestamp.optional(),

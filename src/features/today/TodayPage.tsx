@@ -152,6 +152,15 @@ export function TodayPage() {
         </Card>
       </section>
 
+      <Link
+        to="/practice"
+        className="pressable mt-3 flex min-h-14 items-center gap-3 rounded-card border border-border bg-surface px-4 hover:bg-surface-2"
+      >
+        <Play aria-hidden size={20} className="text-accent" />
+        <span className="flex-1">כל התרגולים</span>
+        <ChevronLeft aria-hidden size={20} className="text-muted" />
+      </Link>
+
       <Sheet open={menuOpen} onClose={() => setMenuOpen(false)} title="עוד">
         <ul className="flex flex-col">
           {SECONDARY_NAV.map(({ to, label, Icon }) => (

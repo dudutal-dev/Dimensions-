@@ -22,6 +22,8 @@
   --color-on-danger: var(--on-danger);
   --color-scrim: var(--scrim);
   --color-glass: var(--glass);
+  --color-night: var(--night);
+  --color-on-night: var(--on-night);
 
   --font-display: var(--ff-display);
   --font-sans: var(--ff-body);

@@ -3,7 +3,7 @@
 אפליקציית PWA בעברית (RTL) לאימון תודעת 3D/4D/5D. המפרט המלא: `SPEC.md`. מקור האמת לתוכן: `content-source/` (קריאה בלבד).
 
 ## פקודות
-- `npm run dev` · `npm run build` · `npm run test` (Vitest) · `npm run e2e` (Playwright: iPhone 14, Pixel 7, דסקטופ — רץ מול ה-build; צילומי מסך ב-`test-results/screens/`) · `npm run content:check`
+- `npm run dev` · `npm run dev:phone` (HTTPS ברשת המקומית — לבדיקה על iPhone פיזי) · `npm run build` · `npm run test` (Vitest) · `npm run e2e` (Playwright: iPhone 14, Pixel 7, דסקטופ — רץ מול ה-build; צילומי מסך ב-`test-results/screens/`) · `npm run content:check`
 - `npm run content:review` — מפיק מחדש את `CONTENT-REVIEW.md` מתוך `src/content/*.json` (לא לערוך את הקובץ ידנית) · `npm run typecheck`
 - שלב ב': `npm run voice:estimate` · `npm run voice:audition` · `npm run voice:generate -- --only <ids>`
 

@@ -98,6 +98,10 @@
   --safe-start: env(safe-area-inset-right, 0px);
   --safe-end: env(safe-area-inset-left, 0px);
 
+  /* מסך "עיניים עצומות" — כהה תמיד, בשתי הערכות */
+  --night: #04060c;
+  --on-night: rgb(236 239 247 / 0.32);
+
   /* שכבות */
   --z-nav: 20;
   --z-fab: 30;

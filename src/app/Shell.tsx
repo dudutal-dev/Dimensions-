@@ -2,6 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { Timer } from 'lucide-react';
 import { useEffect, useRef, type MouseEvent } from 'react';
 import { Link, Navigate, NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
+import { audioEngine } from '../audio/AudioEngine';
 import { repos } from '../data/repositories';
 import { useSettings } from '../data/settingsStore';
 import { Aurora } from '../design';
@@ -188,6 +189,8 @@ function SosButton() {
   return (
     <Link
       to="/sos"
+      // האודיו נפתח כבר כאן, בתוך ההקשה — כי הסשן מתחיל מיד, בלי כפתור "התחל".
+      onClick={() => void audioEngine.unlock()}
       aria-label="90 שניות — מעבר מהיר"
       className="pressable fixed end-4 bottom-[calc(var(--nav-height)+var(--safe-bottom)+16px)] z-[var(--z-fab)] inline-flex min-h-14 items-center gap-2 rounded-full border border-accent/60 bg-glass ps-4 pe-5 font-medium text-accent shadow-2 backdrop-blur-xl lg:end-8 lg:bottom-8"
     >
