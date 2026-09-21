@@ -8,6 +8,7 @@ import { repos } from '../../data/repositories';
 import { useSettings } from '../../data/settingsStore';
 import { Button, Card, DIM_LABEL, DimensionGlyph, IconButton, Sheet } from '../../design';
 import { primaryDim } from '../../domain/checkin-scoring';
+import { dailyPlan, practicePendingToday, weekIdOf } from '../../domain/journey';
 import { anchorsForDay, nextTask, startOfDay, weeklyInsight, type DayPart, type WeeklyInsight } from '../../domain/today';
 import { greetingFor } from '../../lib/date';
 import { useQuickCheckin } from '../checkin/QuickCheckinSheet';
@@ -33,7 +34,7 @@ function useNow(intervalMs = 60_000): Date {
 
 /** "היום" (SPEC 6.2): ברכה, משימה אחת, עוגני היום, ושורת תובנה. פעולה לפני קריאה. */
 export function TodayPage() {
-  const { checkin: content, domains } = loadContent();
+  const { checkin: content, domains, journey: journeyContent, exercises } = loadContent();
   const navigate = useNavigate();
   const now = useNow();
   const anchorTimes = useSettings((s) => s.settings.anchors);
@@ -42,16 +43,20 @@ export function TodayPage() {
 
   const dayStart = startOfDay(now).getTime();
   const data = useLiveQuery(async () => {
-    const [today, week, total] = await Promise.all([
+    const [today, week, total, journey] = await Promise.all([
       repos.checkins.list({ from: dayStart }),
       repos.checkins.list({ from: dayStart - WEEK_MS }),
       repos.checkins.count(),
+      repos.journey.get(),
     ]);
-    return { today, week, total };
+    return { today, week, total, journey };
   }, [dayStart]);
 
   const anchors = anchorsForDay(data?.today ?? [], anchorTimes);
-  const task = nextTask({ now, anchors });
+  const plan = data ? dailyPlan(journeyContent, data.journey, now) : null;
+  const practiceHref = plan ? `/journey/${weekIdOf(plan.week)}` : '/journey';
+  const weekTask = plan ? journeyContent.weeks.find((w) => w.week === plan.week)?.lifeTask.title : undefined;
+  const task = nextTask({ now, anchors, practicePending: data ? practicePendingToday(journeyContent, data.journey, now) : false });
   const anchorLabel = (id: string) => content.anchors.find((a) => a.id === id)?.label ?? '';
 
   return (
@@ -83,8 +88,14 @@ export function TodayPage() {
         )}
         {task.kind === 'practice' && (
           <>
-            <h2 className="text-xl">תרגול היום</h2>
-            <Button variant="primary" size="lg" fullWidth className="mt-5" icon={<Play aria-hidden size={22} />} onClick={() => navigate('/journey')}>
+            <p className="text-sm text-muted">המסע · שבוע {plan?.week}</p>
+            <h2 className="mt-1 text-xl">תרגול היום</h2>
+            <p className="mt-1 text-muted">
+              {(plan?.newExerciseIds.length ? plan.newExerciseIds : (plan?.exerciseIds ?? []))
+                .map((id) => exercises.exercises.find((e) => e.id === id)?.name)
+                .join(' · ')}
+            </p>
+            <Button variant="primary" size="lg" fullWidth className="mt-5" icon={<Play aria-hidden size={22} />} onClick={() => navigate(practiceHref)}>
               לתרגול
             </Button>
           </>
@@ -101,6 +112,23 @@ export function TodayPage() {
           {content.quickMode.title}
         </Button>
       </Card>
+
+      {plan && (
+        <Link
+          to={practiceHref}
+          aria-label={`המסע · שבוע ${plan.week}`}
+          className="pressable mt-4 flex min-h-16 items-center gap-3 rounded-card border border-border bg-surface px-4 py-3 hover:bg-surface-2"
+        >
+          <span className="flex-1">
+            <span className="block text-sm text-muted">המסע · שבוע {plan.week}{plan.isReturnPlan ? ' · ימי חזרה' : ''}</span>
+            <span className="block font-medium">
+              {(plan.newExerciseIds.length ? plan.newExerciseIds : plan.exerciseIds).map((id) => exercises.exercises.find((e) => e.id === id)?.name).join(' · ') || 'תרגול חופשי'}
+            </span>
+            {weekTask && <span className="block text-sm text-muted">משימת החיים: {weekTask}</span>}
+          </span>
+          <ChevronLeft aria-hidden size={20} className="shrink-0 text-muted" />
+        </Link>
+      )}
 
       <section aria-labelledby="anchors-title" className="mt-8">
         <h2 id="anchors-title" className="text-lg">

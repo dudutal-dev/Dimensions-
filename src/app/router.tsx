@@ -4,7 +4,6 @@ import {
   Compass,
   LifeBuoy,
   NotebookPen,
-  Route as RouteIcon,
   Settings,
 } from 'lucide-react';
 import { createHashRouter, type RouteObject } from 'react-router-dom';
@@ -67,8 +66,12 @@ const routes: RouteObject[] = [
         lazy: async () => ({ Component: (await import('../features/shift/ShiftPage')).ShiftPage }),
       },
       {
-        path: 'journey/:weekId?',
-        element: <ComingSoon title="מסע" text="תכנית 12 השבועות: קרקע, המתבונן והצל, לב ונוכחות." milestone="M7" Icon={RouteIcon} />,
+        path: 'journey',
+        lazy: async () => ({ Component: (await import('../features/journey/JourneyPage')).JourneyPage }),
+      },
+      {
+        path: 'journey/:weekId',
+        lazy: async () => ({ Component: (await import('../features/journey/WeekPage')).WeekPage }),
       },
       {
         path: 'insights',

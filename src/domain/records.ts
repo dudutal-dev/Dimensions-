@@ -146,6 +146,13 @@ export const JourneyStateSchema = z
     days: z.record(IsoDate, z.object({ practice: z.boolean(), lifeTask: z.boolean() }).strict()),
     weeklyReflections: z.record(z.string().regex(/^\d{1,2}$/), z.string()),
     mode: z.enum(['program', 'maintenance']),
+    /** מתי התחיל השבוע הנוכחי — "להישאר עוד שבוע" פשוט מאפס את זה. */
+    weekStartedAt: Timestamp.optional(),
+    /** קריטריוני המעבר שסומנו (צ'קליסט רך), לפי שלב ומיקום: "A.0", "B.1"... */
+    criteria: z.record(z.string().regex(/^[ABC]\.[0-9]+$/), z.boolean()).optional(),
+    /** חזרה מהפסקה: שלושה ימים של ת1–ת3, החל מהתאריך הזה. */
+    returnPlanFrom: IsoDate.optional(),
+    completedAt: Timestamp.optional(),
   })
   .strict();
 export type JourneyState = z.infer<typeof JourneyStateSchema>;

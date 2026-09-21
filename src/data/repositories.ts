@@ -100,7 +100,13 @@ export function createRepositories(db: CompassDb) {
 
   return {
     checkins,
-    metrics,
+    metrics: {
+      ...metrics,
+      async byWeekMarker(weekMarker: NonNullable<MetricsEntry['weekMarker']>): Promise<MetricsEntry | undefined> {
+        const rows = await db.metrics.where('weekMarker').equals(weekMarker).sortBy('ts');
+        return rows[rows.length - 1];
+      },
+    },
 
     diagnoses: {
       ...diagnoses,
@@ -156,6 +162,12 @@ export function createRepositories(db: CompassDb) {
           await db.journey.put(next);
           return next;
         });
+      },
+      /** שמירת מצב מלא — התוצאה של פונקציות המעבר ב-domain/journey.ts. */
+      async save(state: JourneyState): Promise<JourneyState> {
+        const next = JourneyStateSchema.parse({ ...state, id: JOURNEY_ID });
+        await db.journey.put(next);
+        return next;
       },
       /** סימון ביצוע יומי. יום שלא סומן פשוט לא קיים — אין "החמצה" (SPEC 6.7). */
       async markDay(date: string, patch: Partial<JourneyState['days'][string]>): Promise<JourneyState> {

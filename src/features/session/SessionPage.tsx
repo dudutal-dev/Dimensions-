@@ -22,6 +22,7 @@ import {
   TextArea,
 } from '../../design';
 import type { SessionLog } from '../../domain/records';
+import { countsAsDailyPractice, isoDate } from '../../domain/journey';
 import { findSession, formatClock, remainingSec, waitsForUser, type Session } from '../../domain/session';
 import { cn } from '../../lib/cn';
 import { BreathCircle } from './BreathCircle';
@@ -316,7 +317,7 @@ interface FinishViewProps {
 /** "מה השתנה?" (SPEC 6.5): גליף לפני/אחרי והערה. מזין את "מה עובד לי" בתובנות. */
 function FinishView({ session, source, context, fields, onClearFields, onDone }: FinishViewProps) {
   const knownBefore = context.before;
-  const { tools } = loadContent();
+  const { tools, journey: journeyContent } = loadContent();
   const [before, setBefore] = useState<Dim | undefined>(knownBefore);
   const [after, setAfter] = useState<Dim | undefined>();
   const [note, setNote] = useState('');
@@ -340,6 +341,11 @@ function FinishView({ session, source, context, fields, onClearFields, onDone }:
             ...(after ? { after } : {}),
             ...(note.trim() ? { note: note.trim() } : {}),
           });
+          // תרגול שהוא אחד מתרגולי השבוע במסע מסמן את "תרגלתי היום" מעצמו.
+          const today = new Date();
+          if (countsAsDailyPractice(journeyContent, await repos.journey.get(), session.id, today)) {
+            await repos.journey.markDay(isoDate(today), { practice: true });
+          }
         })(),
       );
       onDone();

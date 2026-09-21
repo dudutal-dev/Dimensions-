@@ -7,6 +7,7 @@ import { DimSchema, DomainSchema, ToolGroupIdSchema, type Domain, type ToolGroup
 import { repos } from '../../data/repositories';
 import { Button, Card, Chip, LayerTag, RichText, SegmentedControl } from '../../design';
 import { findSession, formatClock, type Session } from '../../domain/session';
+import { isolateLtr } from '../../lib/bidi';
 import { recommend, toolStats, type Recommendation, type ShiftContext, type ToolStats } from '../../domain/shift';
 
 type By = 'from' | 'trigger' | 'domain';
@@ -223,13 +224,10 @@ function RecommendationCard({ recommendation, session, href }: { recommendation:
   );
 }
 
-const LTR_ISOLATE = String.fromCharCode(0x2066); // LEFT-TO-RIGHT ISOLATE
-const POP_ISOLATE = String.fromCharCode(0x2069); // POP DIRECTIONAL ISOLATE
-
 function formatImprovement(value: number): string {
   const rounded = Math.round(value * 10) / 10;
   // המספר עטוף בבידוד LTR — אחרת הסימן + קופץ לצד השני של המספר בטקסט עברי.
-  return `${LTR_ISOLATE}${rounded > 0 ? '+' : ''}${rounded}${POP_ISOLATE} מדרגות`;
+  return `${isolateLtr(`${rounded > 0 ? '+' : ''}${rounded}`)} מדרגות`;
 }
 
 interface SessionListProps {

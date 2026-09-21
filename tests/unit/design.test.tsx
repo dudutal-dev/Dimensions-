@@ -26,6 +26,7 @@ import {
   ToastProvider,
   TrendChart,
 } from '../../src/design';
+import { isolateRanges } from '../../src/lib/bidi';
 import { greetingFor } from '../../src/lib/date';
 
 afterEach(cleanup);
@@ -218,6 +219,15 @@ describe('לוגיקה קטנה', () => {
     expect(resolveTheme('system', true)).toBe('light');
     expect(resolveTheme('system', false)).toBe('dark');
     expect(resolveTheme('dark', true)).toBe('dark');
+  });
+
+  it('טווחי מספרים בטקסט עברי נעטפים בבידוד LTR, ושאר הטקסט לא משתנה', () => {
+    const open = String.fromCharCode(0x2066);
+    const close = String.fromCharCode(0x2069);
+    expect(isolateRanges('שבועות 1–3')).toBe(`שבועות ${open}1–3${close}`);
+    expect(isolateRanges('בוקר: 15–20 דקות. ערב: 5–10 דקות.')).toBe(`בוקר: ${open}15–20${close} דקות. ערב: ${open}5–10${close} דקות.`);
+    expect(isolateRanges('קרקוע 5-4-3-2-1')).toBe(`קרקוע ${open}5-4-3-2-1${close}`);
+    expect(isolateRanges('בין 00:00 ל-23:59, או שבוע 4')).toBe('בין 00:00 ל-23:59, או שבוע 4');
   });
 
   it('ברכה לפי שעה', () => {

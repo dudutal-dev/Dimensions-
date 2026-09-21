@@ -23,7 +23,7 @@
 - TypeScript strict. `domain/` טהור (בלי React/Dexie) ומכוסה בבדיקות.
 - צבעים רק דרך tokens סמנטיים. מאפייני CSS לוגיים בלבד (RTL). יעדי מגע ≥48px. אין emoji כאייקונים (Lucide + גליפים ייעודיים).
 - כל קלט משתמש נשמר אוטומטית ומיד: כתיבות דרך `tracked()` (`data/saveStatus.ts`), זרימות רב-שלביות דרך `useDraft`, חיווי דרך `SavedIndicator`.
-- נתונים: מסכים ניגשים רק ל-`data/repositories.ts` (לא ל-Dexie ישירות; `useLiveQuery` מותר). צורת הרשומות מוגדרת ב-`domain/records.ts` (Zod). שינוי סכמה = גרסה חדשה ב-`SCHEMA_VERSIONS` (`data/db.ts`) + צעד מקביל ב-`BACKUP_MIGRATIONS` (`domain/backup.ts`). לעולם לא עורכים גרסה שיצאה.
+- נתונים: מסכים ניגשים רק ל-`data/repositories.ts` (לא ל-Dexie ישירות; `useLiveQuery` מותר). צורת הרשומות מוגדרת ב-`domain/records.ts` (Zod). שינוי סכמה = גרסה חדשה ב-`SCHEMA_VERSIONS` (`data/db.ts`) + צעד מקביל ב-`BACKUP_MIGRATIONS` (`domain/backup.ts`). לעולם לא עורכים גרסה שיצאה. שדה אופציונלי חדש (בלי אינדקס) אינו משנה רשומות קיימות, ולכן אינו דורש גרסה.
 - `prefers-reduced-motion` נתמך בכל אנימציה.
 - לפני מסירה ויזואלית: Pre-Delivery Checklist של הסקיל `ui-ux-pro-max`.
 
