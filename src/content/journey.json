@@ -1,0 +1,313 @@
+{
+  "title": "המסע — 12 שבועות",
+  "disclaimer": "מסגרת של תרגול תודעתי. הכלים עצמם — מדיטציה, נשימה, יומן, הכרת תודה, חמלה — נתמכים מחקרית {{established}}; המסגור “מ-3D ל-5D” הוא מטפורה מארגנת {{metaphoric}}. לא תחליף לטיפול נפשי או רפואי.",
+  "principles": [
+    {
+      "title": "ממצב לתכונה",
+      "text": "המטרה אינה לחוות 5D — זה קל יחסית — אלא להתייצב בו, וזה דורש חזרתיות. עשרים עד שלושים דקות ביום עדיפות על ריטריט חד-פעמי."
+    },
+    {
+      "title": "מלמטה למעלה",
+      "text": "מערכת עצבים מווסתת קודמת לתובנות. אי אפשר “לחשוב” את עצמך ל-5D מתוך גוף בדריכות."
+    },
+    {
+      "title": "הכללה, לא בריחה",
+      "text": "כל שלב מוסיף; אף שלב לא ננטש."
+    },
+    {
+      "title": "המבחן הוא החיים",
+      "text": "התרגול על הכרית הוא חדר הכושר; המשחק הוא הפקק, הישיבה, הבית."
+    },
+    {
+      "title": "מינון",
+      "text": "בוקר: 15–20 דקות. ערב: 5–10 דקות. ובמהלך היום — מיקרו-תרגולים."
+    }
+  ],
+  "week0": {
+    "id": "w00",
+    "title": "שבוע 0 — מדידת בסיס",
+    "steps": [
+      { "id": "diagnosis", "text": "מלא את שאלון האבחון, ובקש מאדם קרוב למלא אותו עליך." },
+      { "id": "reaction-journal", "text": "יומן תגובות, שבעה ימים: כל ערב רשום שלושה אירועים טעונים — מה קרה ← מה הרגשתי בגוף ← מה עשיתי ← כמה זמן עד שחזרתי לאיזון ← סיווג." },
+      { "id": "baseline-metrics", "text": "רשום את מדדי הבסיס שלך." },
+      { "id": "focus-domain", "text": "בחר **תחום מוקד** אחד — הפער הגדול שעלה מהשאלון." }
+    ],
+    "metrics": [
+      { "id": "recovery-time", "label": "זמן התאוששות ממוצע", "unit": "דקות" },
+      { "id": "quiet-minutes", "label": "דקות שקט ביום", "unit": "דקות" },
+      { "id": "sleep-quality", "label": "איכות שינה", "unit": "1–10" },
+      { "id": "leisure-screen", "label": "שעות מסך פנאי", "unit": "שעות ביום" }
+    ],
+    "intro": [
+      { "id": "w00.s01", "type": "instruction", "text": "שבוע אפס. עוד לא משנים דבר. רק מודדים.", "durationSec": 7 },
+      { "id": "w00.s02", "type": "instruction", "text": "מלא את שאלון האבחון, ובקש מאדם קרוב למלא אותו עליך.", "durationSec": 8 },
+      { "id": "w00.s03", "type": "instruction", "text": "כל ערב השבוע, רשום ביומן שלושה אירועים טעונים, וכמה זמן לקח לך לחזור לאיזון.", "durationSec": 10 },
+      { "id": "w00.s04", "type": "instruction", "text": "בסוף השבוע, בחר תחום מוקד אחד.", "durationSec": 6 }
+    ]
+  },
+  "phases": [
+    {
+      "id": "A",
+      "name": "קרקע",
+      "formalName": "שלב א׳ — ייצוב 3D",
+      "fromWeek": 1,
+      "toWeek": 3,
+      "goal": "מערכת עצבים רגועה, גוף נוכח, סדר בחומר.",
+      "criteriaTitle": "מוכן להמשיך?",
+      "criteria": [
+        "אני יכול לשבת עשר דקות עם הנשימה, בלי להיסחף לגמרי.",
+        "אני ישן סביר.",
+        "לפחות “קצה” אחד נסגר."
+      ]
+    },
+    {
+      "id": "B",
+      "name": "המתבונן והצל",
+      "formalName": "שלב ב׳ — חציית 4D",
+      "fromWeek": 4,
+      "toWeek": 8,
+      "goal": "להפריד בין מודעות לתוכן; לפגוש את מה שמחזיק אותך ב-3D.",
+      "warning": "זה השלב הסוער. צפוי: עליית רגשות ישנים, רצון לנטוש — או ההפך, התנפחות: “הבנתי הכול”. שתיהן תקינות. אם עולה מצוקה שמציפה ואינה נרגעת — האט, חזור לשלב א׳, ופנה לאיש מקצוע.",
+      "criteriaTitle": "מוכן להמשיך?",
+      "criteria": [
+        "אני מזהה טריגר *בזמן אמת*, לפחות במחצית המקרים.",
+        "זמן ההתאוששות שלי התקצר לעומת שבוע 0."
+      ]
+    },
+    {
+      "id": "C",
+      "name": "לב, נוכחות, שירות",
+      "formalName": "שלב ג׳ — עיגון 5D",
+      "fromWeek": 9,
+      "toWeek": 12,
+      "goal": "עיגון: לב פתוח, נוכחות, ופעולה מתוך שירות.",
+      "criteriaTitle": "מהו עיגון?",
+      "criteria": [
+        "חזרה מהירה אחרי נפילה.",
+        "פחות נפילות באותם מקומות.",
+        "אדם קרוב מאשר שינוי.",
+        "ירידה מדידה במדדי שבוע 0."
+      ],
+      "criteriaNote": "עיגון אינו העדר נפילות."
+    }
+  ],
+  "weeks": [
+    {
+      "week": 1,
+      "id": "w01",
+      "phase": "A",
+      "practices": [
+        { "exerciseId": "t1", "minutes": 10, "frequency": "daily", "carried": false },
+        { "exerciseId": "t2", "minutes": 10, "frequency": "daily", "carried": false }
+      ],
+      "lifeTask": { "title": "היגיינת שינה", "text": "שעת שינה קבועה, וללא מסך 45 דקות לפניה." },
+      "intro": [
+        { "id": "w01.s01", "type": "instruction", "text": "שבוע ראשון. מתחילים מהקרקע: מערכת עצבים רגועה, וגוף נוכח.", "durationSec": 8 },
+        { "id": "w01.s02", "type": "instruction", "text": "כל יום: עשר דקות של נשימה קוהרנטית, ועשר דקות של סריקת גוף.", "durationSec": 8 },
+        { "id": "w01.s03", "type": "instruction", "text": "משימת השבוע: שינה. שעה קבועה, ובלי מסך שלושת רבעי שעה לפניה.", "durationSec": 9 }
+      ]
+    },
+    {
+      "week": 2,
+      "id": "w02",
+      "phase": "A",
+      "practices": [
+        { "exerciseId": "t1", "minutes": 10, "frequency": "daily", "carried": true },
+        { "exerciseId": "t2", "minutes": 10, "frequency": "daily", "carried": true },
+        { "exerciseId": "walk", "minutes": 15, "frequency": "daily", "carried": false, "note": "בטבע או בחוץ" }
+      ],
+      "lifeTask": { "title": "סגירת קצוות", "text": "שלושה עניינים חומריים פתוחים — חוב, מסמך, שיחה נדחית. סגור אותם." },
+      "intro": [
+        { "id": "w02.s01", "type": "instruction", "text": "שבוע שני. ממשיכים בנשימה ובסריקת הגוף, ומוסיפים רבע שעה של הליכה מודעת, בטבע או בחוץ.", "durationSec": 11 },
+        { "id": "w02.s02", "type": "instruction", "text": "משימת השבוע: סגירת קצוות. שלושה עניינים חומריים פתוחים. חוב, מסמך, שיחה שנדחתה. סגור אותם.", "durationSec": 11 }
+      ]
+    },
+    {
+      "week": 3,
+      "id": "w03",
+      "phase": "A",
+      "practices": [
+        { "exerciseId": "t1", "minutes": 10, "frequency": "daily", "carried": true },
+        { "exerciseId": "t2", "minutes": 10, "frequency": "daily", "carried": true },
+        { "exerciseId": "walk", "minutes": 15, "frequency": "daily", "carried": true, "note": "בטבע או בחוץ" },
+        { "exerciseId": "t3", "minutes": 1, "frequency": "3x-day", "carried": false }
+      ],
+      "lifeTask": { "title": "דיאטת קלט", "text": "הגבלת חדשות ורשתות לעשרים דקות ביום." },
+      "intro": [
+        { "id": "w03.s01", "type": "instruction", "text": "שבוע שלישי. מוסיפים שלוש עצירות ביום, דקה כל אחת.", "durationSec": 8 },
+        { "id": "w03.s02", "type": "instruction", "text": "קשור אותן לעוגנים: לפני פגישה, לפני פתיחת הדואר, בכניסה הביתה.", "durationSec": 9 },
+        { "id": "w03.s03", "type": "instruction", "text": "משימת השבוע: דיאטת קלט. חדשות ורשתות, עד עשרים דקות ביום.", "durationSec": 9 }
+      ]
+    },
+    {
+      "week": 4,
+      "id": "w04",
+      "phase": "B",
+      "practices": [
+        { "exerciseId": "t4", "minutes": 15, "frequency": "daily", "carried": false }
+      ],
+      "lifeTask": { "title": "תיוג מחשבות", "text": "במהלך היום, תייג מחשבות: “תכנון”, “דאגה”, “שיפוט”." },
+      "checkpoint": { "kind": "mid", "text": "בדיקת ביניים: שאלון האבחון, ומדדים מול שבוע 0." },
+      "intro": [
+        { "id": "w04.s01", "type": "instruction", "text": "שבוע רביעי. מתחיל השלב השני: המתבונן והצל.", "durationSec": 7 },
+        { "id": "w04.s02", "type": "instruction", "text": "זה השלב הסוער. רגשות ישנים עשויים לעלות, וגם רצון לנטוש. או ההפך: תחושה שהבנת הכול. שתיהן תקינות.", "durationSec": 13 },
+        { "id": "w04.s03", "type": "instruction", "text": "אם עולה מצוקה שמציפה ואינה נרגעת: האט, חזור לתרגולי הקרקע, ופנה לאיש מקצוע.", "durationSec": 10 },
+        { "id": "w04.s04", "type": "instruction", "text": "כל יום: רבע שעה של מדיטציית המתבונן. ובמהלך היום, תייג מחשבות. תכנון. דאגה. שיפוט.", "durationSec": 12 },
+        { "id": "w04.s05", "type": "instruction", "text": "השבוע גם בדיקת ביניים: שאלון, ומדדים.", "durationSec": 6 }
+      ]
+    },
+    {
+      "week": 5,
+      "id": "w05",
+      "phase": "B",
+      "practices": [
+        { "exerciseId": "t4", "minutes": 15, "frequency": "daily", "carried": true },
+        { "exerciseId": "t5", "frequency": "daily", "carried": false }
+      ],
+      "lifeTask": { "title": "שלושת הטריגרים שלי", "text": "זהה את שלושת הטריגרים החוזרים שלך." },
+      "intro": [
+        { "id": "w05.s01", "type": "instruction", "text": "שבוע חמישי. ממשיכים במתבונן, ומוסיפים יומן טריגרים.", "durationSec": 8 },
+        { "id": "w05.s02", "type": "instruction", "text": "משימת השבוע: זהה את שלושת הטריגרים החוזרים שלך.", "durationSec": 7 }
+      ]
+    },
+    {
+      "week": 6,
+      "id": "w06",
+      "phase": "B",
+      "practices": [
+        { "exerciseId": "t4", "minutes": 15, "frequency": "daily", "carried": true },
+        { "exerciseId": "t5", "frequency": "daily", "carried": true },
+        { "exerciseId": "t6", "frequency": "2x-week", "carried": false }
+      ],
+      "lifeTask": { "title": "להקשיב עד הסוף", "text": "שיחה אחת שבה אתה מקשיב עד הסוף, בלי להתגונן." },
+      "intro": [
+        { "id": "w06.s01", "type": "instruction", "text": "שבוע שישי. מוסיפים עבודת צל, פעמיים בשבוע.", "durationSec": 7 },
+        { "id": "w06.s02", "type": "instruction", "text": "משימת השבוע: שיחה אחת שבה אתה מקשיב עד הסוף, בלי להתגונן.", "durationSec": 8 }
+      ]
+    },
+    {
+      "week": 7,
+      "id": "w07",
+      "phase": "B",
+      "practices": [
+        { "exerciseId": "t4", "minutes": 15, "frequency": "daily", "carried": true },
+        { "exerciseId": "t5", "frequency": "daily", "carried": true },
+        { "exerciseId": "t6", "frequency": "2x-week", "carried": true },
+        { "exerciseId": "t7", "frequency": "daily", "carried": false, "note": "על תחום המוקד" }
+      ],
+      "lifeTask": { "title": "פעולה הפוכה לדפוס", "text": "פעולה אחת הפוכה לדפוס שלך — למשל, נדיבות במקום קמצנות מתוך פחד." },
+      "intro": [
+        { "id": "w07.s01", "type": "instruction", "text": "שבוע שביעי. מוסיפים חקירת אמונות, על תחום המוקד שלך.", "durationSec": 8 },
+        { "id": "w07.s02", "type": "instruction", "text": "משימת השבוע: פעולה אחת הפוכה לדפוס. למשל, נדיבות במקום קמצנות מתוך פחד.", "durationSec": 10 }
+      ]
+    },
+    {
+      "week": 8,
+      "id": "w08",
+      "phase": "B",
+      "practices": [
+        { "exerciseId": "t4", "minutes": 15, "frequency": "daily", "carried": true },
+        { "exerciseId": "t5", "frequency": "daily", "carried": true },
+        { "exerciseId": "t6", "frequency": "2x-week", "carried": true },
+        { "exerciseId": "t7", "frequency": "daily", "carried": true, "note": "על תחום המוקד" },
+        { "exerciseId": "t8", "frequency": "daily", "carried": false }
+      ],
+      "lifeTask": { "title": "סליחה אחת", "text": "סליחה אחת — לאחר או לעצמך — בכתב. אין חובה לשלוח." },
+      "checkpoint": { "kind": "mid", "text": "בדיקת ביניים: שאלון האבחון, ומדדים מול שבוע 0." },
+      "intro": [
+        { "id": "w08.s01", "type": "instruction", "text": "שבוע שמיני. מוסיפים תרגול סליחה. התחל בקטן.", "durationSec": 7 },
+        { "id": "w08.s02", "type": "instruction", "text": "משימת השבוע: סליחה אחת, בכתב. לאחר, או לעצמך. אין חובה לשלוח.", "durationSec": 9 },
+        { "id": "w08.s03", "type": "instruction", "text": "השבוע גם בדיקת ביניים שנייה.", "durationSec": 5 }
+      ]
+    },
+    {
+      "week": 9,
+      "id": "w09",
+      "phase": "C",
+      "practices": [
+        { "exerciseId": "t9", "minutes": 15, "frequency": "daily", "carried": false },
+        { "exerciseId": "t10", "minutes": 3, "frequency": "evening", "carried": false }
+      ],
+      "lifeTask": { "title": "מעשה טוב אנונימי", "text": "מעשה טוב אנונימי אחד, כל יום." },
+      "intro": [
+        { "id": "w09.s01", "type": "instruction", "text": "שבוע תשיעי. מתחיל השלב השלישי: לב, נוכחות, שירות.", "durationSec": 8 },
+        { "id": "w09.s02", "type": "instruction", "text": "כל יום: רבע שעה של מדיטציית לב. ובערב, הכרת תודה.", "durationSec": 8 },
+        { "id": "w09.s03", "type": "instruction", "text": "משימת השבוע: מעשה טוב אנונימי אחד, כל יום.", "durationSec": 7 }
+      ]
+    },
+    {
+      "week": 10,
+      "id": "w10",
+      "phase": "C",
+      "practices": [
+        { "exerciseId": "t9", "minutes": 15, "frequency": "daily", "carried": true },
+        { "exerciseId": "t10", "minutes": 3, "frequency": "evening", "carried": true },
+        { "exerciseId": "t11", "minutes": 10, "frequency": "daily", "carried": false }
+      ],
+      "lifeTask": { "title": "יום ללא תלונה", "text": "“יום ללא תלונה” — פעמיים השבוע." },
+      "intro": [
+        { "id": "w10.s01", "type": "instruction", "text": "שבוע עשירי. מוסיפים עשר דקות של מודעות פתוחה.", "durationSec": 7 },
+        { "id": "w10.s02", "type": "instruction", "text": "משימת השבוע: יום ללא תלונה. פעמיים השבוע.", "durationSec": 7 }
+      ]
+    },
+    {
+      "week": 11,
+      "id": "w11",
+      "phase": "C",
+      "practices": [
+        { "exerciseId": "t9", "minutes": 15, "frequency": "daily", "carried": true },
+        { "exerciseId": "t10", "minutes": 3, "frequency": "evening", "carried": true },
+        { "exerciseId": "t11", "minutes": 10, "frequency": "daily", "carried": true },
+        { "exerciseId": "t12", "minutes": 10, "frequency": "daily", "carried": false }
+      ],
+      "lifeTask": { "title": "חצי יום ללא שעון", "text": "חצי יום ללא שעון וללא טלפון: פעל לפי הקצב הפנימי." },
+      "intro": [
+        { "id": "w11.s01", "type": "instruction", "text": "שבוע אחד עשר. מוסיפים את תרגול הזמן העמוק.", "durationSec": 7 },
+        { "id": "w11.s02", "type": "instruction", "text": "משימת השבוע: חצי יום בלי שעון ובלי טלפון. פעל לפי הקצב הפנימי.", "durationSec": 9 }
+      ]
+    },
+    {
+      "week": 12,
+      "id": "w12",
+      "phase": "C",
+      "practices": [],
+      "freePractice": {
+        "minMinutes": 20,
+        "maxMinutes": 30,
+        "text": "תרגול חופשי משולב, 20–30 דקות: בחר בעצמך מתוך התרגילים שלמדת."
+      },
+      "lifeTask": { "title": "להגדיר שירות", "text": "הגדר “שירות”: איך הכישורים שלך משרתים משהו גדול ממך." },
+      "checkpoint": { "kind": "final", "text": "מדידה מסכמת: שאלון האבחון, וכל המדדים מול שבוע 0." },
+      "intro": [
+        { "id": "w12.s01", "type": "instruction", "text": "שבוע שנים עשר. התרגול חופשי: עשרים עד שלושים דקות, בשילוב שאתה בוחר.", "durationSec": 9 },
+        { "id": "w12.s02", "type": "instruction", "text": "משימת השבוע: הגדר שירות. איך הכישורים שלך משרתים משהו גדול ממך?", "durationSec": 9 },
+        { "id": "w12.s03", "type": "instruction", "text": "בסוף השבוע: מדידה מסכמת, מול שבוע אפס.", "durationSec": 6 }
+      ]
+    }
+  ],
+  "stayAnotherWeek": "אפשר להישאר כאן עוד שבוע. זו לא נסיגה — זו העמקה.",
+  "missedDay": "יום שלא תורגל הוא פשוט יום. ממשיכים מכאן.",
+  "returnAfterBreak": {
+    "text": "טוב שחזרת. שלושה ימים של ת1–ת3, ואז ממשיכים.",
+    "exerciseIds": ["t1", "t2", "t3"],
+    "days": 3
+  },
+  "obstacles": [
+    { "id": "no-time", "obstacle": "“אין לי זמן”", "remedy": "זו בדיוק תודעת 3D מדברת. רד לשבע דקות; אל תרד לאפס." },
+    { "id": "nothing-happens", "obstacle": "“שום דבר לא קורה”", "remedy": "מדוד מול שבוע 0, לא מול ציפייה לאורות." },
+    { "id": "regression", "obstacle": "נסיגה אחרי שבוע טוב", "remedy": "צפוי. ספירלה. חזור לת1–ת3 לשלושה ימים." },
+    { "id": "spiritual-pride", "obstacle": "התנשאות רוחנית", "remedy": "סימן מובהק ל-4D. התרופה: שירות, ועבודת צל." },
+    { "id": "flooding", "obstacle": "הצפה רגשית", "remedy": "האט, קרקע, שתף אדם קרוב; ואם זה נמשך — איש מקצוע." },
+    { "id": "unsupportive", "obstacle": "סביבה לא תומכת", "remedy": "אל תטיף. התנהגות משכנעת יותר מהסברים." },
+    { "id": "escape", "obstacle": "שימוש ברוחניות לבריחה", "remedy": "שאל: “ממה אני נמנע?” — וטפל בזה ב-3D." }
+  ],
+  "maintenance": {
+    "title": "תחזוקה — אחרי 12 השבועות",
+    "items": [
+      { "id": "daily", "cadence": "יומי מינימלי", "text": "עשר דקות ישיבה, הכרת תודה, ושלוש עצירות." },
+      { "id": "weekly", "cadence": "שבועי", "text": "שעה בטבע ללא מכשיר; סקירת היומן." },
+      { "id": "quarterly", "cadence": "רבעוני", "text": "שאלון מחדש, ומשוב מאדם קרוב; יום שתיקה." },
+      { "id": "community", "cadence": "קהילה", "text": "קבוצת תרגול או שותף — הגורם המנבא ביותר להתמדה." }
+    ]
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "title": "בדיקת מימד",
+  "intro": "עצור. בלי לשנות דבר, סרוק.",
+  "scoring": {
+    "aggregation": "channel-mean",
+    "channelMultipliers": { "body": 1.5, "thought": 1, "emotion": 1, "time": 1 },
+    "blendThreshold": 0.15
+  },
+  "steps": [
+    {
+      "id": "breath",
+      "channel": "body",
+      "title": "נשימה",
+      "questions": [
+        {
+          "id": "breath-place",
+          "kind": "choice",
+          "prompt": "איפה הנשימה?",
+          "options": [
+            { "id": "chest", "label": "בחזה", "weights": { "d3": 0.6, "d4": 0.3, "d5": 0.1 } },
+            { "id": "belly", "label": "בבטן", "weights": { "d3": 0.1, "d4": 0.3, "d5": 0.6 } }
+          ]
+        },
+        {
+          "id": "breath-flow",
+          "kind": "choice",
+          "prompt": "ואיך היא נעה?",
+          "options": [
+            { "id": "held", "label": "עצורה", "weights": { "d3": 0.7, "d4": 0.25, "d5": 0.05 } },
+            { "id": "uneven", "label": "לא סדירה, אנחות", "weights": { "d3": 0.2, "d4": 0.65, "d5": 0.15 } },
+            { "id": "flowing", "label": "זורמת", "weights": { "d3": 0.1, "d4": 0.3, "d5": 0.6 } }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "contraction",
+      "channel": "body",
+      "title": "כיווץ",
+      "questions": [
+        {
+          "id": "contraction",
+          "kind": "scale",
+          "prompt": "לסת, כתפיים, בטן — כמה כיווץ?",
+          "min": 0,
+          "max": 10,
+          "minLabel": "רך לגמרי",
+          "maxLabel": "מכווץ מאוד",
+          "bands": [
+            { "upTo": 2, "weights": { "d3": 0.05, "d4": 0.25, "d5": 0.7 } },
+            { "upTo": 5, "weights": { "d3": 0.25, "d4": 0.5, "d5": 0.25 } },
+            { "upTo": 7, "weights": { "d3": 0.6, "d4": 0.3, "d5": 0.1 } },
+            { "upTo": 10, "weights": { "d3": 0.8, "d4": 0.15, "d5": 0.05 } }
+          ],
+          "chips": [
+            { "id": "jaw", "label": "לסת" },
+            { "id": "shoulders", "label": "כתפיים" },
+            { "id": "belly", "label": "בטן" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "thought",
+      "channel": "thought",
+      "title": "מחשבה אחרונה",
+      "questions": [
+        {
+          "id": "thought-topic",
+          "kind": "choice",
+          "prompt": "על מה הייתה המחשבה האחרונה?",
+          "options": [
+            { "id": "threat", "label": "איום, “מה יהיה”", "weights": { "d3": 0.75, "d4": 0.2, "d5": 0.05 } },
+            { "id": "comparison", "label": "השוואה", "weights": { "d3": 0.75, "d4": 0.2, "d5": 0.05 } },
+            { "id": "blame", "label": "מי אשם", "weights": { "d3": 0.8, "d4": 0.15, "d5": 0.05 } },
+            { "id": "what-they-say", "label": "“מה יגידו”", "weights": { "d3": 0.75, "d4": 0.2, "d5": 0.05 } },
+            { "id": "planning", "label": "תכנון, שחזור", "weights": { "d3": 0.55, "d4": 0.3, "d5": 0.15 } },
+            { "id": "self-analysis", "label": "ניתוח עצמי, “למה אני ככה”", "weights": { "d3": 0.15, "d4": 0.75, "d5": 0.1 } },
+            { "id": "meaning", "label": "חיפוש משמעות", "weights": { "d3": 0.1, "d4": 0.75, "d5": 0.15 } },
+            { "id": "task", "label": "מה שלפניי עכשיו", "weights": { "d3": 0.15, "d4": 0.25, "d5": 0.6 } },
+            { "id": "insight", "label": "רעיון שהגיע שלם", "weights": { "d3": 0.05, "d4": 0.25, "d5": 0.7 } },
+            { "id": "quiet", "label": "שקט, כמעט בלי מחשבות", "weights": { "d3": 0.05, "d4": 0.15, "d5": 0.8 } }
+          ]
+        },
+        {
+          "id": "thought-belief",
+          "kind": "choice",
+          "prompt": "האם האמנתי לה?",
+          "options": [
+            { "id": "fact", "label": "לגמרי — היא הרגישה כמו עובדה", "weights": { "d3": 0.8, "d4": 0.15, "d5": 0.05 } },
+            { "id": "story", "label": "ראיתי שזו מחשבה, במאמץ", "weights": { "d3": 0.15, "d4": 0.75, "d5": 0.1 } },
+            { "id": "passed", "label": "היא כבר חלפה", "weights": { "d3": 0.05, "d4": 0.2, "d5": 0.75 } }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "emotion",
+      "channel": "emotion",
+      "title": "טון רגשי",
+      "questions": [
+        {
+          "id": "emotion-word",
+          "kind": "wheel",
+          "prompt": "מילה אחת לטון הרגשי עכשיו",
+          "rings": [
+            {
+              "ring": "d3",
+              "weights": { "d3": 0.7, "d4": 0.2, "d5": 0.1 },
+              "words": [
+                { "id": "fear", "label": "פחד" },
+                { "id": "anger", "label": "כעס" },
+                { "id": "shame", "label": "בושה" },
+                { "id": "envy", "label": "קנאה" },
+                { "id": "boredom", "label": "שעמום" },
+                { "id": "guilt", "label": "אשמה" }
+              ]
+            },
+            {
+              "ring": "d4",
+              "weights": { "d3": 0.15, "d4": 0.7, "d5": 0.15 },
+              "words": [
+                { "id": "longing", "label": "געגוע" },
+                { "id": "grief", "label": "אבל" },
+                { "id": "confusion", "label": "בלבול" },
+                { "id": "excitement", "label": "התלהבות" },
+                { "id": "sensitivity", "label": "רגישות" }
+              ]
+            },
+            {
+              "ring": "d5",
+              "weights": { "d3": 0.05, "d4": 0.2, "d5": 0.75 },
+              "words": [
+                { "id": "calm", "label": "שלווה" },
+                { "id": "gratitude", "label": "תודה" },
+                { "id": "compassion", "label": "חמלה" },
+                { "id": "quiet-joy", "label": "שמחה שקטה" },
+                { "id": "awe", "label": "יראה" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "time",
+      "channel": "time",
+      "title": "זמן",
+      "questions": [
+        {
+          "id": "time-where",
+          "kind": "choice",
+          "prompt": "איפה הייתי עד לפני רגע?",
+          "options": [
+            { "id": "past", "label": "בעבר", "weights": { "d3": 0.55, "d4": 0.35, "d5": 0.1 } },
+            { "id": "future", "label": "בעתיד", "weights": { "d3": 0.6, "d4": 0.3, "d5": 0.1 } },
+            { "id": "here", "label": "כאן", "weights": { "d3": 0.1, "d4": 0.3, "d5": 0.6 } }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "domainPrompt": "באיזה תחום חיים זה קרה?",
+    "withWhomPrompt": "עם מי? (לא חובה)",
+    "withWhomSuggestions": ["לבד", "בן/בת הזוג", "ילדים", "הורים", "צוות", "לקוח", "מנהל"]
+  },
+  "anchors": [
+    { "id": "wake", "label": "התעוררות", "defaultTime": "07:00" },
+    { "id": "before-first-meeting", "label": "לפני ישיבה ראשונה", "defaultTime": "09:00" },
+    { "id": "after-lunch", "label": "אחרי ארוחת צהריים", "defaultTime": "13:30" },
+    { "id": "home", "label": "כניסה הביתה", "defaultTime": "18:30" },
+    { "id": "before-sleep", "label": "לפני שינה", "defaultTime": "22:30" }
+  ],
+  "results": {
+    "d3": {
+      "title": "3D עכשיו",
+      "text": "הגוף דרוך והמחשבה מרגישה כמו עובדה. עצם זה שתפסת את זה — זה כבר צעד אל המתבונן.",
+      "shiftGroup": "from-3d"
+    },
+    "d3-d4": {
+      "title": "בין 3D ל-4D",
+      "text": "יש כיווץ, ויש גם מי שרואה אותו. הרווח כבר התחיל להיפתח.",
+      "shiftGroup": "from-3d"
+    },
+    "d4": {
+      "title": "4D עכשיו",
+      "text": "אתה מתבונן במה שקורה בך. מכאן הדרך אינה עוד הבנה, אלא ירידה אל הלב.",
+      "shiftGroup": "from-4d"
+    },
+    "d4-d5": {
+      "title": "בין 4D ל-5D",
+      "text": "המתבונן ער, והלב מתחיל להיפתח. אפשר להפסיק לעבוד על עצמך ולנוח במה שכבר כאן.",
+      "shiftGroup": "from-4d"
+    },
+    "d5": {
+      "title": "5D עכשיו",
+      "text": "נשימה רכה, קשב רחב, הווה. אין מה לעשות עם זה — רק לרשום, ולהמשיך מכאן."
+    }
+  },
+  "explain": {
+    "channelLabels": { "body": "הגוף", "thought": "המחשבה", "emotion": "הרגש", "time": "הזמן" },
+    "template": "{channel} הצביע על {dim}",
+    "mixedNote": "הערוצים לא הסכימו ביניהם. ערוץ אחד יכול לשקר — בעיקר המחשבה; הגוף הוא הערוץ הישר ביותר."
+  },
+  "quickMode": {
+    "title": "רישום מהיר",
+    "hint": "לחיצה ארוכה על “בדיקה” — מצב ותחום, בהקשה אחת."
+  },
+  "heatmapEmpty": "עוד {n} בדיקות, ותופיע כאן מפת החום שלך."
+}

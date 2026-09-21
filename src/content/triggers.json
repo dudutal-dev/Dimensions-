@@ -1,0 +1,112 @@
+{
+  "triggers": [
+    {
+      "id": "trg-criticism",
+      "label": "ביקורת",
+      "d3Reaction": "הגנה, או התקפה",
+      "move": ["נשימה", "“תודה, אחשוב על זה”", "בערב: מה נכון בזה?"],
+      "relatedToolIds": ["double-exhale", "labeling"],
+      "durationSec": 40,
+      "segments": [
+        { "id": "trg-criticism.s01", "type": "instruction", "text": "נשימה אחת, לפני כל תגובה.", "durationSec": 5 },
+        { "id": "trg-criticism.s02", "type": "silence", "text": "", "durationSec": 8 },
+        { "id": "trg-criticism.s03", "type": "instruction", "text": "אמור, בקול או בלב: תודה, אחשוב על זה.", "durationSec": 7 },
+        { "id": "trg-criticism.s04", "type": "instruction", "text": "אין צורך להתגונן עכשיו. אין צורך לתקוף.", "durationSec": 7 },
+        { "id": "trg-criticism.s05", "type": "instruction", "text": "הערב, כשיירגע, שאל את עצמך: מה נכון בזה?", "durationSec": 7 },
+        { "id": "trg-criticism.s06", "type": "silence", "text": "", "durationSec": 6 }
+      ]
+    },
+    {
+      "id": "trg-uncertainty",
+      "label": "אי-ודאות",
+      "d3Reaction": "קטסטרופיזציה",
+      "move": ["“מה אני יודע בוודאות *עכשיו*?”", "הצעד הבא בלבד"],
+      "relatedToolIds": ["thought-prefix", "grounding-54321"],
+      "durationSec": 49,
+      "segments": [
+        { "id": "trg-uncertainty.s01", "type": "instruction", "text": "המחשבות רצות אל הגרוע מכול. עצור אותן בשאלה אחת.", "durationSec": 8 },
+        { "id": "trg-uncertainty.s02", "type": "prompt", "text": "מה אני יודע בוודאות, עכשיו?", "durationSec": 20 },
+        { "id": "trg-uncertainty.s03", "type": "prompt", "text": "ומה הצעד הבא? רק הבא.", "durationSec": 15 },
+        { "id": "trg-uncertainty.s04", "type": "instruction", "text": "את השאר אין צורך לדעת כרגע.", "durationSec": 6 }
+      ]
+    },
+    {
+      "id": "trg-injustice",
+      "label": "אי-צדק",
+      "d3Reaction": "זעם, צדקנות",
+      "move": ["הרגש את הכעס בגוף", "מה הפעולה היעילה?", "פעל בלי שנאה"],
+      "relatedToolIds": ["labeling", "double-exhale"],
+      "durationSec": 59,
+      "segments": [
+        { "id": "trg-injustice.s01", "type": "instruction", "text": "יש כאן כעס. אל תדחה אותו. הרגש אותו בגוף.", "durationSec": 8 },
+        { "id": "trg-injustice.s02", "type": "prompt", "text": "איפה הוא יושב?", "durationSec": 5 },
+        { "id": "trg-injustice.s03", "type": "silence", "text": "", "durationSec": 20 },
+        { "id": "trg-injustice.s04", "type": "prompt", "text": "מה הפעולה היעילה כאן?", "durationSec": 20 },
+        { "id": "trg-injustice.s05", "type": "instruction", "text": "עכשיו פעל. בלי שנאה.", "durationSec": 6 }
+      ]
+    },
+    {
+      "id": "trg-rejection",
+      "label": "דחייה, התעלמות",
+      "d3Reaction": "בושה, נסיגה",
+      "move": ["יד על החזה", "“זה כואב, וזה אנושי”", "הערך שלי לא נקבע כאן"],
+      "relatedToolIds": ["heart-drop", "third-person"],
+      "durationSec": 50,
+      "segments": [
+        { "id": "trg-rejection.s01", "type": "instruction", "text": "הנח יד על החזה.", "durationSec": 5 },
+        { "id": "trg-rejection.s02", "type": "instruction", "text": "אמור בלב: זה כואב, וזה אנושי.", "durationSec": 7 },
+        { "id": "trg-rejection.s03", "type": "silence", "text": "", "durationSec": 15 },
+        { "id": "trg-rejection.s04", "type": "instruction", "text": "ועוד משפט אחד: הערך שלי לא נקבע כאן.", "durationSec": 8 },
+        { "id": "trg-rejection.s05", "type": "silence", "text": "", "durationSec": 15 }
+      ]
+    },
+    {
+      "id": "trg-overload",
+      "label": "עומס",
+      "d3Reaction": "פאניקה, מולטיטסקינג",
+      "move": ["עצור", "רשום הכול", "בחר אחד", "השאר ממתין"],
+      "relatedToolIds": ["double-exhale", "grounding-54321"],
+      "durationSec": 94,
+      "segments": [
+        { "id": "trg-overload.s01", "type": "instruction", "text": "עצור. הנח הכול לרגע.", "durationSec": 5 },
+        { "id": "trg-overload.s02", "type": "instruction", "text": "רשום את כל מה שמונח עליך. הכול, במקום אחד.", "durationSec": 8 },
+        { "id": "trg-overload.s03", "type": "silence", "text": "", "durationSec": 60 },
+        { "id": "trg-overload.s04", "type": "instruction", "text": "עכשיו בחר דבר אחד.", "durationSec": 5 },
+        { "id": "trg-overload.s05", "type": "silence", "text": "", "durationSec": 10 },
+        { "id": "trg-overload.s06", "type": "instruction", "text": "השאר ממתין. עשה רק את האחד.", "durationSec": 6 }
+      ]
+    },
+    {
+      "id": "trg-comparison",
+      "label": "השוואה",
+      "d3Reaction": "קנאה",
+      "move": ["“ההצלחה שלו מראה מה אפשרי”", "ברכה פנימית קצרה"],
+      "relatedToolIds": ["embodied-gratitude", "reverse-direction"],
+      "durationSec": 41,
+      "segments": [
+        { "id": "trg-comparison.s01", "type": "instruction", "text": "שים לב לצביטה. היא אנושית.", "durationSec": 6 },
+        { "id": "trg-comparison.s02", "type": "instruction", "text": "אמור בלב: ההצלחה שלו מראה מה אפשרי.", "durationSec": 8 },
+        { "id": "trg-comparison.s03", "type": "silence", "text": "", "durationSec": 10 },
+        { "id": "trg-comparison.s04", "type": "instruction", "text": "ועכשיו ברכה קצרה, בלב. שיהיה לו טוב.", "durationSec": 7 },
+        { "id": "trg-comparison.s05", "type": "silence", "text": "", "durationSec": 10 }
+      ]
+    },
+    {
+      "id": "trg-delay",
+      "label": "פקק, תור, תקלה",
+      "d3Reaction": "עצבנות",
+      "move": ["מתנה של חמש דקות תרגול", "נשימה", "מבט רחב"],
+      "relatedToolIds": ["double-exhale", "widen-attention"],
+      "caution": "בנהיגה: בלי להביט במסך. רק נשימה, ומבט רחב על הדרך.",
+      "durationSec": 294,
+      "segments": [
+        { "id": "trg-delay.s01", "type": "instruction", "text": "קיבלת מתנה: חמש דקות של תרגול.", "durationSec": 6 },
+        { "id": "trg-delay.s02", "type": "instruction", "text": "נשום לאט, עם נשיפה ארוכה.", "durationSec": 5 },
+        { "id": "trg-delay.s03", "type": "breath", "text": "נשיפה ארוכה", "durationSec": 120, "breathPattern": { "inhaleSec": 4, "holdInSec": 0, "exhaleSec": 6, "holdOutSec": 0 } },
+        { "id": "trg-delay.s04", "type": "instruction", "text": "עכשיו הרחב את המבט. ראה את כל שדה הראייה בבת אחת, ברכות.", "durationSec": 9 },
+        { "id": "trg-delay.s05", "type": "silence", "text": "", "durationSec": 150 },
+        { "id": "trg-delay.s06", "type": "bell", "text": "", "durationSec": 4 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "dimension-compass",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "מצפן המימדים — PWA לאימון תודעת 3D/4D/5D",
+  "scripts": {
+    "content:check": "tsx tools/build-content.mjs",
+    "content:review": "tsx tools/content-review.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.1"
+  }
+}

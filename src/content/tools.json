@@ -1,0 +1,416 @@
+{
+  "principles": [
+    "המעבר מ-3D ל-4D דורש **רווח** — בין גירוי לתגובה. הכלי: גוף ותשומת לב.",
+    "המעבר מ-4D ל-5D דורש **ויתור** — על הצורך להבין, לתקן, לשלוט. הכלי: לב וכניעה.",
+    "אי אפשר לדלג בכוח על 4D בטווח הארוך, אבל אפשר **לבקר** ב-5D מכל מקום — והביקורים מלמדים את המערכת לאן היא הולכת.",
+    "המעבר אינו החלטה מחשבתית. “אני מחליט להיות ב-5D” היא מחשבת 3D. המעבר הוא **שחרור**, לא השגה."
+  ],
+  "groups": [
+    {
+      "id": "from-3d",
+      "title": "אני ב-3D",
+      "subtitle": "יצירת רווח",
+      "obstacle": "הזדהות מלאה — אני שווה למחשבה ולרגש.",
+      "goal": "“יש מחשבה”, במקום “זה המצב”.",
+      "passSign": "נשימה עמוקה ספונטנית; סקרנות במקום דחיפות.",
+      "intro": "הכלים מסודרים מהמהיר אל העמוק."
+    },
+    {
+      "id": "from-4d",
+      "title": "אני ב-4D",
+      "subtitle": "ממתבונן ללב",
+      "obstacle": "המתבונן עצמו הופך לעמדה — מנתח, משפר, מחפש. “עוד סדנה אחת ואגיע.”",
+      "goal": "להפסיק לעבוד על עצמך, ולנוח במה שכבר כאן.",
+      "passSign": "חום ומרחב בחזה; המחשבות מאיטות מעצמן; חיוך קל ולא מוסבר; האחר נראה פתאום כאדם, ולא כתפקיד."
+    },
+    {
+      "id": "shortcuts",
+      "title": "קיצורי דרך",
+      "subtitle": "ביקור ישיר ב-5D",
+      "intro": "ביקורים קצרים, לא מגורי קבע — אך יעילים מאוד."
+    },
+    {
+      "id": "fell",
+      "title": "נפלתי",
+      "subtitle": "חזרה אחרי נפילה",
+      "intro": "זה יקרה. תמיד. בעיקר בעייפות, ברעב, במחלה, בלחץ כספי, מול משפחת המוצא ומול ביקורת פומבית. מדד ההצלחה אינו היעדר נפילות, אלא זמן הזיהוי וההתאוששות."
+    }
+  ],
+  "tools": [
+    {
+      "id": "double-exhale",
+      "group": "from-3d",
+      "order": 1,
+      "name": "נשיפה כפולה-ארוכה",
+      "whenToUse": "כשהגוף דרוך וצריך להוריד עוררות מהר.",
+      "summary": "שאיפה, עוד שאיפה קצרה, ונשיפה ארוכה. שלוש פעמים. מוריד עוררות תוך פחות מדקה.",
+      "layer": "established",
+      "source": "transitions §2.1",
+      "durationSec": 50,
+      "segments": [
+        { "id": "double-exhale.s01", "type": "instruction", "text": "שאיפה, עוד שאיפה קצרה מעליה, ונשיפה ארוכה. שלוש פעמים.", "durationSec": 9 },
+        { "id": "double-exhale.s02", "type": "breath", "text": "שאיפה · עוד קצת · נשיפה ארוכה", "durationSec": 36, "breathPattern": { "inhaleSec": 3, "topUpSec": 1, "holdInSec": 0, "exhaleSec": 7, "holdOutSec": 1 } },
+        { "id": "double-exhale.s03", "type": "instruction", "text": "תן לנשימה לחזור לטבעה.", "durationSec": 5 }
+      ]
+    },
+    {
+      "id": "grounding-54321",
+      "group": "from-3d",
+      "order": 2,
+      "name": "קרקוע 5-4-3-2-1",
+      "whenToUse": "כשהראש רץ ואתה לא ממש כאן.",
+      "summary": "חמישה דברים שאתה רואה, ארבעה שאתה נוגע בהם, שלושה שאתה שומע, שניים שאתה מריח, אחד שאתה טועם.",
+      "source": "transitions §2.2",
+      "durationSec": 128,
+      "segments": [
+        { "id": "grounding-54321.s01", "type": "instruction", "text": "הבט סביבך. מצא חמישה דברים שאתה רואה. ציין כל אחד בלב.", "durationSec": 8 },
+        { "id": "grounding-54321.s02", "type": "silence", "text": "", "durationSec": 25 },
+        { "id": "grounding-54321.s03", "type": "instruction", "text": "ארבעה דברים שאתה נוגע בהם, או שנוגעים בך.", "durationSec": 7 },
+        { "id": "grounding-54321.s04", "type": "silence", "text": "", "durationSec": 22 },
+        { "id": "grounding-54321.s05", "type": "instruction", "text": "שלושה דברים שאתה שומע.", "durationSec": 5 },
+        { "id": "grounding-54321.s06", "type": "silence", "text": "", "durationSec": 20 },
+        { "id": "grounding-54321.s07", "type": "instruction", "text": "שני דברים שאתה מריח.", "durationSec": 5 },
+        { "id": "grounding-54321.s08", "type": "silence", "text": "", "durationSec": 15 },
+        { "id": "grounding-54321.s09", "type": "instruction", "text": "דבר אחד שאתה טועם.", "durationSec": 5 },
+        { "id": "grounding-54321.s10", "type": "silence", "text": "", "durationSec": 10 },
+        { "id": "grounding-54321.s11", "type": "instruction", "text": "נשימה אחת עמוקה. אתה כאן.", "durationSec": 6 }
+      ]
+    },
+    {
+      "id": "labeling",
+      "group": "from-3d",
+      "order": 3,
+      "name": "תיוג",
+      "whenToUse": "כשרגש או מחשבה משתלטים.",
+      "summary": "“פחד.” “תכנון.” “שיפוט.” מילה אחת, בלי סיפור.",
+      "layer": "established",
+      "source": "transitions §2.3",
+      "durationSec": 67,
+      "segments": [
+        { "id": "labeling.s01", "type": "instruction", "text": "מה קורה בך עכשיו? תן לזה שם, במילה אחת. פחד. תכנון. שיפוט.", "durationSec": 10 },
+        { "id": "labeling.s02", "type": "instruction", "text": "בלי סיפור. רק המילה.", "durationSec": 5 },
+        { "id": "labeling.s03", "type": "silence", "text": "", "durationSec": 15 },
+        { "id": "labeling.s04", "type": "prompt", "text": "ומה עכשיו? שוב, מילה אחת.", "durationSec": 6 },
+        { "id": "labeling.s05", "type": "silence", "text": "", "durationSec": 15 },
+        { "id": "labeling.s06", "type": "prompt", "text": "ופעם שלישית. מה כאן עכשיו?", "durationSec": 6 },
+        { "id": "labeling.s07", "type": "silence", "text": "", "durationSec": 10 }
+      ]
+    },
+    {
+      "id": "thought-prefix",
+      "group": "from-3d",
+      "order": 4,
+      "name": "“יש לי מחשבה ש...”",
+      "whenToUse": "כשמחשבה מלחיצה מרגישה כמו עובדה.",
+      "summary": "הוסף את הקידומת “יש לי מחשבה ש...” לכל מחשבה מלחיצה. הפרדה בין המחשבה לבין המציאות — defusion, מתוך ACT.",
+      "layer": "established",
+      "source": "transitions §2.4",
+      "durationSec": 69,
+      "segments": [
+        { "id": "thought-prefix.s01", "type": "instruction", "text": "מצא את המחשבה שמלחיצה אותך עכשיו. אמור אותה בלב, כמו שהיא.", "durationSec": 9 },
+        { "id": "thought-prefix.s02", "type": "silence", "text": "", "durationSec": 10 },
+        { "id": "thought-prefix.s03", "type": "instruction", "text": "עכשיו אמור אותה שוב, והוסף לפניה את המילים: יש לי מחשבה ש.", "durationSec": 10 },
+        { "id": "thought-prefix.s04", "type": "silence", "text": "", "durationSec": 15 },
+        { "id": "thought-prefix.s05", "type": "instruction", "text": "שים לב להבדל. המחשבה עדיין כאן, אבל היא מחשבה. לא המצב.", "durationSec": 9 },
+        { "id": "thought-prefix.s06", "type": "silence", "text": "", "durationSec": 10 },
+        { "id": "thought-prefix.s07", "type": "instruction", "text": "עשה זאת עם כל מחשבה מלחיצה שעולה.", "durationSec": 6 }
+      ]
+    },
+    {
+      "id": "third-person",
+      "group": "from-3d",
+      "order": 5,
+      "name": "מגוף ראשון לגוף שלישי",
+      "whenToUse": "כשאתה בתוך הסערה וצריך מרחק מיידי.",
+      "summary": "דבר על עצמך בשמך, בגוף שלישי: “הוא לחוץ עכשיו.” יוצר מרחק מיידי (Kross).",
+      "layer": "established",
+      "source": "transitions §2.5",
+      "durationSec": 50,
+      "segments": [
+        { "id": "third-person.s01", "type": "instruction", "text": "פנה אל עצמך בשמך הפרטי, כמו אל אדם אחר.", "durationSec": 7 },
+        { "id": "third-person.s02", "type": "instruction", "text": "אמור בלב, בגוף שלישי, מה קורה לו עכשיו. למשל: הוא לחוץ עכשיו.", "durationSec": 10 },
+        { "id": "third-person.s03", "type": "silence", "text": "", "durationSec": 15 },
+        { "id": "third-person.s04", "type": "instruction", "text": "הבט בו לרגע מבחוץ. שים לב למרחק שנוצר.", "durationSec": 8 },
+        { "id": "third-person.s05", "type": "silence", "text": "", "durationSec": 10 }
+      ]
+    },
+    {
+      "id": "observer-question",
+      "group": "from-3d",
+      "order": 6,
+      "name": "שאלת המתבונן",
+      "whenToUse": "כשכבר יש מעט רווח, ורוצים להעמיק אותו.",
+      "summary": "“מי שם לב לזה?”",
+      "source": "transitions §2.6",
+      "durationSec": 45,
+      "segments": [
+        { "id": "observer-question.s01", "type": "instruction", "text": "עצור לרגע, בתוך מה שקורה.", "durationSec": 5 },
+        { "id": "observer-question.s02", "type": "prompt", "text": "מי שם לב לזה?", "durationSec": 8 },
+        { "id": "observer-question.s03", "type": "instruction", "text": "אל תענה במילים. רק הבט אחורה, אל מי שמתבונן.", "durationSec": 8 },
+        { "id": "observer-question.s04", "type": "silence", "text": "", "durationSec": 20 },
+        { "id": "observer-question.s05", "type": "instruction", "text": "מכאן, המשך.", "durationSec": 4 }
+      ]
+    },
+    {
+      "id": "heart-drop",
+      "group": "from-4d",
+      "order": 1,
+      "name": "ירידה מהראש ללב",
+      "whenToUse": "כשאתה מבין הכול, ועדיין בראש.",
+      "summary": "יד על מרכז החזה. נשום “דרך” האזור. היזכר ברגע של אהבה פשוטה, והשהה את התחושה דקה עד דקה וחצי.",
+      "source": "transitions §3.1",
+      "durationSec": 133,
+      "segments": [
+        { "id": "heart-drop.s01", "type": "instruction", "text": "הנח יד על מרכז החזה.", "durationSec": 5 },
+        { "id": "heart-drop.s02", "type": "instruction", "text": "נשום לאט, כאילו הנשימה נכנסת ויוצאת דרך האזור הזה.", "durationSec": 8 },
+        { "id": "heart-drop.s03", "type": "silence", "text": "", "durationSec": 25 },
+        { "id": "heart-drop.s04", "type": "instruction", "text": "היזכר ברגע של אהבה פשוטה. ילד, חיה, נוף.", "durationSec": 8 },
+        { "id": "heart-drop.s05", "type": "instruction", "text": "תן לתחושה למלא את החזה, והישאר איתה.", "durationSec": 7 },
+        { "id": "heart-drop.s06", "type": "silence", "text": "", "durationSec": 75 },
+        { "id": "heart-drop.s07", "type": "instruction", "text": "קח את החום הזה איתך.", "durationSec": 5 }
+      ]
+    },
+    {
+      "id": "yes-to-this",
+      "group": "from-4d",
+      "order": 2,
+      "name": "“כן” לרגע",
+      "whenToUse": "כשאתה מתנגד למשהו שכבר כאן.",
+      "summary": "מה שלא נמצא כאן עכשיו — רעש, עייפות, אי-ודאות — אמור לו בשקט: “כן. גם זה.” התנגדות היא הדבק של 3D ושל 4D.",
+      "source": "transitions §3.2",
+      "durationSec": 74,
+      "segments": [
+        { "id": "yes-to-this.s01", "type": "prompt", "text": "מה נמצא כאן עכשיו, שהיית מעדיף שלא יהיה? רעש, עייפות, אי-ודאות.", "durationSec": 10 },
+        { "id": "yes-to-this.s02", "type": "instruction", "text": "אמור לו בשקט: כן. גם זה.", "durationSec": 6 },
+        { "id": "yes-to-this.s03", "type": "silence", "text": "", "durationSec": 15 },
+        { "id": "yes-to-this.s04", "type": "prompt", "text": "מה עוד כאן?", "durationSec": 5 },
+        { "id": "yes-to-this.s05", "type": "instruction", "text": "כן. גם זה.", "durationSec": 5 },
+        { "id": "yes-to-this.s06", "type": "silence", "text": "", "durationSec": 15 },
+        { "id": "yes-to-this.s07", "type": "instruction", "text": "ההתנגדות היא הדבק. כן. גם זה.", "durationSec": 8 },
+        { "id": "yes-to-this.s08", "type": "silence", "text": "", "durationSec": 10 }
+      ]
+    },
+    {
+      "id": "widen-attention",
+      "group": "from-4d",
+      "order": 3,
+      "name": "הרחבת הקשב",
+      "whenToUse": "כשהקשב מכונס בעצמך.",
+      "summary": "מהנקודה אל המרחב: חוש את כל הגוף יחד ← את החדר ← את המרחב שמעבר לקירות. מודעות ללא מרכז.",
+      "source": "transitions §3.3",
+      "durationSec": 121,
+      "segments": [
+        { "id": "widen-attention.s01", "type": "instruction", "text": "חוש את כל הגוף יחד, בבת אחת.", "durationSec": 6 },
+        { "id": "widen-attention.s02", "type": "silence", "text": "", "durationSec": 20 },
+        { "id": "widen-attention.s03", "type": "instruction", "text": "הרחב אל החדר כולו. הצלילים, האוויר, המרחק אל הקירות.", "durationSec": 8 },
+        { "id": "widen-attention.s04", "type": "silence", "text": "", "durationSec": 25 },
+        { "id": "widen-attention.s05", "type": "instruction", "text": "הרחב עוד, אל המרחב שמעבר לקירות.", "durationSec": 6 },
+        { "id": "widen-attention.s06", "type": "silence", "text": "", "durationSec": 25 },
+        { "id": "widen-attention.s07", "type": "instruction", "text": "מודעות רחבה, ללא מרכז. נוח בה.", "durationSec": 6 },
+        { "id": "widen-attention.s08", "type": "silence", "text": "", "durationSec": 25 }
+      ]
+    },
+    {
+      "id": "release-question",
+      "group": "from-4d",
+      "order": 4,
+      "name": "שחרור השאלה",
+      "whenToUse": "כשאתה עסוק בלתקן את עצמך.",
+      "summary": "“מה אם אין שום דבר לתקן ברגע הזה?”",
+      "source": "transitions §3.4",
+      "durationSec": 62,
+      "segments": [
+        { "id": "release-question.s01", "type": "instruction", "text": "עצור לרגע את העבודה על עצמך.", "durationSec": 6 },
+        { "id": "release-question.s02", "type": "prompt", "text": "מה אם אין שום דבר לתקן ברגע הזה?", "durationSec": 9 },
+        { "id": "release-question.s03", "type": "silence", "text": "", "durationSec": 25 },
+        { "id": "release-question.s04", "type": "instruction", "text": "אל תענה. תן לשאלה לעשות את שלה.", "durationSec": 7 },
+        { "id": "release-question.s05", "type": "silence", "text": "", "durationSec": 15 }
+      ]
+    },
+    {
+      "id": "embodied-gratitude",
+      "group": "from-4d",
+      "order": 5,
+      "name": "הכרת תודה גופנית",
+      "whenToUse": "כשהלב סגור והראש עובד.",
+      "summary": "לא רשימה בראש — תחושת “תודה” בחזה, חצי דקה, על דבר אחד קטן.",
+      "source": "transitions §3.5",
+      "durationSec": 42,
+      "segments": [
+        { "id": "embodied-gratitude.s01", "type": "instruction", "text": "בחר דבר אחד קטן, מהיום.", "durationSec": 5 },
+        { "id": "embodied-gratitude.s02", "type": "instruction", "text": "לא רשימה בראש. הרגש את התודה בחזה.", "durationSec": 7 },
+        { "id": "embodied-gratitude.s03", "type": "silence", "text": "", "durationSec": 30 }
+      ]
+    },
+    {
+      "id": "reverse-direction",
+      "group": "from-4d",
+      "order": 6,
+      "name": "היפוך כיוון",
+      "whenToUse": "כשאתה עסוק במה שחסר לך.",
+      "summary": "מ“מה אני מקבל?” ל“מה אני יכול לתת כאן?” שירות הוא הדלת המהירה ביותר מ-4D.",
+      "source": "transitions §3.6",
+      "durationSec": 41,
+      "segments": [
+        { "id": "reverse-direction.s01", "type": "instruction", "text": "במקום לשאול מה אני מקבל כאן, הפוך את הכיוון.", "durationSec": 7 },
+        { "id": "reverse-direction.s02", "type": "prompt", "text": "מה אני יכול לתת כאן, עכשיו?", "durationSec": 8 },
+        { "id": "reverse-direction.s03", "type": "silence", "text": "", "durationSec": 20 },
+        { "id": "reverse-direction.s04", "type": "instruction", "text": "בחר דבר אחד קטן, ועשה אותו.", "durationSec": 6 }
+      ]
+    },
+    {
+      "id": "silence",
+      "group": "from-4d",
+      "order": 7,
+      "name": "שתיקה",
+      "whenToUse": "כשאתה מדבר על התהליך במקום להיות בו.",
+      "summary": "4D אוהב לדבר על התהליך. 5D שותק יותר.",
+      "source": "transitions §3.7",
+      "durationSec": 121,
+      "segments": [
+        { "id": "silence.s01", "type": "instruction", "text": "עכשיו, בלי לדבר על התהליך. רק שתיקה.", "durationSec": 7 },
+        { "id": "silence.s02", "type": "silence", "text": "", "durationSec": 110 },
+        { "id": "silence.s03", "type": "bell", "text": "", "durationSec": 4 }
+      ]
+    },
+    {
+      "id": "sos-90",
+      "group": "shortcuts",
+      "order": 1,
+      "name": "90 שניות",
+      "whenToUse": "ברגע שתפסת את עצמך בתגובת 3D.",
+      "summary": "המסלול המלא בדחיסה: שם ← גוף ← רווח ← לב ← פעולה.",
+      "source": "transitions §4 · training-program §7",
+      "durationSec": 90,
+      "exerciseRef": "sos90"
+    },
+    {
+      "id": "awe",
+      "group": "shortcuts",
+      "order": 2,
+      "name": "יראה",
+      "whenToUse": "כשיש בהישג יד משהו גדול ממך.",
+      "summary": "שמיים בלילה, נוף רחב, מוזיקה גדולה. יראה מקטינה את ה“אני” ומרחיבה את תחושת הזמן (Keltner, Rudd).",
+      "layer": "established",
+      "source": "transitions §4",
+      "durationSec": 122,
+      "segments": [
+        { "id": "awe.s01", "type": "instruction", "text": "מצא משהו גדול ממך. שמיים, נוף רחב, מוזיקה גדולה.", "durationSec": 8 },
+        { "id": "awe.s02", "type": "instruction", "text": "תן לזה למלא את כל הקשב.", "durationSec": 6 },
+        { "id": "awe.s03", "type": "silence", "text": "", "durationSec": 90 },
+        { "id": "awe.s04", "type": "instruction", "text": "שים לב כמה קטן נעשה האני, וכמה רחב נעשה הזמן.", "durationSec": 8 },
+        { "id": "awe.s05", "type": "silence", "text": "", "durationSec": 10 }
+      ]
+    },
+    {
+      "id": "cold-or-effort",
+      "group": "shortcuts",
+      "order": 3,
+      "name": "מים קרים או מאמץ עז",
+      "whenToUse": "כשלולאה מחשבתית לא מרפה.",
+      "summary": "מים קרים או מאמץ גופני עז מאפסים לולאה מחשבתית; אחריהם נפתח חלון של שקט.",
+      "caution": "רק אם מצבך הגופני מאפשר זאת.",
+      "source": "transitions §4",
+      "durationSec": 129,
+      "segments": [
+        { "id": "cold-or-effort.s01", "type": "instruction", "text": "בחר אחד: מים קרים על הפנים, או דקה של מאמץ גופני עז. רק אם הגוף שלך מאפשר.", "durationSec": 11 },
+        { "id": "cold-or-effort.s02", "type": "instruction", "text": "לך עכשיו. אני מחכה כאן.", "durationSec": 5 },
+        { "id": "cold-or-effort.s03", "type": "silence", "text": "", "durationSec": 75 },
+        { "id": "cold-or-effort.s04", "type": "instruction", "text": "חזרת. יש עכשיו חלון של שקט. אל תמלא אותו.", "durationSec": 8 },
+        { "id": "cold-or-effort.s05", "type": "silence", "text": "", "durationSec": 30 }
+      ]
+    },
+    {
+      "id": "laughter",
+      "group": "shortcuts",
+      "order": 4,
+      "name": "צחוק אמיתי",
+      "whenToUse": "כשהכול נעשה רציני מדי.",
+      "summary": "צחוק אמיתי.",
+      "source": "transitions §4",
+      "durationSec": 74,
+      "segments": [
+        { "id": "laughter.s01", "type": "instruction", "text": "מצא משהו, או מישהו, שמצחיק אותך באמת.", "durationSec": 8 },
+        { "id": "laughter.s02", "type": "instruction", "text": "תן לצחוק לקרות. צחוק אמיתי, מהבטן.", "durationSec": 6 },
+        { "id": "laughter.s03", "type": "silence", "text": "", "durationSec": 60 }
+      ]
+    },
+    {
+      "id": "touch-and-eyes",
+      "group": "shortcuts",
+      "order": 5,
+      "name": "מגע ועיניים",
+      "whenToUse": "כשאדם אהוב נמצא לידך.",
+      "summary": "חיבוק של עשרים שניות; מבט של דקה בעיני אדם אהוב.",
+      "source": "transitions §4",
+      "durationSec": 104,
+      "segments": [
+        { "id": "touch-and-eyes.s01", "type": "instruction", "text": "מצא אדם אהוב, ובקש חיבוק.", "durationSec": 6 },
+        { "id": "touch-and-eyes.s02", "type": "instruction", "text": "חיבוק של עשרים שניות. בלי למהר לצאת ממנו.", "durationSec": 7 },
+        { "id": "touch-and-eyes.s03", "type": "silence", "text": "", "durationSec": 20 },
+        { "id": "touch-and-eyes.s04", "type": "instruction", "text": "ואם אפשר, דקה של מבט בעיניים. בלי מילים.", "durationSec": 7 },
+        { "id": "touch-and-eyes.s05", "type": "silence", "text": "", "durationSec": 60 },
+        { "id": "touch-and-eyes.s06", "type": "bell", "text": "", "durationSec": 4 }
+      ]
+    },
+    {
+      "id": "last-day",
+      "group": "shortcuts",
+      "order": 6,
+      "name": "“זה היום האחרון”",
+      "whenToUse": "מול אדם — כשאתה רואה תפקיד ולא אדם.",
+      "summary": "דמיין שזו הפעם האחרונה שאתה רואה את האדם שמולך. משנה הכול בשניות.",
+      "source": "transitions §4",
+      "durationSec": 55,
+      "segments": [
+        { "id": "last-day.s01", "type": "instruction", "text": "הבט באדם שמולך, או העלה אותו בדמיונך.", "durationSec": 7 },
+        { "id": "last-day.s02", "type": "instruction", "text": "דמיין שזו הפעם האחרונה שאתה רואה אותו.", "durationSec": 7 },
+        { "id": "last-day.s03", "type": "silence", "text": "", "durationSec": 25 },
+        { "id": "last-day.s04", "type": "instruction", "text": "שים לב מה משתנה.", "durationSec": 6 },
+        { "id": "last-day.s05", "type": "silence", "text": "", "durationSec": 10 }
+      ]
+    },
+    {
+      "id": "fell-back",
+      "group": "fell",
+      "order": 1,
+      "name": "נפלתי — ומה עכשיו",
+      "whenToUse": "אחרי התפרצות, קריסה או חזרה לדפוס ישן.",
+      "summary": "אל תיפול פעמיים · קצר את הזמן עד הזיהוי · אם פגעת, התנצל מהר ופשוט · תחקיר בלי אשמה: הטריגר, הסימן הגופני הראשון, הצורך שלא נענה.",
+      "source": "transitions §5",
+      "durationSec": 125,
+      "segments": [
+        { "id": "fell-back.s01", "type": "instruction", "text": "נפלת. זה קורה. תמיד, ולכולם.", "durationSec": 7 },
+        { "id": "fell-back.s02", "type": "instruction", "text": "כלל ראשון: אל תיפול פעמיים. הנפילה היא דבר אחד. השיפוט העצמי עליה הוא נפילה שנייה.", "durationSec": 12 },
+        { "id": "fell-back.s03", "type": "instruction", "text": "נשימה אחת ארוכה.", "durationSec": 4 },
+        { "id": "fell-back.s04", "type": "silence", "text": "", "durationSec": 10 },
+        { "id": "fell-back.s05", "type": "prompt", "text": "בדוק רגע: אתה רעב? כועס? בודד? עייף?", "durationSec": 10 },
+        { "id": "fell-back.s06", "type": "instruction", "text": "אם פגעת במישהו, התנצל מהר ופשוט. בלי הסברים רוחניים.", "durationSec": 8 },
+        { "id": "fell-back.s07", "type": "instruction", "text": "ועכשיו תחקיר קצר, בלי אשמה.", "durationSec": 5 },
+        { "id": "fell-back.s08", "type": "prompt", "text": "מה היה הטריגר?", "durationSec": 20 },
+        { "id": "fell-back.s09", "type": "prompt", "text": "מה הסימן הגופני הראשון שפספסת?", "durationSec": 20 },
+        { "id": "fell-back.s10", "type": "prompt", "text": "מה הצורך שלא נענה?", "durationSec": 20 },
+        { "id": "fell-back.s11", "type": "instruction", "text": "המדד היחיד שחשוב הוא הזמן עד הזיהוי. הפעם זיהית.", "durationSec": 9 }
+      ]
+    }
+  ],
+  "gates": {
+    "title": "שערים",
+    "intro": "מצבים שפותחים 5D מעצמם.",
+    "items": [
+      { "id": "flow", "label": "זרימה ביצירה או בעבודה עמוקה" },
+      { "id": "nature", "label": "טבע" },
+      { "id": "music", "label": "מוזיקה — נגינה במיוחד" },
+      { "id": "movement", "label": "תנועה, ריקוד" },
+      { "id": "service", "label": "שירות ללא תמורה" },
+      { "id": "children-animals", "label": "שהייה עם ילדים קטנים או עם בעלי חיים" },
+      { "id": "ritual", "label": "תפילה או טקס בעל משמעות אישית" },
+      { "id": "long-silence", "label": "שתיקה ממושכת" }
+    ],
+    "task": "זהה את שני השערים האישיים שלך, ושבץ אותם בלוח הזמנים השבועי — כמו פגישה."
+  },
+  "afterSession": {
+    "question": "מה השתנה?",
+    "notePlaceholder": "מילה או שתיים, אם בא לך"
+  }
+}
