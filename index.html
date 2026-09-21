@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0B0F1A" />
+    <meta name="description" content="מצפן המימדים — מאמן אישי לזיהוי מצב התודעה ולמעבר בין מצבים" />
+    <title>מצפן המימדים</title>
+    <script>
+      // ערכת הצבע נקבעת לפני הציור הראשון, כדי שלא יהיה הבהוב בין כהה לבהיר.
+      (function () {
+        var theme = 'system';
+        var scale = 1;
+        try {
+          var saved = JSON.parse(localStorage.getItem('dc.appearance') || '{}').state || {};
+          theme = saved.theme || theme;
+          scale = saved.textScale || scale;
+        } catch (e) {}
+        var resolved =
+          theme === 'system' ? (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : theme;
+        var root = document.documentElement;
+        root.dataset.theme = resolved;
+        root.style.setProperty('--text-scale', String(scale));
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', resolved === 'light' ? '#F7F5F0' : '#0B0F1A');
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

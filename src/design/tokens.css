@@ -1,0 +1,106 @@
+/*
+ * Design tokens — "Aurora Calm" (SPEC פרק 4).
+ * קומפוננטות משתמשות רק בשמות הסמנטיים (דרך Tailwind: bg-surface, text-muted, text-d5…). אין hex גולמי מחוץ לקובץ הזה.
+ * הניגודיות של כל הזוגות נבדקת אוטומטית ב-tests/unit/tokens.test.ts.
+ *
+ * סטיות מה-SPEC (4.1), כולן במצב הבהיר בלבד ולצורך ניגודיות ‎≥4.5:1‎ כטקסט:
+ *   --d3  #B85F22 → #9C4E17 · --d5  #0F8F7E → #0A7264 · --accent  #9A7420 → #7D5C14
+ * תוספות: --accent-fill (מילוי הכפתור הראשי: זהב רך בשתי הערכות; --accent עצמו משמש לטקסט ולאייקונים),
+ *   --border-strong (גבול פקדים, ‎≥3:1), --on-accent / --on-danger, --scrim, --glass.
+ */
+
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #0b0f1a;
+  --surface: #141a2a;
+  --surface-2: #1c2438;
+  --text: #eceff7;
+  --text-muted: #a3abc2;
+  --border: #2a3350;
+  --border-strong: #66708f;
+
+  --d3: #e8935a;
+  --d4: #8b7cf6;
+  --d5: #5edcc8;
+
+  --accent: #f2d492;
+  --accent-fill: #f2d492;
+  --on-accent: #0b0f1a;
+  --danger: #f08a8a;
+  --on-danger: #0b0f1a;
+
+  --scrim: rgb(3 5 12 / 0.6);
+  --glass: rgb(20 26 42 / 0.78);
+
+  --elev-1: 0 1px 2px rgb(0 0 0 / 0.3);
+  --elev-2: 0 6px 20px rgb(0 0 0 / 0.35);
+  --elev-3: 0 18px 48px rgb(0 0 0 / 0.5);
+
+  --aurora-strength: 20%;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #f7f5f0;
+  --surface: #ffffff;
+  --surface-2: #efece5;
+  --text: #1b2030;
+  --text-muted: #5a6275;
+  --border: #ddd8cc;
+  --border-strong: #8a8578;
+
+  --d3: #9c4e17;
+  --d4: #5b48d6;
+  --d5: #0a7264;
+
+  --accent: #7d5c14;
+  --accent-fill: #ecc96f;
+  --on-accent: #1b2030;
+  --danger: #b3261e;
+  --on-danger: #ffffff;
+
+  --scrim: rgb(27 32 48 / 0.45);
+  --glass: rgb(255 255 255 / 0.82);
+
+  --elev-1: 0 1px 2px rgb(27 32 48 / 0.08);
+  --elev-2: 0 6px 20px rgb(27 32 48 / 0.1);
+  --elev-3: 0 18px 48px rgb(27 32 48 / 0.18);
+
+  --aurora-strength: 14%;
+}
+
+:root {
+  /* טיפוגרפיה */
+  --ff-display: 'Frank Ruhl Libre Variable', 'Frank Ruhl Libre', 'Times New Roman', serif;
+  --ff-body: 'Heebo Variable', 'Heebo', system-ui, 'Segoe UI', Arial, sans-serif;
+  --text-scale: 1;
+
+  /* צורה */
+  --r-control: 12px;
+  --r-card: 20px;
+  --r-sheet: 28px;
+
+  /* תנועה (מקבילים ל-design/motion.ts) */
+  --dur-fast: 180ms;
+  --dur-base: 240ms;
+  --e-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --e-in: cubic-bezier(0.64, 0, 0.78, 0);
+
+  /* פריסה */
+  --content-max: 560px;
+  --nav-height: 64px;
+  --sidenav-width: 248px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-start: env(safe-area-inset-right, 0px);
+  --safe-end: env(safe-area-inset-left, 0px);
+
+  /* שכבות */
+  --z-nav: 20;
+  --z-fab: 30;
+  --z-sheet: 40;
+  --z-toast: 50;
+}
