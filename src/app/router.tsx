@@ -3,6 +3,7 @@ import {
   ChartColumn,
   Compass,
   LifeBuoy,
+  ListChecks,
   NotebookPen,
   Route as RouteIcon,
   Settings,
@@ -21,13 +22,21 @@ import { Shell } from './Shell';
  */
 const routes: RouteObject[] = [
   {
+    path: '/welcome',
+    lazy: async () => ({ Component: (await import('../features/onboarding/OnboardingPage')).OnboardingPage }),
+  },
+  {
     path: '/',
     element: <Shell />,
     children: [
       { index: true, element: <TodayPage /> },
       {
         path: 'checkin',
-        element: <ComingSoon title="בדיקת מימד" text="חמישה צעדים, שישים שניות: נשימה, כיווץ, מחשבה, רגש, זמן." milestone="M3" Icon={Compass} />,
+        lazy: async () => ({ Component: (await import('../features/checkin/CheckinPage')).CheckinPage }),
+      },
+      {
+        path: 'diagnosis',
+        element: <ComingSoon title="אבחון מלא" text="שתים-עשרה שאלות על הדפוס הדומיננטי שלך, בחמישה תחומים." milestone="M6" Icon={ListChecks} />,
       },
       {
         path: 'shift/:toolId?',

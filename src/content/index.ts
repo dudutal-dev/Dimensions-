@@ -11,6 +11,7 @@ import fake5d from './fake5d.json';
 import journey from './journey.json';
 import library from './library.json';
 import model from './model.json';
+import onboarding from './onboarding.json';
 import safety from './safety.json';
 import tools from './tools.json';
 import triggers from './triggers.json';
@@ -32,6 +33,7 @@ export function loadContent(): ContentBundle {
     journey: contentSchemas.journey.parse(journey),
     library: contentSchemas.library.parse(library),
     safety: contentSchemas.safety.parse(safety),
+    onboarding: contentSchemas.onboarding.parse(onboarding),
   };
   return cached;
 }

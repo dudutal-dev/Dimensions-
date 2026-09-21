@@ -31,6 +31,37 @@ export function Chip({ selected, onToggle, children, disabled }: ChipProps) {
   );
 }
 
+interface OptionButtonProps {
+  selected: boolean;
+  onSelect: () => void;
+  children: ReactNode;
+  /** שורת הסבר קטנה מתחת לתווית. */
+  hint?: string;
+  icon?: ReactNode;
+}
+
+/** אפשרות בחירה גדולה לזרימות של "הקשה אחת" (בדיקת מימד, Onboarding). */
+export function OptionButton({ selected, onSelect, children, hint, icon }: OptionButtonProps) {
+  return (
+    <button
+      type="button"
+      aria-pressed={selected}
+      onClick={onSelect}
+      className={cn(
+        'pressable flex min-h-14 w-full select-none items-center gap-3 rounded-control border px-4 py-3 text-start text-base',
+        selected ? 'border-accent bg-accent/15 font-medium' : 'border-border-strong bg-surface-2 hover:bg-surface',
+      )}
+    >
+      {icon}
+      <span className="flex-1">
+        {children}
+        {hint && <span className="mt-0.5 block text-sm font-normal text-muted">{hint}</span>}
+      </span>
+      {selected && <Check aria-hidden size={20} className="shrink-0 text-accent" />}
+    </button>
+  );
+}
+
 interface SegmentedControlProps<T extends string> {
   label: string;
   value: T;

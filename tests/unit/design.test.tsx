@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import 'fake-indexeddb/auto';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
@@ -7,7 +8,21 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { resolveTheme } from '../../src/app/appearance';
 import { PRIMARY_NAV, SECONDARY_NAV } from '../../src/app/nav';
 import { Shell } from '../../src/app/Shell';
-import { Button, Chip, DimBadge, DimensionGlyph, IconButton, SegmentedControl, Sheet, Slider } from '../../src/design';
+import { useSettings } from '../../src/data/settingsStore';
+import { defaultSettings } from '../../src/domain/defaults';
+import {
+  Button,
+  Chip,
+  DimBadge,
+  DimensionGlyph,
+  IconButton,
+  OptionButton,
+  RichText,
+  SegmentedControl,
+  Sheet,
+  Slider,
+  ToastProvider,
+} from '../../src/design';
 import { greetingFor } from '../../src/lib/date';
 
 afterEach(cleanup);
@@ -84,6 +99,34 @@ describe('פקדים', () => {
   });
 });
 
+describe('טקסט עשיר ואפשרות בחירה', () => {
+  it('RichText: מודגש, נטוי ותגית רובד — בלי להשאיר סימני עריכה', () => {
+    const { container } = render(
+      <p>
+        <RichText text="אפשר לתרגל *לצד* טיפול. **חשוב:** נתמך מחקרית {{established}}" />
+      </p>,
+    );
+    expect(container.querySelector('em')).toHaveTextContent('לצד');
+    expect(container.querySelector('strong')).toHaveTextContent('חשוב:');
+    expect(screen.getByText('מבוסס')).toBeInTheDocument();
+    expect(container.textContent).not.toMatch(/[*{}]/);
+  });
+
+  it('OptionButton מדווח aria-pressed ומציג שורת הסבר', async () => {
+    const onSelect = vi.fn();
+    render(
+      <OptionButton selected onSelect={onSelect} hint="60 שניות">
+        בדיקה ראשונה
+      </OptionButton>,
+    );
+    const option = screen.getByRole('button', { name: /בדיקה ראשונה/ });
+    expect(option).toHaveAttribute('aria-pressed', 'true');
+    expect(option).toHaveTextContent('60 שניות');
+    await userEvent.click(option);
+    expect(onSelect).toHaveBeenCalledOnce();
+  });
+});
+
 describe('Sheet', () => {
   it('דיאלוג מודאלי עם כותרת; נסגר ב-Escape ובכפתור הסגירה', async () => {
     const onClose = vi.fn();
@@ -118,11 +161,16 @@ describe('ניווט', () => {
 
   it('ה-Shell מציג ניווט, כפתור 90 שניות, קישור דילוג, ומסמן את המסך הנוכחי', () => {
     window.scrollTo = vi.fn();
+    useSettings.setState({ loaded: true, settings: { ...defaultSettings(), onboarded: true } });
     const router = createMemoryRouter(
       [{ path: '/', element: <Shell />, children: [{ path: 'checkin', element: <h1>בדיקת מימד</h1> }] }],
       { initialEntries: ['/checkin'] },
     );
-    render(<RouterProvider router={router} />);
+    render(
+      <ToastProvider>
+        <RouterProvider router={router} />
+      </ToastProvider>,
+    );
 
     const nav = screen.getAllByRole('navigation', { name: 'ניווט ראשי' })[0]!;
     expect(within(nav).getAllByRole('link').length).toBeGreaterThanOrEqual(5);

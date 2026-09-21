@@ -27,6 +27,7 @@ import {
   type MetricsEntry,
   type SessionLog,
   type Settings,
+  type SettingsPatch,
 } from '../domain/records';
 import { newId } from '../lib/id';
 import { db as appDb, type CompassDb } from './db';
@@ -172,7 +173,7 @@ export function createRepositories(db: CompassDb) {
       async get(): Promise<Settings> {
         return withSettingsDefaults(await db.settings.get(SETTINGS_ID));
       },
-      async update(patch: Partial<Omit<Settings, 'id'>>): Promise<Settings> {
+      async update(patch: SettingsPatch): Promise<Settings> {
         return db.transaction('rw', db.settings, async () => {
           const current = withSettingsDefaults(await db.settings.get(SETTINGS_ID));
           const next = SettingsSchema.parse({

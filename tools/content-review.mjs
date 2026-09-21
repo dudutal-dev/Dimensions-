@@ -192,8 +192,22 @@ add(...b.safety.boundaries.map((x) => `- **${x.title}** — ${x.text}`));
 add(`### ${b.safety.help.title}`, b.safety.help.intro, '', b.safety.help.healthyPractice, '', '**סימנים שכדאי לעצור ולפנות לעזרה:**', ...b.safety.help.warningSigns.map((s) => `- ${s.text}`), '', '**מה עושים:**', ...b.safety.help.whatToDo.map((s) => `- ${s}`), '', ...b.safety.resources.map((r) => `**${r.name} — ${r.phone}** · ${r.description}`));
 add(`**הצעה עדינה** (כיווץ ${b.safety.gentleNudge.rule.value}, ${b.safety.gentleNudge.rule.consecutive} פעמים ברצף): ${b.safety.gentleNudge.text}`, '', b.safety.notRecommended);
 
+// ---------- Onboarding ----------
+add(
+  '---',
+  '',
+  '## 10. Onboarding',
+  '',
+  `**${b.onboarding.welcome.title}** — ${b.onboarding.welcome.text}`,
+  '',
+  `**${b.onboarding.framing.title}:** ${b.model.framing.full}`,
+  '',
+  `**${b.onboarding.start.title}**`,
+  ...b.onboarding.start.options.map((o) => `- **${o.title}** (${o.meta}) — ${o.text}`),
+);
+
 // ---------- ספרייה ----------
-add('---', '', '## 10. ספרייה', '', 'מאמרי הספרייה הועתקו מהמקור כמעט כלשונם (עריכת פיסוק בלבד, ואימוג׳י הרובד הוחלפו בתגיות). נספח הפיזיקה מלא.');
+add('---', '', '## 11. ספרייה', '', 'מאמרי הספרייה הועתקו מהמקור כמעט כלשונם (עריכת פיסוק בלבד, ואימוג׳י הרובד הוחלפו בתגיות). נספח הפיזיקה מלא.');
 for (const s of b.library.sections) {
   add(`### ${s.title}`, ...b.library.articles.filter((a) => a.section === s.id).map((a) => `- **${a.title}**${tag(a.layer)}${a.lockedUntilJourneyComplete ? ' · _נפתח אחרי 12 השבועות_' : ''} · _${a.source}_`));
 }

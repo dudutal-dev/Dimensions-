@@ -163,7 +163,7 @@ describe('repositories', () => {
     const { settings } = createRepositories(freshDb());
     expect(await settings.get()).toEqual(defaultSettings());
 
-    await settings.update({ theme: 'light', anchors: { wake: '06:15' } as never, sound: { ui: 0.2 } as never });
+    await settings.update({ theme: 'light', anchors: { wake: '06:15' }, sound: { ui: 0.2 } });
     const saved = await settings.get();
     expect(saved.theme).toBe('light');
     expect(saved.anchors.wake).toBe('06:15');

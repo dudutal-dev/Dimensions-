@@ -162,7 +162,15 @@ export const SettingsSchema = z
     textScale: z.union([z.literal(0.9), z.literal(1), z.literal(1.12), z.literal(1.25)]),
     /** השם שמופיע בשאלון "שאל אדם קרוב". */
     userName: z.string().optional(),
-    anchors: z.record(AnchorIdSchema, ClockTime),
+    anchors: z
+      .object({
+        wake: ClockTime,
+        'before-first-meeting': ClockTime,
+        'after-lunch': ClockTime,
+        home: ClockTime,
+        'before-sleep': ClockTime,
+      })
+      .strict(),
     sound: z
       .object({
         ui: Volume,
@@ -186,6 +194,11 @@ export const SettingsSchema = z
   })
   .strict();
 export type Settings = z.infer<typeof SettingsSchema>;
+/** עדכון חלקי: עוגנים וצלילים ממוזגים שדה-שדה. */
+export type SettingsPatch = Partial<Omit<Settings, 'id' | 'anchors' | 'sound'>> & {
+  anchors?: Partial<Settings['anchors']>;
+  sound?: Partial<Settings['sound']>;
+};
 export type ThemeChoice = Settings['theme'];
 export type TextScale = Settings['textScale'];
 

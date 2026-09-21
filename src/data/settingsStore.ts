@@ -4,7 +4,7 @@
  */
 import { create, type StoreApi, type UseBoundStore } from 'zustand';
 import { withSettingsDefaults } from '../domain/defaults';
-import type { Settings } from '../domain/records';
+import type { Settings, SettingsPatch } from '../domain/records';
 import { repos as appRepos, type Repositories } from './repositories';
 import { tracked } from './saveStatus';
 
@@ -34,7 +34,7 @@ export interface SettingsStore {
   loaded: boolean;
   load: () => Promise<void>;
   /** עדכון מיידי במסך, ושמירה אוטומטית ברקע. */
-  update: (patch: Partial<Omit<Settings, 'id'>>) => Promise<void>;
+  update: (patch: SettingsPatch) => Promise<void>;
 }
 
 export function createSettingsStore(repos: Repositories): UseBoundStore<StoreApi<SettingsStore>> {

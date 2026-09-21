@@ -342,6 +342,7 @@ export const CheckinContentSchema = z
       .strict(),
     quickMode: z.object({ title: Text, hint: Text }).strict(),
     heatmapEmpty: Text,
+    heatmapEmptyOne: Text,
   })
   .strict();
 export type CheckinContent = z.infer<typeof CheckinContentSchema>;
@@ -801,6 +802,28 @@ export const SafetyContentSchema = z
   .strict();
 export type SafetyContent = z.infer<typeof SafetyContentSchema>;
 
+// ---------- onboarding.json ----------
+
+/** טקסטים ייחודיים ל-Onboarding. המסגור, שלושת המצבים והגבולות נלקחים מ-model.json ומ-safety.json. */
+export const OnboardingContentSchema = z
+  .object({
+    welcome: z.object({ title: Text, text: Text }).strict(),
+    framing: z.object({ title: Text, libraryLink: Text }).strict(),
+    states: z.object({ title: Text }).strict(),
+    start: z
+      .object({
+        title: Text,
+        options: z
+          .array(z.object({ id: z.enum(['diagnosis', 'checkin']), title: Text, meta: Text, text: Text }).strict())
+          .length(2),
+      })
+      .strict(),
+    restore: Text,
+    skip: Text,
+  })
+  .strict();
+export type OnboardingContent = z.infer<typeof OnboardingContentSchema>;
+
 // ---------- החבילה כולה ----------
 
 export const contentSchemas = {
@@ -816,6 +839,7 @@ export const contentSchemas = {
   journey: JourneyContentSchema,
   library: LibraryContentSchema,
   safety: SafetyContentSchema,
+  onboarding: OnboardingContentSchema,
 } as const;
 
 export type ContentFileName = keyof typeof contentSchemas;
@@ -833,4 +857,5 @@ export interface ContentBundle {
   journey: JourneyContent;
   library: LibraryContent;
   safety: SafetyContent;
+  onboarding: OnboardingContent;
 }

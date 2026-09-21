@@ -1,19 +1,37 @@
+import { useLiveQuery } from 'dexie-react-hooks';
 import { Timer } from 'lucide-react';
-import { useEffect, useRef } from 'react';
-import { Link, NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
+import { useEffect, useRef, type MouseEvent } from 'react';
+import { Link, Navigate, NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
+import { repos } from '../data/repositories';
+import { useSettings } from '../data/settingsStore';
 import { Aurora } from '../design';
+import { primaryDim } from '../domain/checkin-scoring';
+import { QuickCheckinSheet, useQuickCheckin } from '../features/checkin/QuickCheckinSheet';
 import { cn } from '../lib/cn';
 import { PRIMARY_NAV, SECONDARY_NAV, type NavItem } from './nav';
+
+/** מסכים שזמינים גם לפני ה-Onboarding: שחזור מגיבוי במכשיר חדש, ועמוד העיצוב. */
+const OPEN_BEFORE_ONBOARDING = ['/backup', '/design'];
 
 /** המעטפת: הילה, ניווט (תחתון במובייל, צדדי מ-1024px), כפתור "90 שניות" צף, ואזור התוכן. */
 export function Shell() {
   const mainRef = useRef<HTMLElement>(null);
   const { pathname } = useLocation();
+  const loaded = useSettings((s) => s.loaded);
+  const onboarded = useSettings((s) => s.settings.onboarded);
+  // ההילה בצבע המצב האחרון שנרשם (SPEC 6.2).
+  const lastDim = useLiveQuery(async () => {
+    const [latest] = await repos.checkins.latest(1);
+    return latest ? primaryDim(latest.result) : undefined;
+  }, []);
 
   // אחרי מעבר מסך הפוקוס עובר לתוכן — לקוראי מסך ולמקלדת.
   useEffect(() => {
     mainRef.current?.focus({ preventScroll: true });
   }, [pathname]);
+
+  if (!loaded) return <Aurora />;
+  if (!onboarded && !OPEN_BEFORE_ONBOARDING.includes(pathname)) return <Navigate to="/welcome" replace />;
 
   return (
     <div className="relative min-h-dvh lg:ps-[var(--sidenav-width)]">
@@ -23,13 +41,13 @@ export function Shell() {
           event.preventDefault();
           mainRef.current?.focus();
         }}
-        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[60] focus:rounded-control focus:bg-accent focus:px-4 focus:py-3 focus:text-on-accent"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[60] focus:rounded-control focus:bg-accent-fill focus:px-4 focus:py-3 focus:text-on-accent"
       >
         דלג לתוכן
       </a>
 
-      <Aurora />
-      <SideNav />
+      <Aurora dim={lastDim} />
+      {onboarded && <SideNav />}
 
       <main
         id="main"
@@ -40,14 +58,50 @@ export function Shell() {
         <Outlet />
       </main>
 
-      <SosButton />
-      <BottomNav />
+      {onboarded && (
+        <>
+          <SosButton />
+          <BottomNav />
+          <QuickCheckinSheet />
+        </>
+      )}
       <ScrollRestoration />
     </div>
   );
 }
 
+const LONG_PRESS_MS = 500;
+
+/** לחיצה ארוכה על "בדיקה" פותחת רישום מהיר (SPEC 6.3). אותה פעולה זמינה גם ככפתור גלוי במסך "היום". */
+function useLongPress(onLongPress: () => void) {
+  const timer = useRef<number | undefined>(undefined);
+  const fired = useRef(false);
+  const cancel = () => window.clearTimeout(timer.current);
+
+  return {
+    onPointerDown: () => {
+      fired.current = false;
+      cancel();
+      timer.current = window.setTimeout(() => {
+        fired.current = true;
+        navigator.vibrate?.(12);
+        onLongPress();
+      }, LONG_PRESS_MS);
+    },
+    onPointerUp: cancel,
+    onPointerLeave: cancel,
+    onPointerCancel: cancel,
+    onContextMenu: (event: MouseEvent) => event.preventDefault(),
+    onClick: (event: MouseEvent) => {
+      if (fired.current) event.preventDefault();
+    },
+  };
+}
+
 function BottomNav() {
+  const openQuick = useQuickCheckin((s) => s.setOpen);
+  const longPress = useLongPress(() => openQuick(true));
+
   return (
     <nav
       aria-label="ניווט ראשי"
@@ -59,9 +113,10 @@ function BottomNav() {
             <NavLink
               to={item.to}
               end={item.end}
+              {...(item.to === '/checkin' ? longPress : {})}
               className={({ isActive }) =>
                 cn(
-                  'pressable flex h-full flex-col items-center justify-center gap-0.5 text-xs',
+                  'pressable flex h-full select-none flex-col items-center justify-center gap-0.5 text-xs [-webkit-touch-callout:none]',
                   isActive ? 'font-semibold text-accent' : 'text-muted hover:text-text',
                 )
               }
