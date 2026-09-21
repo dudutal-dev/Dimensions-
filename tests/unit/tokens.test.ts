@@ -32,6 +32,19 @@ function contrast(a: string, b: string): number {
   return (hi! + 0.05) / (lo! + 0.05);
 }
 
+/** --glass מוגדר כ-rgb(r g b / a) — הסרגל התחתון שקוף למחצה, ולכן הרקע בפועל תלוי במה שמתחתיו. */
+function readGlass(theme: string): { rgb: number[]; alpha: number } {
+  const start = css.indexOf(`[data-theme='${theme}']`);
+  const match = /--glass:\s*rgb\((\d+) (\d+) (\d+) \/ ([\d.]+)\)/.exec(css.slice(start));
+  if (!match) throw new Error(`לא נמצא --glass בערכה ${theme}`);
+  return { rgb: [Number(match[1]), Number(match[2]), Number(match[3])], alpha: Number(match[4]) };
+}
+
+function over(glass: { rgb: number[]; alpha: number }, underHex: string): string {
+  const under = [1, 3, 5].map((i) => parseInt(underHex.slice(i, i + 2), 16));
+  return `#${glass.rgb.map((c, i) => Math.round(c * glass.alpha + under[i]! * (1 - glass.alpha)).toString(16).padStart(2, '0')).join('')}`;
+}
+
 const THEMES = {
   dark: readTheme("[data-theme='dark']"),
   light: readTheme("[data-theme='light']"),
@@ -62,6 +75,16 @@ describe.each(Object.entries(THEMES))('ניגודיות — ערכה %s', (_name
     for (const fill of ['d3-fill', 'd4-fill', 'd5-fill']) {
       for (const surface of SURFACES) {
         expect(contrast(t[fill]!, t[surface]!), `${fill} על ${surface}`).toBeGreaterThanOrEqual(3);
+      }
+    }
+  });
+
+  it('תוויות הסרגל התחתון קריאות גם כשתוכן בהיר או צבעוני נגלל מתחת לזכוכית (4.5:1)', () => {
+    const glass = readGlass(_name);
+    for (const under of ['bg', 'surface-2', 'accent-fill', 'd3-fill', 'd4-fill', 'd5-fill']) {
+      const composite = over(glass, t[under]!);
+      for (const label of ['text-muted', 'accent']) {
+        expect(contrast(t[label]!, composite), `${label} על זכוכית מעל ${under}`).toBeGreaterThanOrEqual(4.5);
       }
     }
   });

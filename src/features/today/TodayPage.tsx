@@ -8,7 +8,7 @@ import { repos } from '../../data/repositories';
 import { useSettings } from '../../data/settingsStore';
 import { Button, Card, DIM_LABEL, DimensionGlyph, IconButton, Sheet } from '../../design';
 import { primaryDim } from '../../domain/checkin-scoring';
-import { dailyPlan, practicePendingToday, weekIdOf } from '../../domain/journey';
+import { dailyPlan, isoDate, practicePendingToday, weekIdOf } from '../../domain/journey';
 import { anchorsForDay, nextTask, startOfDay, weeklyInsight, type DayPart, type WeeklyInsight } from '../../domain/today';
 import { greetingFor } from '../../lib/date';
 import { useQuickCheckin } from '../checkin/QuickCheckinSheet';
@@ -43,20 +43,21 @@ export function TodayPage() {
 
   const dayStart = startOfDay(now).getTime();
   const data = useLiveQuery(async () => {
-    const [today, week, total, journey] = await Promise.all([
+    const [today, week, total, journey, evening] = await Promise.all([
       repos.checkins.list({ from: dayStart }),
       repos.checkins.list({ from: dayStart - WEEK_MS }),
       repos.checkins.count(),
       repos.journey.get(),
+      repos.evenings.getByDate(isoDate(new Date(dayStart))),
     ]);
-    return { today, week, total, journey };
+    return { today, week, total, journey, evening };
   }, [dayStart]);
 
   const anchors = anchorsForDay(data?.today ?? [], anchorTimes);
   const plan = data ? dailyPlan(journeyContent, data.journey, now) : null;
   const practiceHref = plan ? `/journey/${weekIdOf(plan.week)}` : '/journey';
   const weekTask = plan ? journeyContent.weeks.find((w) => w.week === plan.week)?.lifeTask.title : undefined;
-  const task = nextTask({ now, anchors, practicePending: data ? practicePendingToday(journeyContent, data.journey, now) : false });
+  const task = nextTask({ now, anchors, practicePending: data ? practicePendingToday(journeyContent, data.journey, now) : false, eveningJournalPending: data ? !data.evening : false });
   const anchorLabel = (id: string) => content.anchors.find((a) => a.id === id)?.label ?? '';
 
   return (
@@ -103,7 +104,7 @@ export function TodayPage() {
         {task.kind === 'evening-journal' && (
           <>
             <h2 className="text-xl">יומן ערב</h2>
-            <Button variant="primary" size="lg" fullWidth className="mt-5" icon={<NotebookPen aria-hidden size={22} />} onClick={() => navigate('/journal')}>
+            <Button variant="primary" size="lg" fullWidth className="mt-5" icon={<NotebookPen aria-hidden size={22} />} onClick={() => navigate('/journal/evening')}>
               לרשום את היום
             </Button>
           </>

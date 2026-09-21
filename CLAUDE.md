@@ -24,6 +24,8 @@
 - צבעים רק דרך tokens סמנטיים. מאפייני CSS לוגיים בלבד (RTL). יעדי מגע ≥48px. אין emoji כאייקונים (Lucide + גליפים ייעודיים).
 - כל קלט משתמש נשמר אוטומטית ומיד: כתיבות דרך `tracked()` (`data/saveStatus.ts`), זרימות רב-שלביות דרך `useDraft`, חיווי דרך `SavedIndicator`.
 - נתונים: מסכים ניגשים רק ל-`data/repositories.ts` (לא ל-Dexie ישירות; `useLiveQuery` מותר). צורת הרשומות מוגדרת ב-`domain/records.ts` (Zod). שינוי סכמה = גרסה חדשה ב-`SCHEMA_VERSIONS` (`data/db.ts`) + צעד מקביל ב-`BACKUP_MIGRATIONS` (`domain/backup.ts`). לעולם לא עורכים גרסה שיצאה. שדה אופציונלי חדש (בלי אינדקס) אינו משנה רשומות קיימות, ולכן אינו דורש גרסה.
+- כתיבה של כמה רשומות יחד — בטרנזקציה אחת (`useLiveQuery` מציג גם מצבי ביניים). נתוני דמה לבדיקת התובנות: `#/design` ← "נתוני דמה" (`data/demoData.ts`; מזהים שמתחילים ב-`demo-`, נמחקים בנפרד).
+- ספירה בעברית דרך `lib/plural.ts` ("אירוע אחד", לא "1 אירועים"); טווחי מספרים דרך `lib/bidi.ts`.
 - `prefers-reduced-motion` נתמך בכל אנימציה.
 - לפני מסירה ויזואלית: Pre-Delivery Checklist של הסקיל `ui-ux-pro-max`.
 

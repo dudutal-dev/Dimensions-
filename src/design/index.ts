@@ -1,6 +1,6 @@
 export { Button, IconButton } from './Button';
 export { Card, EmptyState } from './Card';
-export { SharesBar, SharesLegend, SharesValues, TrendChart, pct, type Shares, type TrendPoint } from './Charts';
+export { SharesBar, SharesLegend, SharesValues, TrendChart, WeeklyChart, pct, type Shares, type TrendPoint, type WeeklyPoint } from './Charts';
 export { Chip, OptionButton, SegmentedControl } from './Chip';
 export { DimBadge, DimensionGlyph } from './DimensionGlyph';
 export { DIM_LABEL } from './dims';

@@ -178,3 +178,87 @@ export function SharesLegend({ className }: { className?: string }) {
     </ul>
   );
 }
+
+// ---------- סדרה שבועית אחת: עמודות או קו ----------
+
+export interface WeeklyPoint {
+  id: string;
+  label: string;
+  /** null = אין נתונים בשבוע הזה (לא אפס). */
+  value: number | null;
+}
+
+interface WeeklyChartProps {
+  title: string;
+  kind: 'bar' | 'line';
+  points: WeeklyPoint[];
+  /** צבע הסימנים (CSS). סדרה אחת — אין צורך במקרא, הכותרת נותנת לה שם. */
+  color: string;
+  formatValue: (value: number) => string;
+  /** גבול עליון קבוע לציר (למשל 1 לאחוזים). בלי זה — לפי הערך המרבי. */
+  max?: number;
+}
+
+/** גרף שבועי קטן של סדרה אחת. ציר הזמן RTL; הערך האחרון מתויג ישירות; יש טבלה חלופית. */
+export function WeeklyChart({ title, kind, points, color, formatValue, max }: WeeklyChartProps) {
+  const values = points.flatMap((p) => (p.value === null ? [] : [p.value]));
+  if (values.length === 0) return null;
+  const top = max ?? (Math.max(...values) * 1.15 || 1);
+  const pad = { top: 18, bottom: 24, left: 8, right: 8 };
+  const plotW = W - pad.left - pad.right;
+  const plotH = H - pad.top - pad.bottom;
+  const slot = plotW / points.length;
+  const x = (index: number) => W - pad.right - slot * (index + 0.5);
+  const y = (value: number) => pad.top + (1 - Math.min(value / top, 1)) * plotH;
+  const lastIndex = points.reduce((found, p, i) => (p.value === null ? found : i), -1);
+  const drawn = points.map((p, i) => ({ ...p, i })).filter((p): p is WeeklyPoint & { i: number; value: number } => p.value !== null);
+
+  return (
+    <figure>
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${title}. ${drawn.map((p) => `${p.label}: ${formatValue(p.value)}`).join('. ')}`} className="w-full">
+        <line x1={pad.left} x2={W - pad.right} y1={y(0)} y2={y(0)} stroke="var(--border-strong)" strokeWidth={1} />
+        {kind === 'bar' &&
+          drawn.map((p) => {
+            const barW = Math.min(16, slot * 0.5);
+            const barH = Math.max(y(0) - y(p.value), 2);
+            return <rect key={p.id} x={x(p.i) - barW / 2} y={y(0) - barH} width={barW} height={barH} rx={4} fill={color} />;
+          })}
+        {kind === 'line' && (
+          <>
+            <polyline fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" points={drawn.map((p) => `${x(p.i)},${y(p.value)}`).join(' ')} />
+            {drawn.map((p) => (
+              <circle key={p.id} cx={x(p.i)} cy={y(p.value)} r={4} fill={color} stroke="var(--surface)" strokeWidth={2} />
+            ))}
+          </>
+        )}
+        {points.map((p, i) => (
+          <text key={p.id} x={x(i)} y={H - 6} textAnchor="middle" fontSize={10} fill="var(--text-muted)">
+            {p.label}
+          </text>
+        ))}
+        {lastIndex >= 0 && (
+          <text x={x(lastIndex)} y={y(points[lastIndex]!.value!) - 9} textAnchor="middle" fontSize={11} fontWeight={600} fill="var(--text)">
+            {formatValue(points[lastIndex]!.value!)}
+          </text>
+        )}
+      </svg>
+      <figcaption>
+        <details className="text-sm">
+          <summary className="flex min-h-12 cursor-pointer items-center text-muted">הצג כטבלה</summary>
+          <table className="tabular w-full">
+            <tbody>
+              {points.map((p) => (
+                <tr key={p.id} className="border-t border-border">
+                  <th scope="row" className="py-1.5 text-start font-normal text-muted">
+                    {p.label}
+                  </th>
+                  <td className="py-1.5 text-end">{p.value === null ? '—' : formatValue(p.value)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </details>
+      </figcaption>
+    </figure>
+  );
+}

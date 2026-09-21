@@ -1,9 +1,7 @@
 import {
   BookOpen,
-  ChartColumn,
   Compass,
   LifeBuoy,
-  NotebookPen,
   Settings,
 } from 'lucide-react';
 import { createHashRouter, type RouteObject } from 'react-router-dom';
@@ -75,7 +73,7 @@ const routes: RouteObject[] = [
       },
       {
         path: 'insights',
-        element: <ComingSoon title="תובנות" text="מפת החום האישית שלך, זמן התאוששות, ומה עובד לך." milestone="M8" Icon={ChartColumn} />,
+        lazy: async () => ({ Component: (await import('../features/insights/InsightsPage')).InsightsPage }),
       },
       {
         path: 'practice',
@@ -83,7 +81,15 @@ const routes: RouteObject[] = [
       },
       {
         path: 'journal',
-        element: <ComingSoon title="יומן" text="יומן ערב, יומן טריגרים וחקירת אמונות." milestone="M8" Icon={NotebookPen} />,
+        lazy: async () => ({ Component: (await import('../features/journal/JournalPage')).JournalPage }),
+      },
+      {
+        path: 'journal/evening/:date?',
+        lazy: async () => ({ Component: (await import('../features/journal/EveningPage')).EveningPage }),
+      },
+      {
+        path: 'journal/form/:id',
+        lazy: async () => ({ Component: (await import('../features/journal/FormViewPage')).FormViewPage }),
       },
       {
         path: 'library',

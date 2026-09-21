@@ -45,8 +45,10 @@ describe('ארכיטקטורה', () => {
   });
 
   it('אין בקוד תווי כיווניות בלתי-נראים (משתמשים ב-String.fromCharCode או ב-dir)', () => {
-    // טווחי התווים: embeddings/overrides ו-isolates. נבנים מקודי תווים כדי שהבדיקה עצמה תישאר נקייה.
-    const invisible = new RegExp(`[${String.fromCharCode(0x202a)}-${String.fromCharCode(0x202e)}${String.fromCharCode(0x2066)}-${String.fromCharCode(0x2069)}]`);
+    // טווחי התווים: embeddings/overrides, isolates, ורווח קשיח. נבנים מקודי תווים כדי שהבדיקה עצמה תישאר נקייה.
+    const invisible = new RegExp(
+      `[${String.fromCharCode(0x202a)}-${String.fromCharCode(0x202e)}${String.fromCharCode(0x2066)}-${String.fromCharCode(0x2069)}${String.fromCharCode(0xa0)}]`,
+    );
     const dirty = [...sourceFiles(SRC), ...sourceFiles(join(SRC, '..', 'tests'))].filter((file) => invisible.test(readFileSync(file, 'utf8')));
     expect(dirty.map((file) => relative(SRC, file))).toEqual([]);
   });

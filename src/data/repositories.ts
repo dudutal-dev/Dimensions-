@@ -135,14 +135,21 @@ export function createRepositories(db: CompassDb) {
       getByDate(date: string): Promise<EveningEntry | undefined> {
         return db.evenings.where('date').equals(date).first();
       },
-      /** רשומה אחת לכל תאריך: יוצר אותה או מעדכן את האירועים שלה. */
-      async saveForDate(date: string, events: EveningEvent[]): Promise<EveningEntry> {
+      /**
+       * רשומה אחת לכל תאריך: יוצר אותה או מעדכן את האירועים שלה. בלי אירועים — אין רשומה
+       * (ערב ריק לא נספר כערב של יומן). ה-ts הוא צהרי אותו תאריך, כדי שרישום בדיעבד ייכנס לשבוע הנכון.
+       */
+      async saveForDate(date: string, events: EveningEvent[]): Promise<EveningEntry | undefined> {
         return db.transaction('rw', db.evenings, async () => {
           const existing = await db.evenings.where('date').equals(date).first();
+          if (events.length === 0) {
+            if (existing) await db.evenings.delete(existing.id);
+            return undefined;
+          }
           const entry = EveningEntrySchema.parse({
             id: existing?.id ?? newId(),
             date,
-            ts: existing?.ts ?? Date.now(),
+            ts: existing?.ts ?? new Date(`${date}T12:00:00`).getTime(),
             events,
           });
           await db.evenings.put(entry);

@@ -141,10 +141,15 @@ describe('repositories', () => {
     const first = await evenings.saveForDate('2026-09-21', [event]);
     const second = await evenings.saveForDate('2026-09-21', [event, { ...event, recoveryMin: 10, dim: 'd4' }]);
 
-    expect(second.id).toBe(first.id);
+    expect(second?.id).toBe(first?.id);
+    expect(new Date(first!.ts).getHours()).toBe(12); // צהרי אותו תאריך — גם ברישום בדיעבד
     expect(await evenings.count()).toBe(1);
     expect((await evenings.getByDate('2026-09-21'))?.events).toHaveLength(2);
     await expect(evenings.saveForDate('2026-09-22', [event, event, event, event])).rejects.toThrow();
+
+    // ערב בלי אירועים אינו רשומה
+    expect(await evenings.saveForDate('2026-09-21', [])).toBeUndefined();
+    expect(await evenings.count()).toBe(0);
   });
 
   it('מסע: ברירת מחדל, עדכון, וסימון יום בלי לדרוס את מה שכבר סומן', async () => {
