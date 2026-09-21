@@ -1,6 +1,7 @@
 import { Inbox, Monitor, Moon, Play, Sun, Trash2 } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
-import { TEXT_SCALES, useAppearance, type TextScale, type ThemeChoice } from '../../app/appearance';
+import { useSavedFlash } from '../../data/saveStatus';
+import { useSettings } from '../../data/settingsStore';
 import type { Dim, Layer } from '../../content/schema';
 import {
   Button,
@@ -19,6 +20,7 @@ import {
   TextField,
   useToast,
 } from '../../design';
+import { TEXT_SCALES, type TextScale, type ThemeChoice } from '../../domain/records';
 
 const DIMS: Dim[] = ['d3', 'd4', 'd5'];
 const LAYERS: Layer[] = ['established', 'speculative', 'metaphoric'];
@@ -57,7 +59,9 @@ function Section({ title, note, children }: { title: string; note?: string; chil
 
 /** עמוד מערכת העיצוב (M1): כל ה-tokens והרכיבים במקום אחד, לאישור ויזואלי בכהה ובבהיר. */
 export function DesignPage() {
-  const { theme, setTheme, textScale, setTextScale } = useAppearance();
+  const { theme, textScale } = useSettings((state) => state.settings);
+  const updateSettings = useSettings((state) => state.update);
+  const settingsSaved = useSavedFlash();
   const toast = useToast();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [contraction, setContraction] = useState(4);
@@ -78,7 +82,7 @@ export function DesignPage() {
         <SegmentedControl<ThemeChoice>
           label="ערכת צבע"
           value={theme}
-          onChange={setTheme}
+          onChange={(value) => void updateSettings({ theme: value })}
           options={[
             { value: 'dark', label: 'כהה', icon: <Moon aria-hidden size={18} /> },
             { value: 'light', label: 'בהיר', icon: <Sun aria-hidden size={18} /> },
@@ -88,9 +92,12 @@ export function DesignPage() {
         <SegmentedControl<`${TextScale}`>
           label="גודל טקסט"
           value={`${textScale}`}
-          onChange={(value) => setTextScale(Number(value) as TextScale)}
+          onChange={(value) => void updateSettings({ textScale: Number(value) as TextScale })}
           options={TEXT_SCALES.map((scale, i) => ({ value: `${scale}` as `${TextScale}`, label: ['קטן', 'רגיל', 'גדול', 'ענק'][i] ?? '' }))}
         />
+        <div className="flex justify-end">
+          <SavedIndicator visible={settingsSaved} />
+        </div>
       </Section>
 
       <Section title="שלושת המצבים" note="צבע אינו נושא מידע לבדו: לכל מצב גם צורה וגם תווית.">

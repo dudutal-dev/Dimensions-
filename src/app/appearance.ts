@@ -1,43 +1,17 @@
-/**
- * ערכת צבע וגודל טקסט. נשמרים ב-localStorage (ולא ב-Dexie) כדי שה-script שב-index.html
- * יוכל להחיל אותם לפני הציור הראשון. שאר ההגדרות יעברו ל-Dexie ב-M2.
- */
+/** מחיל את ערכת הצבע ואת גודל הטקסט מההגדרות על <html>. ההגדרות עצמן: data/settingsStore.ts. */
 import { useEffect } from 'react';
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-
-export type ThemeChoice = 'system' | 'dark' | 'light';
-export const TEXT_SCALES = [0.9, 1, 1.12, 1.25] as const;
-export type TextScale = (typeof TEXT_SCALES)[number];
-
-interface AppearanceState {
-  theme: ThemeChoice;
-  textScale: TextScale;
-  setTheme: (theme: ThemeChoice) => void;
-  setTextScale: (scale: TextScale) => void;
-}
-
-export const useAppearance = create<AppearanceState>()(
-  persist(
-    (set) => ({
-      theme: 'system',
-      textScale: 1,
-      setTheme: (theme) => set({ theme }),
-      setTextScale: (textScale) => set({ textScale }),
-    }),
-    { name: 'dc.appearance' },
-  ),
-);
+import { useSettings } from '../data/settingsStore';
+import type { ThemeChoice } from '../domain/records';
 
 export function resolveTheme(choice: ThemeChoice, prefersLight: boolean): 'dark' | 'light' {
   if (choice !== 'system') return choice;
   return prefersLight ? 'light' : 'dark';
 }
 
-/** מחיל את ההגדרות על <html>, ועוקב אחרי שינוי ערכת המערכת ואחרי הסתרת הלשונית (לעצירת ההילה). */
+/** עוקב גם אחרי שינוי ערכת המערכת, ואחרי הסתרת הלשונית (לעצירת ההילה). */
 export function useApplyAppearance(): void {
-  const theme = useAppearance((s) => s.theme);
-  const textScale = useAppearance((s) => s.textScale);
+  const theme = useSettings((s) => s.settings.theme);
+  const textScale = useSettings((s) => s.settings.textScale);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-color-scheme: light)');

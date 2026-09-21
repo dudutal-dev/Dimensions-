@@ -2,7 +2,6 @@ import {
   BookOpen,
   ChartColumn,
   Compass,
-  DatabaseBackup,
   LifeBuoy,
   NotebookPen,
   Route as RouteIcon,
@@ -60,7 +59,7 @@ const routes: RouteObject[] = [
       },
       {
         path: 'backup',
-        element: <ComingSoon title="גיבוי" text="ייצוא וייבוא של כל הנתונים שלך, בקובץ אחד." milestone="M2" Icon={DatabaseBackup} />,
+        lazy: async () => ({ Component: (await import('../features/backup/BackupPage')).BackupPage }),
       },
       {
         path: 'help',

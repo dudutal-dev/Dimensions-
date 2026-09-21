@@ -13,7 +13,7 @@
         var theme = 'system';
         var scale = 1;
         try {
-          var saved = JSON.parse(localStorage.getItem('dc.appearance') || '{}').state || {};
+          var saved = JSON.parse(localStorage.getItem('dc.appearance') || '{}');
           theme = saved.theme || theme;
           scale = saved.textScale || scale;
         } catch (e) {}
