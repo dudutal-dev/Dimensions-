@@ -26,6 +26,8 @@
 - נתונים: מסכים ניגשים רק ל-`data/repositories.ts` (לא ל-Dexie ישירות; `useLiveQuery` מותר). צורת הרשומות מוגדרת ב-`domain/records.ts` (Zod). שינוי סכמה = גרסה חדשה ב-`SCHEMA_VERSIONS` (`data/db.ts`) + צעד מקביל ב-`BACKUP_MIGRATIONS` (`domain/backup.ts`). לעולם לא עורכים גרסה שיצאה. שדה אופציונלי חדש (בלי אינדקס) אינו משנה רשומות קיימות, ולכן אינו דורש גרסה.
 - כתיבה של כמה רשומות יחד — בטרנזקציה אחת (`useLiveQuery` מציג גם מצבי ביניים). נתוני דמה לבדיקת התובנות: `#/design` ← "נתוני דמה" (`data/demoData.ts`; מזהים שמתחילים ב-`demo-`, נמחקים בנפרד).
 - ספירה בעברית דרך `lib/plural.ts` ("אירוע אחד", לא "1 אירועים"); טווחי מספרים דרך `lib/bidi.ts`.
+- תווים בלתי-נראים (בידוד כיווניות, רווח קשיח, טווח ניקוד) נבנים ב-`String.fromCharCode` ולא נכתבים בקוד — נאכף ב-`architecture.test.ts`.
+- ספרייה: המאמרים ב-`content/library.json`; בלוק `ref` מציג נתון מקובץ תוכן אחר בלי לשכפל טקסט (`features/library/blocks.tsx`), והחיפוש (`domain/library.ts`) מכסה גם אותו. השדה `source` הוא עקיבות פנימית ואינו מוצג.
 - `prefers-reduced-motion` נתמך בכל אנימציה.
 - לפני מסירה ויזואלית: Pre-Delivery Checklist של הסקיל `ui-ux-pro-max`.
 

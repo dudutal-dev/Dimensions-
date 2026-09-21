@@ -23,6 +23,7 @@ import {
   SharesValues,
   Sheet,
   Slider,
+  Switch,
   ToastProvider,
   TrendChart,
 } from '../../src/design';
@@ -100,6 +101,22 @@ describe('פקדים', () => {
     render(<Slider label="כמה כיווץ?" value={7} onChange={() => {}} />);
     expect(screen.getByRole('slider', { name: 'כמה כיווץ?' })).toHaveValue('7');
     expect(screen.getByText('7')).toBeInTheDocument();
+  });
+
+  it('מתג: role=switch, מצב ב-aria-checked, ההסבר מקושר, ולחיצה הופכת את המצב', async () => {
+    const user = userEvent.setup();
+    function Demo() {
+      const [on, setOn] = useState(false);
+      return <Switch label="רטט עדין" hint="במכשירים שתומכים בכך." checked={on} onChange={setOn} />;
+    }
+    render(<Demo />);
+    const toggle = screen.getByRole('switch', { name: 'רטט עדין' });
+    expect(toggle).toHaveAttribute('aria-checked', 'false');
+    expect(toggle).toHaveAccessibleDescription('במכשירים שתומכים בכך.');
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute('aria-checked', 'true');
+    await user.keyboard(' ');
+    expect(toggle).toHaveAttribute('aria-checked', 'false');
   });
 });
 

@@ -1,18 +1,12 @@
-import {
-  BookOpen,
-  Compass,
-  LifeBuoy,
-  Settings,
-} from 'lucide-react';
 import { createHashRouter, type RouteObject } from 'react-router-dom';
 import { TodayPage } from '../features/today/TodayPage';
-import { ComingSoon } from './ComingSoon';
+import { NotFound } from './NotFound';
 import { Shell } from './Shell';
 
 /**
  * Hash router — תואם GitHub Pages, ומאפשר deep link לכל מסך ראשי
  * (#/checkin · #/shift/heart-drop · #/journey/w04 · #/design).
- * המסכים שעוד לא נבנו מוצגים כ-ComingSoon, ויוחלפו אחד-אחד באבני הדרך הבאות.
+ * כל מסך מלבד "היום" נטען בעצלתיים, כדי שהטעינה הראשונה תישאר קלה.
  */
 const routes: RouteObject[] = [
   {
@@ -93,11 +87,15 @@ const routes: RouteObject[] = [
       },
       {
         path: 'library',
-        element: <ComingSoon title="ספרייה" text="המודל, חמשת הערוצים, זיוף 5D ונספח הפיזיקה." milestone="M9" Icon={BookOpen} />,
+        lazy: async () => ({ Component: (await import('../features/library/LibraryPage')).LibraryPage }),
+      },
+      {
+        path: 'library/:articleId',
+        lazy: async () => ({ Component: (await import('../features/library/ArticlePage')).ArticlePage }),
       },
       {
         path: 'settings',
-        element: <ComingSoon title="הגדרות" text="ערכת צבע, גודל טקסט, צלילים ושעות העוגנים." milestone="M9" Icon={Settings} />,
+        lazy: async () => ({ Component: (await import('../features/settings/SettingsPage')).SettingsPage }),
       },
       {
         path: 'backup',
@@ -105,13 +103,13 @@ const routes: RouteObject[] = [
       },
       {
         path: 'help',
-        element: <ComingSoon title="צריך עזרה?" text="סימנים שכדאי לעצור, ואל מי לפנות." milestone="M9" Icon={LifeBuoy} />,
+        lazy: async () => ({ Component: (await import('../features/help/HelpPage')).HelpPage }),
       },
       {
         path: 'design',
         lazy: async () => ({ Component: (await import('../features/design/DesignPage')).DesignPage }),
       },
-      { path: '*', element: <ComingSoon title="לא מצאתי את המסך הזה" text="אפשר לחזור דרך הניווט שלמטה." milestone="—" Icon={Compass} /> },
+      { path: '*', element: <NotFound /> },
     ],
   },
 ];

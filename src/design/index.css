@@ -67,6 +67,11 @@
 }
 
 @layer base {
+  /* לגופן העברי אין נטוי אמיתי: הדפדפן מטה את האותיות ימינה, והמילה הנטויה "נדבקת" למילה שלפניה. מרווח קטן מפריד ביניהן. */
+  em {
+    padding-inline: 0.14em 0.04em;
+  }
+
   html {
     font-size: calc(100% * var(--text-scale));
     -webkit-text-size-adjust: 100%;

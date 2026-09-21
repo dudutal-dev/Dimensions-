@@ -8,5 +8,6 @@ export { Aurora, LayerTag, ProgressDots, SavedIndicator } from './Indicators';
 export { RichText } from './RichText';
 export { Sheet } from './Sheet';
 export { Slider } from './Slider';
+export { Switch } from './Switch';
 export { TextArea, TextField } from './TextField';
 export { ToastProvider, useToast } from './Toast';

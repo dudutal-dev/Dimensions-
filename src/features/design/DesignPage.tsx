@@ -1,7 +1,6 @@
-import { Inbox, Monitor, Moon, Play, Sun, Trash2 } from 'lucide-react';
+import { Inbox, Play, Trash2 } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { useSavedFlash } from '../../data/saveStatus';
-import { useSettings } from '../../data/settingsStore';
 import type { Dim, Layer } from '../../content/schema';
 import {
   Button,
@@ -13,14 +12,13 @@ import {
   LayerTag,
   ProgressDots,
   SavedIndicator,
-  SegmentedControl,
   Sheet,
   Slider,
   TextArea,
   TextField,
   useToast,
 } from '../../design';
-import { TEXT_SCALES, type TextScale, type ThemeChoice } from '../../domain/records';
+import { AppearanceControls } from '../settings/AppearanceControls';
 import { AudioCheck } from './AudioCheck';
 import { DemoData } from './DemoData';
 
@@ -61,8 +59,6 @@ function Section({ title, note, children }: { title: string; note?: string; chil
 
 /** עמוד מערכת העיצוב (M1): כל ה-tokens והרכיבים במקום אחד, לאישור ויזואלי בכהה ובבהיר. */
 export function DesignPage() {
-  const { theme, textScale } = useSettings((state) => state.settings);
-  const updateSettings = useSettings((state) => state.update);
   const settingsSaved = useSavedFlash();
   const toast = useToast();
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -81,22 +77,7 @@ export function DesignPage() {
       <p className="mt-2 text-muted">Aurora Calm — כהה כברירת מחדל, עומק רך, הילה איטית ברקע.</p>
 
       <Section title="ערכת צבע וגודל טקסט">
-        <SegmentedControl<ThemeChoice>
-          label="ערכת צבע"
-          value={theme}
-          onChange={(value) => void updateSettings({ theme: value })}
-          options={[
-            { value: 'dark', label: 'כהה', icon: <Moon aria-hidden size={18} /> },
-            { value: 'light', label: 'בהיר', icon: <Sun aria-hidden size={18} /> },
-            { value: 'system', label: 'מערכת', icon: <Monitor aria-hidden size={18} /> },
-          ]}
-        />
-        <SegmentedControl<`${TextScale}`>
-          label="גודל טקסט"
-          value={`${textScale}`}
-          onChange={(value) => void updateSettings({ textScale: Number(value) as TextScale })}
-          options={TEXT_SCALES.map((scale, i) => ({ value: `${scale}` as `${TextScale}`, label: ['קטן', 'רגיל', 'גדול', 'ענק'][i] ?? '' }))}
-        />
+        <AppearanceControls />
         <div className="flex justify-end">
           <SavedIndicator visible={settingsSaved} />
         </div>

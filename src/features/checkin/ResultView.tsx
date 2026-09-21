@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { LifeBuoy } from 'lucide-react';
+import { ChevronLeft, LifeBuoy } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loadContent } from '../../content';
@@ -16,7 +16,7 @@ interface ResultViewProps {
 
 /** תוצאת הבדיקה (SPEC 6.3): גליף, הסבר קצר "למה", ואז — לעבור מכאן, או רק לרשום. */
 export function ResultView({ checkin, score }: ResultViewProps) {
-  const { checkin: content, safety } = loadContent();
+  const { checkin: content, safety, fake5d } = loadContent();
   const navigate = useNavigate();
   const saved = useSavedFlash();
   const [note, setNote] = useState(checkin.note ?? '');
@@ -67,6 +67,16 @@ export function ResultView({ checkin, score }: ResultViewProps) {
         </ul>
         {score.mixed && <p className="mt-3 text-sm text-muted">{content.explain.mixedNote}</p>}
       </Card>
+
+      {checkin.result === 'd5' && (
+        <Link to="/library/fake-5d" className="pressable mt-4 flex min-h-14 items-center gap-3 rounded-card border border-border bg-surface px-4 py-2 hover:bg-surface-2">
+          <span className="flex-1">
+            <span className="block font-medium">{fake5d.title}</span>
+            <span className="block text-sm text-muted">{fake5d.intro}</span>
+          </span>
+          <ChevronLeft aria-hidden size={20} className="shrink-0 text-muted" />
+        </Link>
+      )}
 
       {nudge && (
         <Card tone="raised" className="mt-4 flex items-start gap-3">
