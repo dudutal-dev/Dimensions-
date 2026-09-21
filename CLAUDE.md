@@ -7,7 +7,7 @@
 - `npm run content:review` — מפיק מחדש את `CONTENT-REVIEW.md` מתוך `src/content/*.json` (לא לערוך את הקובץ ידנית) · `npm run typecheck`
 - `npm run e2e:qa` — סריקת כל המסכים (`@sweep`) ומדידת טעינה (`@perf`, worker יחיד); מופרד מ-`npm run e2e` כדי שהעומס לא יפיל בדיקות אחרות
 - `npm run dist:check` — אחרי build: תקציב הטעינה הראשונית (250KB gzip), סריקת מפתחות ב-`dist/`, נכסי PWA · `npm run icons` — מפיק מחדש אייקונים ומסכי פתיחה מ-`tools/pwa-assets.mjs`
-- שלב ב': `npm run voice:estimate` · `npm run voice:audition` · `npm run voice:generate -- --only <ids>`
+- שלב ב': `npm run voice:voices` (רשימת מועמדים, בלי עלות) · `npm run voice:estimate` (בלי רשת) · `npm run voice:audition -- --yes` (מפיק — עולה תווים) · `npm run voice:generate -- --only <ids>` (B2)
 
 ## כללים שאסור להפר
 - עובדים לפי אבני הדרך ב-SPEC פרק 12, אחת בכל פעם. בסוף כל אחת: בדיקות, commit, סיכום, **והמתנה לאישור דודו**.
@@ -18,6 +18,7 @@
 - הכול מקומי. בלי אנליטיקס, בלי קריאות רשת בשלב א'.
 - מפתח ElevenLabs רק ב-`.env` (ב-.gitignore). לעולם לא בקוד, ב-commit או ב-`dist/`.
 - כל צליל עובר דרך `AudioEngine` (SPEC פרק 9). אודיו נבדק על iPhone פיזי.
+- שלב ב': כל פעולה שעולה תווים ב-ElevenLabs דורשת `--yes` ואישור מפורש של דודו לפני ההרצה; Claude אינו מריץ אותה ביוזמתו ואינו נוגע ב-`.env`. עברית — רק במודל `eleven_v3` (נבדק בתיעוד; לבדוק שוב לפני B2).
 - כל טקסט הדרכה מפורק ל-`segments` עם `id` יציב — זה גם תסריט הקול של שלב ב'.
 
 ## קוד

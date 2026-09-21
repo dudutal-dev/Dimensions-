@@ -1,0 +1,55 @@
+{
+  "_readme": "אודישן קולות (SPEC 10.2). ממלאים את voices אחרי `npm run voice:voices` — 4–6 קולות לעברית (לפחות אישה אחת וגבר אחד) ו-2–3 לאנגלית. אחר כך: `npm run voice:estimate`, ורק אז `npm run voice:audition -- --yes`.",
+  "output_format": "mp3_44100_128",
+  "voices": {
+    "he": [],
+    "en": []
+  },
+  "variants": {
+    "he": [
+      {
+        "id": "v3-natural",
+        "label": "v3 · Natural",
+        "model_id": "eleven_v3",
+        "voice_settings": { "stability": 0.5 }
+      },
+      {
+        "id": "v3-robust",
+        "label": "v3 · Robust (יציב יותר)",
+        "model_id": "eleven_v3",
+        "voice_settings": { "stability": 1 }
+      }
+    ],
+    "en": [
+      {
+        "id": "v3-natural",
+        "label": "v3 · Natural",
+        "model_id": "eleven_v3",
+        "voice_settings": { "stability": 0.5 }
+      },
+      {
+        "id": "ml2-calm",
+        "label": "Multilingual v2 · calm",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": { "stability": 0.7, "similarity_boost": 0.75, "style": 0.1, "speed": 0.9, "use_speaker_boost": true }
+      }
+    ]
+  },
+  "paragraphs": [
+    {
+      "id": "breath",
+      "title": "הנחיית נשימה איטית",
+      "segments": ["t1.s02", "t1.s03", "t1.s04", "t1.s06"]
+    },
+    {
+      "id": "explain",
+      "title": "הסבר קצר",
+      "source": "channels.principle"
+    },
+    {
+      "id": "heart",
+      "title": "משפט חם מתרגול הלב",
+      "segments": ["heart-drop.s04", "heart-drop.s05", "t9.s05", "heart-drop.s07"]
+    }
+  ]
+}

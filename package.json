@@ -19,7 +19,10 @@
     "e2e": "playwright test",
     "e2e:qa": "cross-env DC_E2E=sweep playwright test && cross-env DC_E2E=perf playwright test",
     "dist:check": "node tools/check-dist.mjs",
-    "icons": "node tools/make-icons.mjs"
+    "icons": "node tools/make-icons.mjs",
+    "voice:voices": "node tools/voice/voices.mjs",
+    "voice:estimate": "node tools/voice/estimate.mjs",
+    "voice:audition": "node tools/voice/audition.mjs"
   },
   "dependencies": {
     "@fontsource-variable/frank-ruhl-libre": "^5.3.0",
