@@ -53,6 +53,12 @@ describe('ארכיטקטורה', () => {
     expect(dirty.map((file) => relative(SRC, file))).toEqual([]);
   });
 
+  it('אין שקיפות על צבעי טקסט — היא שוברת את הניגודיות שנבדקה ל-tokens', () => {
+    const faded = new RegExp('(?:^|[ "\'`:])text-(?:text|muted|accent|danger|d3|d4|d5)[/][0-9]+', 'm');
+    const dirty = sourceFiles(SRC).filter((file) => faded.test(readFileSync(file, 'utf8')));
+    expect(dirty.map((file) => relative(SRC, file))).toEqual([]);
+  });
+
   it('design/ אינו תלוי במסכים או בנתונים', () => {
     const forbidden = /\/(data|app|features)(\/|$)/;
     const violations = sourceFiles(join(SRC, 'design')).flatMap((file) =>

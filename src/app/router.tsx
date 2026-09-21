@@ -106,6 +106,10 @@ const routes: RouteObject[] = [
         lazy: async () => ({ Component: (await import('../features/help/HelpPage')).HelpPage }),
       },
       {
+        path: 'install',
+        lazy: async () => ({ Component: (await import('../features/install/InstallPage')).InstallPage }),
+      },
+      {
         path: 'design',
         lazy: async () => ({ Component: (await import('../features/design/DesignPage')).DesignPage }),
       },

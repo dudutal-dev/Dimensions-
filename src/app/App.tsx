@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom';
 import { ensurePersistentStorage } from '../data/persistence';
 import { useSettings } from '../data/settingsStore';
 import { ToastProvider } from '../design';
+import { initPwa } from '../lib/pwa';
 import { useApplyAppearance } from './appearance';
 import { router } from './router';
 
@@ -13,6 +14,7 @@ export function App() {
   useEffect(() => {
     void useSettings.getState().load();
     void ensurePersistentStorage();
+    initPwa();
   }, []);
 
   return (

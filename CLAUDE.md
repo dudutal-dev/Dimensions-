@@ -5,6 +5,8 @@
 ## פקודות
 - `npm run dev` · `npm run dev:phone` (HTTPS ברשת המקומית — לבדיקה על iPhone פיזי) · `npm run build` · `npm run test` (Vitest) · `npm run e2e` (Playwright: iPhone 14, Pixel 7, דסקטופ — רץ מול ה-build; צילומי מסך ב-`test-results/screens/`) · `npm run content:check`
 - `npm run content:review` — מפיק מחדש את `CONTENT-REVIEW.md` מתוך `src/content/*.json` (לא לערוך את הקובץ ידנית) · `npm run typecheck`
+- `npm run e2e:qa` — סריקת כל המסכים (`@sweep`) ומדידת טעינה (`@perf`, worker יחיד); מופרד מ-`npm run e2e` כדי שהעומס לא יפיל בדיקות אחרות
+- `npm run dist:check` — אחרי build: תקציב הטעינה הראשונית (250KB gzip), סריקת מפתחות ב-`dist/`, נכסי PWA · `npm run icons` — מפיק מחדש אייקונים ומסכי פתיחה מ-`tools/pwa-assets.mjs`
 - שלב ב': `npm run voice:estimate` · `npm run voice:audition` · `npm run voice:generate -- --only <ids>`
 
 ## כללים שאסור להפר
@@ -28,6 +30,8 @@
 - ספירה בעברית דרך `lib/plural.ts` ("אירוע אחד", לא "1 אירועים"); טווחי מספרים דרך `lib/bidi.ts`.
 - תווים בלתי-נראים (בידוד כיווניות, רווח קשיח, טווח ניקוד) נבנים ב-`String.fromCharCode` ולא נכתבים בקוד — נאכף ב-`architecture.test.ts`.
 - ספרייה: המאמרים ב-`content/library.json`; בלוק `ref` מציג נתון מקובץ תוכן אחר בלי לשכפל טקסט (`features/library/blocks.tsx`), והחיפוש (`domain/library.ts`) מכסה גם אותו. השדה `source` הוא עקיבות פנימית ואינו מוצג.
+- PWA: service worker רק ב-build (לא ב-`npm run dev`); עדכון גרסה בהסכמה בלבד (`lib/pwa.ts`, `app/UpdateBanner.tsx`) — לעולם לא רענון אוטומטי, ולא בתוך הנגן. מסכי הפתיחה של iOS אינם ב-precache. קול שלב ב' לא ייכנס ל-precache (SPEC 10.5).
+- אין שקיפות על צבעי טקסט (`text-muted/80` וכד') — שוברת ניגודיות בערכה הבהירה; נאכף ב-`architecture.test.ts`. כל מסך חדש מתווסף ל-`ROUTES` ב-`tests/e2e/qa-sweep.spec.ts` (320px + טקסט ענק + ערכה בהירה).
 - `prefers-reduced-motion` נתמך בכל אנימציה.
 - לפני מסירה ויזואלית: Pre-Delivery Checklist של הסקיל `ui-ux-pro-max`.
 

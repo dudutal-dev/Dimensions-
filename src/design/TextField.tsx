@@ -3,7 +3,7 @@ import { cn } from '../lib/cn';
 
 // גודל הגופן בשדות הוא 17px (‎≥16px) — מונע זום אוטומטי ב-iOS (SPEC 4.6).
 const FIELD =
-  'w-full rounded-control border border-border-strong bg-surface-2 px-4 text-base text-text placeholder:text-muted/80 ' +
+  'w-full rounded-control border border-border-strong bg-surface-2 px-4 text-base text-text placeholder:text-muted ' +
   'transition-[border-color,box-shadow] duration-[180ms] focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40';
 
 interface BaseProps {

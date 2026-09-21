@@ -104,7 +104,7 @@ export function SegmentedControl<T extends string>({ label, value, onChange, opt
             data-value={opt.value}
             onClick={() => onChange(opt.value)}
             className={cn(
-              'pressable inline-flex min-h-12 flex-1 items-center justify-center gap-1.5 rounded-[9px] px-3 text-sm',
+              'pressable inline-flex min-h-12 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-[9px] px-2 text-sm sm:px-3',
               checked ? 'bg-surface font-medium text-text shadow-1' : 'text-muted hover:text-text',
             )}
           >

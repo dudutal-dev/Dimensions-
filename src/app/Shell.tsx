@@ -10,6 +10,7 @@ import { primaryDim } from '../domain/checkin-scoring';
 import { QuickCheckinSheet, useQuickCheckin } from '../features/checkin/QuickCheckinSheet';
 import { cn } from '../lib/cn';
 import { PRIMARY_NAV, SECONDARY_NAV, type NavItem } from './nav';
+import { UpdateBanner } from './UpdateBanner';
 
 /** מסכים שזמינים גם לפני ה-Onboarding: שחזור מגיבוי במכשיר חדש, ועמוד העיצוב. */
 const OPEN_BEFORE_ONBOARDING = ['/backup', '/design'];
@@ -56,6 +57,7 @@ export function Shell() {
         tabIndex={-1}
         className="relative z-10 mx-auto w-full max-w-[var(--content-max)] px-4 pt-[calc(var(--safe-top)+16px)] pb-[calc(var(--nav-height)+var(--safe-bottom)+96px)] outline-none sm:px-6 lg:pb-24"
       >
+        <UpdateBanner />
         <Outlet />
       </main>
 
@@ -110,14 +112,14 @@ function BottomNav() {
     >
       <ul className="mx-auto flex h-[var(--nav-height)] max-w-[var(--content-max)] items-stretch px-1">
         {PRIMARY_NAV.map((item) => (
-          <li key={item.to} className="flex-1">
+          <li key={item.to} className="min-w-0 flex-1">
             <NavLink
               to={item.to}
               end={item.end}
               {...(item.to === '/checkin' ? longPress : {})}
               className={({ isActive }) =>
                 cn(
-                  'pressable flex h-full select-none flex-col items-center justify-center gap-0.5 text-xs [-webkit-touch-callout:none]',
+                  'pressable flex h-full min-w-0 select-none flex-col items-center justify-center gap-0.5 text-[clamp(11px,0.75rem,14px)] [-webkit-touch-callout:none]',
                   isActive ? 'font-semibold text-accent' : 'text-muted hover:text-text',
                 )
               }
@@ -126,7 +128,7 @@ function BottomNav() {
                 <>
                   <span
                     className={cn(
-                      'flex h-8 w-14 items-center justify-center rounded-full transition-colors duration-[180ms]',
+                      'flex h-8 w-full max-w-14 items-center justify-center rounded-full transition-colors duration-[180ms]',
                       isActive && 'bg-accent/15',
                     )}
                   >

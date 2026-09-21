@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ChevronLeft, CircleUser, Compass, ListChecks, NotebookPen, Play } from 'lucide-react';
+import { ChevronLeft, CircleUser, Compass, ListChecks, NotebookPen, Play, Smartphone, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SECONDARY_NAV } from '../../app/nav';
@@ -11,6 +11,7 @@ import { primaryDim } from '../../domain/checkin-scoring';
 import { dailyPlan, isoDate, practicePendingToday, weekIdOf } from '../../domain/journey';
 import { anchorsForDay, nextTask, startOfDay, weeklyInsight, type DayPart, type WeeklyInsight } from '../../domain/today';
 import { greetingFor } from '../../lib/date';
+import { isStandalone } from '../../lib/download';
 import { useQuickCheckin } from '../checkin/QuickCheckinSheet';
 
 const WEEKDAYS = ['בימי א׳', 'בימי ב׳', 'בימי ג׳', 'בימי ד׳', 'בימי ה׳', 'בימי ו׳', 'בשבתות'];
@@ -37,7 +38,9 @@ export function TodayPage() {
   const { checkin: content, domains, journey: journeyContent, exercises } = loadContent();
   const navigate = useNavigate();
   const now = useNow();
-  const anchorTimes = useSettings((s) => s.settings.anchors);
+  const settings = useSettings((s) => s.settings);
+  const updateSettings = useSettings((s) => s.update);
+  const anchorTimes = settings.anchors;
   const openQuick = useQuickCheckin((s) => s.setOpen);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -149,7 +152,7 @@ export function TodayPage() {
                   )}
                 </span>
                 <span className="flex min-h-[2.5em] items-start text-center text-xs leading-tight text-muted">{label}</span>
-                <span className="tabular text-xs text-muted/80" dir="ltr">
+                <span className="tabular text-xs text-muted" dir="ltr">
                   {anchor.time}
                 </span>
               </>
@@ -180,6 +183,21 @@ export function TodayPage() {
           <p className="text-sm text-muted">{data ? insightText(weeklyInsight(data.total, data.week), content, domains.domains) : ' '}</p>
         </Card>
       </section>
+
+      {!settings.installHintDismissed && !isStandalone() && (
+        <div className="mt-3 flex items-center gap-1 rounded-card border border-border bg-surface ps-4">
+          <Link to="/install" className="pressable flex min-h-14 flex-1 items-center gap-3">
+            <Smartphone aria-hidden size={20} className="shrink-0 text-accent" />
+            <span className="flex-1">
+              <span className="block">להתקין למסך הבית</span>
+              <span className="block text-sm text-muted">מסך מלא, גם בלי רשת.</span>
+            </span>
+          </Link>
+          <IconButton label="לא עכשיו — להסתיר את ההצעה" onClick={() => void updateSettings({ installHintDismissed: true })}>
+            <X aria-hidden size={20} className="text-muted" />
+          </IconButton>
+        </div>
+      )}
 
       <Link
         to="/practice"

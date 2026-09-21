@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Bell, CalendarPlus, ChevronLeft, DatabaseBackup, LifeBuoy, Palette } from 'lucide-react';
+import { Bell, CalendarPlus, ChevronLeft, DatabaseBackup, LifeBuoy, Palette, Smartphone } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { audioEngine } from '../../audio/AudioEngine';
@@ -129,6 +129,7 @@ export function SettingsPage() {
 
       <Section title="עוד">
         <ul className="flex flex-col gap-2">
+          <Row to="/install" icon={<Smartphone aria-hidden size={20} />} label="התקנה למסך הבית" hint="מסך מלא, עבודה בלי רשת, ונתונים שנשמרים." />
           <Row to="/backup" icon={<DatabaseBackup aria-hidden size={20} />} label="גיבוי, שחזור ומחיקת נתונים" hint="כל הנתונים נשמרים רק במכשיר הזה." />
           <Row to="/help" icon={<LifeBuoy aria-hidden size={20} />} label={content.safety.help.title} />
           <Row to="/design" icon={<Palette aria-hidden size={20} />} label="מערכת העיצוב ובדיקת אודיו" hint="לבדיקות קבלה." />

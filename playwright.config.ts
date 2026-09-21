@@ -2,13 +2,21 @@ import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 5174;
 
+/**
+ * שלוש הרצות: ברירת המחדל (הזרימות), "sweep" (סריקת QA כבדה של כל המסכים), ו-"perf" (מדידת טעינה — worker יחיד,
+ * כי מדידה לצד בדיקות אחרות על אותה מכונה חסרת משמעות). ההפרדה שומרת על החבילה הרגילה יציבה תחת עומס.
+ */
+const RUN = process.env.DC_E2E;
+
 /** בדיקות קצה-לקצה (ARD-9): מובייל תחילה — iPhone 14 (WebKit) ו-Pixel 7 (Chromium), ואז דסקטופ. */
 export default defineConfig({
   testDir: 'tests/e2e',
+  grep: RUN === 'sweep' ? /@sweep/ : RUN === 'perf' ? /@perf/ : undefined,
+  grepInvert: RUN ? undefined : /@sweep|@perf/,
   outputDir: 'test-results',
   fullyParallel: true,
   // WebKit על Windows איטי; מעט workers וזמן נדיב מונעים כישלונות-שווא של עומס.
-  workers: 3,
+  workers: RUN === 'perf' ? 1 : RUN === 'sweep' ? 2 : 3,
   timeout: 60_000,
   expect: { timeout: 10_000 },
   forbidOnly: Boolean(process.env.CI),

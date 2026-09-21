@@ -7,6 +7,20 @@
     <meta name="theme-color" content="#0B0F1A" />
     <meta name="description" content="מצפן המימדים — מאמן אישי לזיהוי מצב התודעה ולמעבר בין מצבים" />
     <title>מצפן המימדים</title>
+    <link rel="icon" href="./icons/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="מצפן" />
+    <!-- default: שורת הסטטוס הולכת אחרי ערכת המערכת, ונשארת קריאה גם בערכה הבהירה -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <style>
+      /* מסך העלייה בלבד — הצבעים הם ערכי ה-tokens של שתי הערכות (tokens.css עוד לא נטען בשלב הזה). */
+      html { background: #0b0f1a; }
+      html[data-theme='light'] { background: #f7f5f0; }
+      .boot { position: fixed; inset: 0; display: grid; place-items: center; --boot-ring: #f2d492; --boot-south: #8b7cf6; --boot-core: #5edcc8; }
+      html[data-theme='light'] .boot { --boot-ring: #7d5c14; --boot-south: #5b48d6; --boot-core: #0f8f7e; }
+    </style>
     <script>
       // ערכת הצבע נקבעת לפני הציור הראשון, כדי שלא יהיה הבהוב בין כהה לבהיר.
       (function () {
@@ -28,7 +42,21 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- ציור ראשון מיידי, לפני שה-JavaScript נטען: המצפן במרכז, על רקע הערכה. React מחליף אותו בעלייה. -->
+      <div class="boot" aria-hidden="true">
+        <svg viewBox="64 64 384 384" width="112" height="112" fill="none">
+          <circle cx="256" cy="256" r="132" stroke="var(--boot-ring)" stroke-width="10" />
+          <path d="M256 96v26M256 390v26M96 256h26M390 256h26" stroke="var(--boot-ring)" stroke-width="10" stroke-linecap="round" />
+          <g transform="rotate(35 256 256)">
+            <path d="M256 150 286 256H226Z" fill="var(--boot-ring)" />
+            <path d="M256 362 286 256H226Z" fill="var(--boot-south)" />
+          </g>
+          <circle cx="256" cy="256" r="12" fill="var(--boot-core)" />
+        </svg>
+      </div>
+    </div>
+    <noscript>מצפן המימדים צריך JavaScript כדי לפעול.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

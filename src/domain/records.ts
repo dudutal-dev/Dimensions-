@@ -200,6 +200,8 @@ export const SettingsSchema = z
     onboarded: z.boolean(),
     /** מתי יוצא גיבוי בפעם האחרונה — לתזכורת עדינה במסך הגיבוי. */
     lastBackupAt: Timestamp.optional(),
+    /** ההצעה להתקין למסך הבית נסגרה — לא מציעים שוב. */
+    installHintDismissed: z.boolean().optional(),
   })
   .strict();
 export type Settings = z.infer<typeof SettingsSchema>;

@@ -1,6 +1,7 @@
 /**
- * טעינת חבילת התוכן לאפליקציה. ה-JSON עובר ולידציה מלאה ב-build (npm run content:check);
- * כאן הוא מפוענח פעם אחת דרך הסכמות כדי לקבל טיפוסים מדויקים.
+ * טעינת חבילת התוכן לאפליקציה. ה-JSON עובר ולידציה מלאה ב-build (npm run content:check) ובבדיקות היחידה.
+ * בפיתוח ובבדיקות הוא מפוענח שוב דרך הסכמות; ב-production מדלגים על כך — הסכמות רק מאמתות ואינן משנות
+ * את הנתונים (אין default/transform; נאכף ב-content.test), והפענוח עלה מאות אלפיות שנייה בטעינה הראשונה בטלפון.
  */
 import channels from './channels.json';
 import checkin from './checkin.json';
@@ -20,6 +21,9 @@ import { contentSchemas, type ContentBundle } from './schema';
 let cached: ContentBundle | null = null;
 
 export function loadContent(): ContentBundle {
+  if (!cached && import.meta.env.PROD) {
+    cached = { model, diagnosis, checkin, channels, fake5d, tools, triggers, domains, exercises, journey, library, safety, onboarding } as unknown as ContentBundle;
+  }
   cached ??= {
     model: contentSchemas.model.parse(model),
     diagnosis: contentSchemas.diagnosis.parse(diagnosis),

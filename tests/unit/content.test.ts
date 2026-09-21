@@ -39,6 +39,11 @@ describe('חבילת התוכן', () => {
     expect(content.exercises.exercises).toHaveLength(14);
   });
 
+  it('הסכמות רק מאמתות ואינן משנות את הנתונים — לכן ב-production נטען ה-JSON כמו שהוא', () => {
+    // אם ייכנסו לסכמות default/transform, הפלט יפסיק להיות זהה לקלט — והקיצור ב-content/index.ts יהפוך לשגוי.
+    expect(JSON.parse(JSON.stringify(loadContent()))).toEqual(readRaw());
+  });
+
   it('מכילה את כל מה שה-SPEC דורש', () => {
     const b = validBundle();
     const exerciseIds = b.exercises.exercises.map((e) => e.id);
