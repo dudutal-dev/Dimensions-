@@ -38,6 +38,24 @@ jobs:
         with:
           path: dist
 
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # מפעיל את GitHub Pages במאגר בפעם הראשונה (Source: GitHub Actions) — בלי הגדרה ידנית
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -59,17 +77,3 @@ jobs:
           name: playwright-results
           path: test-results
           retention-days: 7
-
-  deploy:
-    needs: build
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
