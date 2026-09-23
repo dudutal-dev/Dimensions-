@@ -19,7 +19,11 @@ async function completeOnboarding(page: Page) {
   await page.goto('/');
   await expect(page).toHaveURL(/#\/welcome$/);
   await expect(page.getByRole('heading', { level: 1, name: 'מצפן המימדים' })).toBeVisible();
-  for (let i = 0; i < 4; i++) await page.getByRole('button', { name: 'המשך' }).click();
+  // ממתינים לכותרת של כל מסך לפני ההקשה הבאה: הקשה בזמן אנימציית המעבר (AnimatePresence mode=wait) נבלעת תחת עומס
+  for (const next of ['קודם כול, ביושר', 'שלושה מצבים', 'גבולות', 'מאיפה מתחילים?']) {
+    await page.getByRole('button', { name: 'המשך' }).click();
+    await expect(page.getByRole('heading', { level: 1, name: next })).toBeVisible();
+  }
   await page.getByRole('button', { name: /בדיקה ראשונה/ }).click();
   await expect(page).toHaveURL(/#\/checkin$/);
 }

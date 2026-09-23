@@ -47,9 +47,9 @@ src/lib       עזרים: bidi, ics, הורדה/שיתוף, PWA
 
 ## פריסה ל-GitHub Pages
 
-1. ליצור מאגר ב-GitHub ולחבר אותו: `git remote add origin <url>` ואז `git push -u origin main`.
-2. במאגר: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-3. כל דחיפה ל-`main` מריצה את `.github/workflows/deploy.yml`: בדיקות יחידה → build → `dist:check` → פריסה. בדיקות ה-e2e רצות במקביל ומדווחות, בלי לחסום פריסה.
+האתר: **https://dudutal-dev.github.io/Dimensions-/** (מאגר: https://github.com/dudutal-dev/Dimensions-).
+
+כל דחיפה ל-`main` מריצה את `.github/workflows/deploy.yml`: בדיקות יחידה → build → `dist:check` → פריסה. בדיקות ה-e2e רצות במקביל ומדווחות, בלי לחסום פריסה. מקור ה-Pages במאגר חייב להיות **GitHub Actions** (Settings → Pages); אם הוא "Deploy from a branch", GitHub מפרסם את קוד המקור הגולמי במקום את ה-build, והאפליקציה נשברת.
 
 ה-build משתמש בנתיבים יחסיים (`base: './'`) ובניתוב hash, ולכן עובד מכל תת-תיקייה בלי הגדרה נוספת.
 
