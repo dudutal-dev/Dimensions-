@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { exportBackup } from '../../src/data/backup';
 import { CompassDb, db } from '../../src/data/db';
 import { createRepositories, repos } from '../../src/data/repositories';
-import { tracked, useSaveStatus } from '../../src/data/saveStatus';
+import { tracked, useSavedFlash, useSaveStatus } from '../../src/data/saveStatus';
 import { createSettingsStore, useSettings } from '../../src/data/settingsStore';
 import { useDraft } from '../../src/data/useDraft';
 import { ToastProvider } from '../../src/design';
@@ -116,6 +116,16 @@ describe('טיוטה אוטומטית', () => {
     await waitFor(() => expect(hook.result.current.loaded).toBe(true));
     await act(() => hook.result.current.clear());
     expect(await testRepos.drafts.load('form')).toBeUndefined();
+  });
+});
+
+describe('חיווי "נשמר"', () => {
+  it('מהבהב רק על שמירה שקרתה אחרי שהמסך עלה — לא על שמירות קודמות בסשן', async () => {
+    await act(() => tracked(Promise.resolve('קודם'))); // שמירה במסך אחר, לפני שהמסך הזה עלה
+    const hook = renderHook(() => useSavedFlash());
+    expect(hook.result.current).toBe(false);
+    await act(() => tracked(Promise.resolve('עכשיו')));
+    expect(hook.result.current).toBe(true);
   });
 });
 

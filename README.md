@@ -27,6 +27,7 @@ npm run dev
 | `npm test` | בדיקות יחידה (Vitest) |
 | `npm run e2e` | בדיקות קצה-לקצה (Playwright: iPhone 14, Pixel 7, דסקטופ) מול ה-build; צילומי מסך ב-`test-results/screens/` |
 | `npm run e2e:qa` | סריקת QA של כל המסכים (320px, טקסט ענק, ערכה בהירה, מסך לרוחב, axe) + מדידת טעינה ב-worker יחיד |
+| `npx playwright test -c playwright.live.config.ts` | אותן בדיקות e2e מול האתר הפרוס ב-GitHub Pages |
 | `npm run dist:check` | אחרי build: תקציב הטעינה הראשונית (250KB gzip), סריקת מפתחות, נכסי PWA |
 | `npm run content:check` | ולידציה של `src/content/*.json` |
 | `npm run content:review` | מפיק מחדש את `CONTENT-REVIEW.md` |

@@ -49,6 +49,8 @@ async function sweep(page: Page, { axe }: { axe: boolean }) {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow, `גלילה אופקית ב-${route}`).toBeLessThanOrEqual(0);
     if (axe) {
+      // axe מחשב ניגודיות לפי האטימות הרגעית — ממתינים שאנימציות סופיות (fade של "נשמר", מעברי מסך) יסתיימו
+      await page.evaluate(() => Promise.all(document.getAnimations().filter((a) => a.effect?.getTiming().iterations !== Infinity).map((a) => a.finished.catch(() => undefined))));
       const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
       expect(result.violations.map((v) => `${route} — ${v.id}: ${v.nodes[0]?.target.join(' ')} — ${v.nodes[0]?.any[0]?.message ?? ''}`)).toEqual([]);
     }

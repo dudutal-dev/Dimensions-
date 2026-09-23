@@ -2,7 +2,7 @@
  * מצב השמירה האוטומטית. כל כתיבה שמקורה בקלט של המשתמש עוברת דרך tracked(),
  * והמסכים מציגים את החיווי העדין "נשמר" (SPEC פרק 7) דרך useSavedFlash().
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { create } from 'zustand';
 
 export type SaveState = 'idle' | 'saving' | 'saved' | 'error';
@@ -38,9 +38,12 @@ const FLASH_MS = 2000;
 export function useSavedFlash(): boolean {
   const savedCount = useSaveStatus((s) => s.savedCount);
   const [visible, setVisible] = useState(false);
+  // המונה גלובלי: מהבהבים רק על שמירה שקרתה אחרי שהמסך הזה עלה, לא על שמירות קודמות בסשן
+  const seen = useRef(savedCount);
 
   useEffect(() => {
-    if (savedCount === 0) return;
+    if (savedCount === seen.current) return;
+    seen.current = savedCount;
     setVisible(true);
     const timer = window.setTimeout(() => setVisible(false), FLASH_MS);
     return () => window.clearTimeout(timer);
