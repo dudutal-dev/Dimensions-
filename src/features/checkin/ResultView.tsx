@@ -69,7 +69,7 @@ export function ResultView({ checkin, score }: ResultViewProps) {
       </Card>
 
       {checkin.result === 'd5' && (
-        <Link to="/library/fake-5d" className="pressable mt-4 flex min-h-14 items-center gap-3 rounded-card border border-border bg-surface px-4 py-2 hover:bg-surface-2">
+        <Link to="/library/fake-5d" className="pressable mt-4 flex min-h-14 items-center gap-3 rounded-card border border-border surface-card px-4 py-2 hover:brightness-110">
           <span className="flex-1">
             <span className="block font-medium">{fake5d.title}</span>
             <span className="block text-sm text-muted">{fake5d.intro}</span>

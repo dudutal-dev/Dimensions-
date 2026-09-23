@@ -17,7 +17,7 @@
 - אין gamification: בלי XP, בלי streak אדום, בלי מסך "הגעת ל-5D". 3D אינו "רע" — בלי צבעי רמזור.
 - הכול מקומי. בלי אנליטיקס, בלי קריאות רשת בשלב א'.
 - מפתח ElevenLabs רק ב-`.env` (ב-.gitignore). לעולם לא בקוד, ב-commit או ב-`dist/`.
-- כל צליל עובר דרך `AudioEngine` (SPEC פרק 9). אודיו נבדק על iPhone פיזי.
+- כל צליל עובר דרך `AudioEngine` (SPEC פרק 9) — כולל קול המכשיר (`audio/voice.ts`, Web Speech): הגשר עד קובצי הקול של שלב ב'; מדבר רק הנחיות ושאלות, לא שתיקות ולא ספירת נשימות; הרקע מונמך בזמן דיבור. אודיו נבדק על iPhone פיזי.
 - שלב ב': כל פעולה שעולה תווים ב-ElevenLabs דורשת `--yes` ואישור מפורש של דודו לפני ההרצה; Claude אינו מריץ אותה ביוזמתו ואינו נוגע ב-`.env`. עברית — רק במודל `eleven_v3` (נבדק בתיעוד; לבדוק שוב לפני B2).
 - כל טקסט הדרכה מפורק ל-`segments` עם `id` יציב — זה גם תסריט הקול של שלב ב'.
 
@@ -33,6 +33,7 @@
 - ספרייה: המאמרים ב-`content/library.json`; בלוק `ref` מציג נתון מקובץ תוכן אחר בלי לשכפל טקסט (`features/library/blocks.tsx`), והחיפוש (`domain/library.ts`) מכסה גם אותו. השדה `source` הוא עקיבות פנימית ואינו מוצג.
 - PWA: service worker רק ב-build (לא ב-`npm run dev`); עדכון גרסה בהסכמה בלבד (`lib/pwa.ts`, `app/UpdateBanner.tsx`) — לעולם לא רענון אוטומטי, ולא בתוך הנגן. מסכי הפתיחה של iOS אינם ב-precache. קול שלב ב' לא ייכנס ל-precache (SPEC 10.5).
 - אין שקיפות על צבעי טקסט (`text-muted/80` וכד') — שוברת ניגודיות בערכה הבהירה; נאכף ב-`architecture.test.ts`. כל מסך חדש מתווסף ל-`ROUTES` ב-`tests/e2e/qa-sweep.spec.ts` (320px + טקסט ענק + ערכה בהירה).
+- הנגן: האורב (`features/session/BreathOrb.tsx`, CSS ב-`.orb*`) מונע ממשתנה `--b` אחד ב-rAF; אנימציות בנגן הן CSS ולא framer — כי בדיקות ה-e2e מדמות את שעון ה-JS (`page.clock`) ו-framer קופא. משטחים: `Card tone="hero"` לכרטיס הראשי של מסך, `surface-card` לשורות רשימה, `btn-primary` לכפתור הזהב.
 - `prefers-reduced-motion` נתמך בכל אנימציה.
 - לפני מסירה ויזואלית: Pre-Delivery Checklist של הסקיל `ui-ux-pro-max`.
 

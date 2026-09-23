@@ -207,7 +207,7 @@ function RecommendationCard({ recommendation, session, href }: { recommendation:
         : 'מה שעבד לך עד עכשיו';
 
   return (
-    <Card padding="lg" elevation={2} className="mt-5">
+    <Card padding="lg" tone="hero" className="mt-5">
       <p className="flex items-center gap-2 text-sm text-muted">
         <Sparkles aria-hidden size={16} className="text-accent" />
         {lead}

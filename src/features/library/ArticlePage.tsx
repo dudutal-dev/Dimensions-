@@ -74,7 +74,7 @@ export function ArticlePage() {
       </div>
 
       {next && (
-        <Link to={`/library/${next.id}`} className="pressable mt-8 flex min-h-16 items-center gap-3 rounded-card border border-border bg-surface px-4 py-3 hover:bg-surface-2">
+        <Link to={`/library/${next.id}`} className="pressable mt-8 flex min-h-16 items-center gap-3 rounded-card border border-border surface-card px-4 py-3 hover:brightness-110">
           <span className="flex-1">
             <span className="block text-sm text-muted">הבא בפרק</span>
             <span className="block font-medium">{next.title}</span>

@@ -7,10 +7,12 @@
  *     - navigator.audioSession.type = 'playback' (Safari 16.4+), וגם
  *     - אלמנט <audio> שמנגן שקט בלולאה — מעביר את סשן האודיו ל-"playback", ואז גם Web Audio נשמע.
  *  3. ערוצי mix נפרדים עם GainNode: ui (פעמונים) · ambient · voice (שלב ב'), מעל master אחד.
- *  4. קול (שלב ב') ינוגן דרך BufferSource באותו context — כדי שה-mix יהיה אחיד.
+ *  4. קול (שלב ב') ינוגן דרך BufferSource באותו context — כדי שה-mix יהיה אחיד. עד אז: קול המכשיר (Web Speech),
+ *     שאינו עובר דרך ה-context אבל כן דרך המנוע — כדי שהרקע יונמך בזמן דיבור (duck, SPEC 10.5) והעוצמה תישמר במקום אחד.
  *  5. הסתרת הלשונית / נעילת מסך: suspend ו-resume נקיים.
  */
 import { playBell, playBreathCue, silentWavUrl, startAmbientPad, type AmbientPad, type BellKind, type BreathCue } from './sounds';
+import { DeviceVoice, hasVoice, type VoiceLang } from './voice';
 
 export type Channel = 'ui' | 'ambient' | 'voice';
 export type Volumes = Record<Channel, number>;
@@ -40,6 +42,9 @@ export class AudioEngine {
   private silentLoop: HTMLAudioElement | null = null;
   private silentLoopPlaying = false;
   private ambient: AmbientPad | null = null;
+  private readonly deviceVoice = new DeviceVoice();
+  /** ‎−6dB על הרקע בזמן דיבור */
+  private static readonly DUCK = 0.5;
 
   /**
    * חייב להיקרא מתוך אירוע מגע (click / pointerup). בטוח לקריאה חוזרת.
@@ -96,8 +101,9 @@ export class AudioEngine {
       });
   }
 
-  /** סוף סשן: מפסיק את הרקע ואת לולאת השקט. ה-context נשאר לסשן הבא. */
+  /** סוף סשן: מפסיק את הרקע, את הדיבור ואת לולאת השקט. ה-context נשאר לסשן הבא. */
   endSession(): void {
+    this.stopSpeaking();
     this.stopAmbient();
     this.silentLoop?.pause();
     this.silentLoopPlaying = false;
@@ -105,6 +111,7 @@ export class AudioEngine {
 
   /** הלשונית הוסתרה או שהמסך ננעל. */
   async suspend(): Promise<void> {
+    this.stopSpeaking();
     this.silentLoop?.pause();
     this.silentLoopPlaying = false;
     if (this.ctx?.state === 'running') await this.ctx.suspend().catch(() => undefined);
@@ -137,6 +144,36 @@ export class AudioEngine {
   stopAmbient(): void {
     this.ambient?.stop();
     this.ambient = null;
+  }
+
+  /** יש קול במכשיר לשפה הזו? (ב-iOS יש עברית מובנית; בדסקטופ לא תמיד.) */
+  canSpeak(lang: VoiceLang): boolean {
+    return this.deviceVoice.supported && hasVoice(lang);
+  }
+
+  /**
+   * מדבר הנחיה אחת בקול המכשיר. הרקע מונמך בזמן הדיבור וחוזר בסיומו (duck ‎−6dB).
+   * ההבטחה נפתרת כשהדיבור נגמר. בלי קול לשפה — נפתרת מיד (הנגן מטפל בנפילה לפעמון).
+   */
+  async speak(text: string, lang: VoiceLang): Promise<void> {
+    if (!this.canSpeak(lang)) return;
+    this.duckAmbient(true);
+    try {
+      await this.deviceVoice.speak(text, { lang, volume: this.volumes.voice });
+    } finally {
+      this.duckAmbient(false);
+    }
+  }
+
+  stopSpeaking(): void {
+    this.deviceVoice.stop();
+    this.duckAmbient(false);
+  }
+
+  private duckAmbient(on: boolean): void {
+    const gain = this.channels.ambient;
+    if (!this.ctx || !gain) return;
+    gain.gain.setTargetAtTime(this.volumes.ambient * (on ? AudioEngine.DUCK : 1), this.ctx.currentTime, 0.25);
   }
 
   /** ערוץ הקול של שלב ב' — חשוף כבר עכשיו כדי שה-SegmentPlayer יתחבר לאותו mix. */

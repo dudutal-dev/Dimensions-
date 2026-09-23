@@ -107,7 +107,7 @@ function ArticleLink({ article, locked, snippet, query }: { article: Article; lo
   return (
     <Link
       to={{ pathname: `/library/${article.id}`, search: query ? `?from=${encodeURIComponent(query)}` : '' }}
-      className="pressable flex min-h-16 items-center gap-3 rounded-card border border-border bg-surface px-4 py-3 hover:bg-surface-2"
+      className="pressable flex min-h-16 items-center gap-3 rounded-card border border-border surface-card px-4 py-3 hover:brightness-110"
     >
       <span className="min-w-0 flex-1">
         <span className="block font-medium">

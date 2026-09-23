@@ -59,6 +59,9 @@ test.describe('נגן התרגולים', () => {
     expect(results.violations.map((v) => v.id)).toEqual([]);
     await shot(page, '24-prestart');
 
+    // השעון המדומה ממשיך לזוז בזמן אמת; המקטע הראשון נמשך 5 שניות, ותחת עומס (WebKit) הוא נגמר לפני הבדיקה.
+    // מכאן הזמן קפוא וזז רק ב-runFor. (לפני axe אי אפשר להקפיא — axe עצמו נשען על טיימרים.)
+    await page.clock.pauseAt(Date.now() + 60_000);
     await page.getByRole('button', { name: 'התחל' }).click();
     await expect(page.getByText('עצור.', { exact: true })).toBeVisible();
 

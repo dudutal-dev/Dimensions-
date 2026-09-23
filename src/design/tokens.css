@@ -43,6 +43,11 @@
   --elev-1: 0 1px 2px rgb(0 0 0 / 0.3);
   --elev-2: 0 6px 20px rgb(0 0 0 / 0.35);
   --elev-3: 0 18px 48px rgb(0 0 0 / 0.5);
+  /* קו אור דק בקצה העליון של משטחים — נותן למשטח עומק של זכוכית כהה */
+  --surface-hi: rgb(255 255 255 / 0.06);
+  --surface-lo: rgb(0 0 0 / 0.18);
+  /* זוהר רך מתחת לכפתור הראשי ולאורב */
+  --accent-glow: 0 10px 34px color-mix(in oklab, var(--accent-fill) 30%, transparent);
 
   --aurora-strength: 20%;
 }
@@ -77,6 +82,9 @@
   --elev-1: 0 1px 2px rgb(27 32 48 / 0.08);
   --elev-2: 0 6px 20px rgb(27 32 48 / 0.1);
   --elev-3: 0 18px 48px rgb(27 32 48 / 0.18);
+  --surface-hi: rgb(255 255 255 / 0.9);
+  --surface-lo: rgb(27 32 48 / 0.04);
+  --accent-glow: 0 10px 30px color-mix(in oklab, var(--accent-fill) 45%, transparent);
 
   --aurora-strength: 14%;
 }

@@ -279,7 +279,7 @@ export function InsightsPage() {
         </Card>
       )}
 
-      <Link to="/diagnosis" className="pressable mt-8 flex min-h-14 items-center gap-3 rounded-card border border-border bg-surface px-4 hover:bg-surface-2">
+      <Link to="/diagnosis" className="pressable mt-8 flex min-h-14 items-center gap-3 rounded-card border border-border surface-card px-4 hover:brightness-110">
         <span className="flex-1">השוואת אבחונים ומגמה</span>
         <ChevronLeft aria-hidden size={20} className="text-muted" />
       </Link>

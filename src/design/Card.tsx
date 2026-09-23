@@ -2,8 +2,8 @@ import type { HTMLAttributes, ReactNode } from 'react';
 import { cn } from '../lib/cn';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  /** raised — כרטיס מורם (surface-2), למשל בתוך כרטיס אחר או ל-input. */
-  tone?: 'surface' | 'raised';
+  /** raised — כרטיס מורם (surface-2), למשל בתוך כרטיס אחר או ל-input. hero — הכרטיס הראשי של המסך, עם גוון עדין מלמעלה (--hero-tint). */
+  tone?: 'surface' | 'raised' | 'hero';
   elevation?: 0 | 1 | 2;
   padding?: 'md' | 'lg';
 }
@@ -15,8 +15,8 @@ export function Card({ tone = 'surface', elevation = 1, padding = 'md', classNam
     <div
       className={cn(
         'rounded-card border border-border',
-        tone === 'surface' ? 'bg-surface' : 'bg-surface-2',
-        ELEVATION[elevation],
+        tone === 'surface' ? 'surface-card' : tone === 'hero' ? 'surface-hero' : 'surface-raised',
+        tone !== 'hero' && ELEVATION[elevation],
         padding === 'md' ? 'p-4' : 'p-6',
         className,
       )}

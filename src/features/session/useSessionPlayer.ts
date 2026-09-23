@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { audioEngine } from '../../audio/AudioEngine';
 import { acquireWakeLock, clearMediaSession, releaseWakeLock, setMediaPlaybackState, setMediaSession } from '../../audio/screen';
 import type { BreathCue } from '../../audio/sounds';
+import type { VoiceLang } from '../../audio/voice';
 import { useSettings } from '../../data/settingsStore';
 import {
   breathAt,
@@ -38,6 +39,9 @@ const CUE_FOR_PHASE: Record<BreathPhase, BreathCue> = {
 export interface PlayerOptions {
   eyesClosed: boolean;
   ambient: boolean;
+  /** קול הדרכה (קול המכשיר, עד קובצי שלב ב'). undefined — כבוי. */
+  voice?: VoiceLang;
+  voiceVolume?: number;
 }
 
 export function useSessionPlayer(session: Session, options: PlayerOptions) {
@@ -83,10 +87,18 @@ export function useSessionPlayer(session: Session, options: PlayerOptions) {
         const segment = session.segments[event.index];
         if (!segment) continue;
         lastBreathKey.current = '';
+        audioEngine.stopSpeaking();
         if (segment.type === 'bell') {
           audioEngine.bell(event.index === session.segments.length - 1 ? 'end' : 'start');
-        } else if (optionsRef.current.eyesClosed && event.index > 0 && (segment.type === 'instruction' || segment.type === 'prompt')) {
-          // בעיניים עצומות (ובלי קול, בשלב א') צליל רך מסמן שהגיעה הנחיה חדשה.
+          continue;
+        }
+        const spoken = segment.type === 'instruction' || segment.type === 'prompt';
+        const { voice, eyesClosed } = optionsRef.current;
+        if (spoken && voice && audioEngine.canSpeak(voice)) {
+          // הקול מדבר את ההנחיה (SPEC 10.3: שתיקות וספירת נשימות אינן מדוברות)
+          void audioEngine.speak(segment.text, voice);
+        } else if (eyesClosed && event.index > 0 && spoken) {
+          // בלי קול, בעיניים עצומות: צליל רך מסמן שהגיעה הנחיה חדשה
           audioEngine.bell('soft');
           if (sound.haptics) navigator.vibrate?.(10);
         }
@@ -122,6 +134,7 @@ export function useSessionPlayer(session: Session, options: PlayerOptions) {
 
   const pause = useCallback(() => {
     if (stateRef.current.status !== 'running') return;
+    audioEngine.stopSpeaking();
     commit(pauseState(stateRef.current));
     setMediaPlaybackState('paused');
   }, [commit]);
@@ -139,7 +152,7 @@ export function useSessionPlayer(session: Session, options: PlayerOptions) {
     void audioEngine.unlock().then(() => {
       if (optionsRef.current.ambient) audioEngine.startAmbient();
     });
-    audioEngine.setVolumes({ ui: sound.ui, ambient: sound.ambient });
+    audioEngine.setVolumes({ ui: sound.ui, ambient: sound.ambient, voice: optionsRef.current.voiceVolume ?? 1 });
     void acquireWakeLock();
     setMediaSession({ title: session.name, onPlay: resume, onPause: pause });
     setMediaPlaybackState('playing');

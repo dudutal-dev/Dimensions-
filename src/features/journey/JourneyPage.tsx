@@ -104,7 +104,7 @@ export function JourneyPage() {
       <h1 className="mt-2 text-2xl">המסע</h1>
 
       {isReturningFromBreak(state, now) && (
-        <Card padding="lg" elevation={2} className="mt-5">
+        <Card padding="lg" tone="hero" className="mt-5">
           <h2 className="text-xl">טוב שחזרת.</h2>
           <p className="mt-1 text-muted">{content.returnAfterBreak.text.replace('טוב שחזרת. ', '')}</p>
           <div className="mt-4 flex flex-col gap-2">
@@ -118,7 +118,7 @@ export function JourneyPage() {
         </Card>
       )}
 
-      <Card padding="lg" elevation={2} className="mt-5">
+      <Card padding="lg" tone="hero" className="mt-5">
         <p className="text-sm text-muted">
           {state.currentWeek === 0 ? 'מדידת בסיס' : currentPhase?.name}
           {plan?.isReturnPlan && ' · ימי חזרה'}
@@ -213,7 +213,7 @@ function Principles() {
 
 function LinkRow({ to, label }: { to: string; label: string }) {
   return (
-    <Link to={to} className="pressable mt-3 flex min-h-14 items-center gap-3 rounded-card border border-border bg-surface px-4 hover:bg-surface-2">
+    <Link to={to} className="pressable mt-3 flex min-h-14 items-center gap-3 rounded-card border border-border surface-card px-4 hover:brightness-110">
       <span className="flex-1">{label}</span>
       <ChevronLeft aria-hidden size={20} className="text-muted" />
     </Link>

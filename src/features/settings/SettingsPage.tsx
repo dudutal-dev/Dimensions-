@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Bell, CalendarPlus, ChevronLeft, DatabaseBackup, LifeBuoy, Palette, Smartphone } from 'lucide-react';
+import { AudioLines, Bell, CalendarPlus, ChevronLeft, DatabaseBackup, LifeBuoy, Palette, Smartphone } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { audioEngine } from '../../audio/AudioEngine';
@@ -13,6 +13,7 @@ import { DEFAULT_ANCHOR_TIMES } from '../../domain/defaults';
 import { ANCHOR_IDS, type AnchorId } from '../../domain/records';
 import { saveTextFile } from '../../lib/download';
 import { buildAnchorsIcs, ICS_FILE_NAME, ICS_MIME } from '../../lib/ics';
+import { useDeviceVoice } from '../session/useDeviceVoice';
 import { AppearanceControls } from './AppearanceControls';
 
 const CLOCK = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
@@ -25,6 +26,9 @@ export function SettingsPage() {
   const settings = useSettings((state) => state.settings);
   const update = useSettings((state) => state.update);
   const journey = useLiveQuery(() => repos.journey.get(), []);
+  const voiceAvailable = useDeviceVoice('he');
+  const voiceSettings = settings.voice ?? { lang: 'he' as const, volume: 1, showText: false };
+  const setVoice = (patch: Partial<typeof voiceSettings>) => void update({ voice: { ...voiceSettings, ...patch } });
 
   const anchorLabel = (id: AnchorId) => content.checkin.anchors.find((a) => a.id === id)?.label ?? id;
   const isDefaultTimes = ANCHOR_IDS.every((id) => settings.anchors[id] === DEFAULT_ANCHOR_TIMES[id]);
@@ -75,11 +79,22 @@ export function SettingsPage() {
           <Switch label="רטט עדין" hint="במכשירים שתומכים בכך." checked={settings.sound.haptics} onChange={(haptics) => void update({ sound: { haptics } })} />
           <Switch
             label="עיניים עצומות כברירת מחדל"
-            hint="מסך כהה בתרגול, וצליל רך בכל הנחיה חדשה."
+            hint="מסך חשוך בתרגול; הקול והצלילים מובילים."
             checked={settings.eyesClosed ?? false}
             onChange={(eyesClosed) => void update({ eyesClosed })}
           />
         </div>
+      </Section>
+
+      <Section title="קול הדרכה" note={voiceAvailable ? 'ההנחיות בתרגולים נאמרות בקול המכשיר. קול מקצועי מופק יחליף אותו בהמשך.' : 'במכשיר הזה אין קול עברי, ולכן ההנחיות מלוות בצליל רך בלבד. ב-iPhone הקול מובנה.'}>
+        <div className="flex flex-col divide-y divide-border">
+          <Switch label="להקריא את ההנחיות" checked={voiceAvailable && voiceSettings.lang !== 'none'} onChange={(on) => setVoice({ lang: on ? 'he' : 'none' })} />
+          <Switch label="להציג טקסט על המסך החשוך" hint="ההנחיה מופיעה עמומה, גם כשמתרגלים בלי להסתכל." checked={voiceSettings.showText} onChange={(showText) => setVoice({ showText })} />
+        </div>
+        <Slider label="עוצמת הקול" value={Math.round(voiceSettings.volume * 10)} onChange={(level) => setVoice({ volume: level / 10 })} min={1} max={10} minLabel="שקט" maxLabel="מלא" />
+        <Button variant="secondary" icon={<AudioLines aria-hidden size={18} />} disabled={!voiceAvailable} onClick={() => void audioEngine.unlock().then(() => audioEngine.speak('שב בנוחות. תן לגוף להיות כבד.', 'he'))}>
+          להשמיע משפט לדוגמה
+        </Button>
       </Section>
 
       <Section title="שעות העוגנים" note="חמש בדיקות קצרות ביום. “היום” מציע בדיקה סביב כל שעה.">
@@ -152,7 +167,7 @@ function Section({ title, note, children }: { title: string; note?: string; chil
 function Row({ to, icon, label, hint }: { to: string; icon: ReactNode; label: string; hint?: string }) {
   return (
     <li>
-      <Link to={to} className="pressable flex min-h-16 items-center gap-3 rounded-card border border-border bg-surface px-4 py-2 hover:bg-surface-2">
+      <Link to={to} className="pressable flex min-h-16 items-center gap-3 rounded-card border border-border surface-card px-4 py-2 hover:brightness-110">
         <span className="text-accent">{icon}</span>
         <span className="flex-1">
           <span className="block font-medium">{label}</span>

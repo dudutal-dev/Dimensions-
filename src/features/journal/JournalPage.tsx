@@ -71,7 +71,7 @@ export function JournalPage() {
       <h1 className="mt-2 text-2xl">יומן</h1>
 
       {/* ---------- יומן ערב ---------- */}
-      <Card padding="lg" elevation={2} className="mt-5">
+      <Card padding="lg" tone="hero" className="mt-5">
         <p className="text-sm text-muted">{formatDay(today)}</p>
         <h2 className="mt-1 text-xl">יומן ערב</h2>
         <p className="mt-1 text-muted">
@@ -95,7 +95,7 @@ export function JournalPage() {
                 const avg = entry.events.reduce((sum, e) => sum + e.recoveryMin, 0) / entry.events.length;
                 return (
                   <li key={entry.id}>
-                    <Link to={`/journal/evening/${entry.date}`} className="pressable flex min-h-16 items-center gap-3 rounded-card border border-border bg-surface px-4 py-2 hover:bg-surface-2">
+                    <Link to={`/journal/evening/${entry.date}`} className="pressable flex min-h-16 items-center gap-3 rounded-card border border-border surface-card px-4 py-2 hover:brightness-110">
                       <span className="flex-1">
                         <span className="block font-medium">{formatDay(entry.date)}</span>
                         <span className="block text-sm text-muted">
@@ -149,7 +149,7 @@ export function JournalPage() {
               .slice(0, 20)
               .map((form) => (
                 <li key={form.id}>
-                  <Link to={`/journal/form/${form.id}`} className="pressable flex min-h-14 items-center gap-3 rounded-card border border-border bg-surface px-4 py-2 hover:bg-surface-2">
+                  <Link to={`/journal/form/${form.id}`} className="pressable flex min-h-14 items-center gap-3 rounded-card border border-border surface-card px-4 py-2 hover:brightness-110">
                     <span className="flex-1">
                       <span className="block font-medium">{exercise(FORM_EXERCISE[form.kind])?.name}</span>
                       <span className="block truncate text-sm text-muted">

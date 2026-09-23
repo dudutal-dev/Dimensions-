@@ -160,3 +160,77 @@ describe('AudioEngine', () => {
     expect(engine.diagnostics()).toMatchObject({ unlocked: true, silentLoopPlaying: true });
   });
 });
+
+/** speechSynthesis מדומה: קול עברי אחד, והדיבור "נגמר" כשקוראים ל-finish. */
+function stubSpeech(langs: string[]) {
+  const spoken: SpeechSynthesisUtterance[] = [];
+  const synth = {
+    speaking: false,
+    pending: false,
+    getVoices: () => langs.map((lang) => ({ lang, localService: true, default: true, name: lang, voiceURI: lang })),
+    speak: vi.fn((utterance: SpeechSynthesisUtterance) => {
+      spoken.push(utterance);
+      synth.speaking = true;
+    }),
+    cancel: vi.fn(() => {
+      synth.speaking = false;
+    }),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  };
+  vi.stubGlobal('speechSynthesis', synth);
+  vi.stubGlobal(
+    'SpeechSynthesisUtterance',
+    class {
+      lang = '';
+      rate = 1;
+      pitch = 1;
+      volume = 1;
+      voice: unknown = null;
+      onstart: (() => void) | null = null;
+      onend: (() => void) | null = null;
+      onerror: (() => void) | null = null;
+      constructor(public text: string) {}
+    },
+  );
+  return { synth, spoken, finish: () => spoken.at(-1)?.onend?.(new Event('end') as SpeechSynthesisEvent) };
+}
+
+describe('קול ההדרכה של המכשיר', () => {
+  it('בלי speechSynthesis או בלי קול עברי — אין דיבור, וההבטחה נפתרת מיד', async () => {
+    const engine = new AudioEngine();
+    expect(engine.canSpeak('he')).toBe(false);
+    await expect(engine.speak('שב בנוחות.', 'he')).resolves.toBeUndefined();
+
+    stubSpeech(['en-US']);
+    expect(engine.canSpeak('he')).toBe(false);
+    expect(engine.canSpeak('en')).toBe(true);
+  });
+
+  it('מדבר בעברית בקצב איטי, מנמיך את הרקע בזמן הדיבור, ומחזיר אותו בסיום', async () => {
+    const { synth, spoken, finish } = stubSpeech(['he-IL']);
+    const engine = new AudioEngine();
+    await engine.unlock();
+    engine.setVolumes({ ambient: 0.4, voice: 0.8 });
+    const ambient = FakeAudioContext.instances[0]!.gains[2]!; // master, ui, ambient — לפי סדר היצירה
+
+    const done = engine.speak('שב בנוחות. תן לגוף להיות כבד.', 'he');
+    expect(synth.speak).toHaveBeenCalledTimes(1);
+    expect(spoken[0]).toMatchObject({ lang: 'he-IL', volume: 0.8 });
+    expect(spoken[0]!.rate).toBeLessThan(1);
+    expect(ambient.gain.value).toBeCloseTo(0.2); // ‎−6dB
+
+    finish();
+    await done;
+    expect(ambient.gain.value).toBeCloseTo(0.4);
+  });
+
+  it('השהיה או סוף סשן עוצרים את הדיבור', async () => {
+    const { synth } = stubSpeech(['he-IL']);
+    const engine = new AudioEngine();
+    await engine.unlock();
+    void engine.speak('הנח יד על מרכז החזה.', 'he');
+    engine.endSession();
+    expect(synth.cancel).toHaveBeenCalled();
+  });
+});

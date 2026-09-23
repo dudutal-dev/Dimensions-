@@ -66,13 +66,16 @@ export function TodayPage() {
   return (
     <>
       <header className="mt-1 mb-6 flex items-center justify-between gap-3">
-        <h1 className="text-2xl">{greetingFor(now)}</h1>
+        <div>
+          <h1 className="text-3xl">{greetingFor(now)}</h1>
+          <p className="mt-1 text-sm text-muted">{new Intl.DateTimeFormat('he-IL', { weekday: 'long', day: 'numeric', month: 'long' }).format(now)}</p>
+        </div>
         <IconButton label="תפריט: יומן, ספרייה, הגדרות" onClick={() => setMenuOpen(true)} className="lg:hidden">
           <CircleUser aria-hidden size={28} strokeWidth={1.5} />
         </IconButton>
       </header>
 
-      <Card padding="lg" elevation={2}>
+      <Card padding="lg" tone="hero">
         {task.kind === 'checkin' && (
           <>
             <p className="text-sm text-muted">{task.anchor ? anchorLabel(task.anchor) : 'בכל רגע'}</p>
@@ -121,7 +124,7 @@ export function TodayPage() {
         <Link
           to={practiceHref}
           aria-label={`המסע · שבוע ${plan.week}`}
-          className="pressable mt-4 flex min-h-16 items-center gap-3 rounded-card border border-border bg-surface px-4 py-3 hover:bg-surface-2"
+          className="pressable mt-4 flex min-h-16 items-center gap-3 rounded-card border border-border surface-card px-4 py-3 hover:brightness-110"
         >
           <span className="flex-1">
             <span className="block text-sm text-muted">המסע · שבוע {plan.week}{plan.isReturnPlan ? ' · ימי חזרה' : ''}</span>
@@ -201,7 +204,7 @@ export function TodayPage() {
 
       <Link
         to="/practice"
-        className="pressable mt-3 flex min-h-14 items-center gap-3 rounded-card border border-border bg-surface px-4 hover:bg-surface-2"
+        className="pressable mt-3 flex min-h-14 items-center gap-3 rounded-card border border-border surface-card px-4 hover:brightness-110"
       >
         <Play aria-hidden size={20} className="text-accent" />
         <span className="flex-1">כל התרגולים</span>
@@ -209,7 +212,7 @@ export function TodayPage() {
       </Link>
       <Link
         to="/diagnosis"
-        className="pressable mt-2 flex min-h-14 items-center gap-3 rounded-card border border-border bg-surface px-4 hover:bg-surface-2"
+        className="pressable mt-2 flex min-h-14 items-center gap-3 rounded-card border border-border surface-card px-4 hover:brightness-110"
       >
         <ListChecks aria-hidden size={20} className="text-accent" />
         <span className="flex-1">האבחון שלי</span>

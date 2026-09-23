@@ -17,7 +17,7 @@ export function PracticeListPage() {
           <li key={exercise.id}>
             <Link
               to={`/session/${exercise.id}?from=journey`}
-              className="pressable flex min-h-16 items-center gap-3 rounded-card border border-border bg-surface px-4 py-3 hover:bg-surface-2"
+              className="pressable flex min-h-16 items-center gap-3 rounded-card border border-border surface-card px-4 py-3 hover:brightness-110"
             >
               <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-surface-2 text-accent">
                 {exercise.mode === 'form' ? <PenLine aria-hidden size={20} /> : <Play aria-hidden size={20} />}

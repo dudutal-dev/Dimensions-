@@ -1,35 +1,26 @@
-import { Bell, ChevronLeft, ChevronRight, EyeOff, Music2, Pause, Play, X } from 'lucide-react';
+import { AudioLines, ChevronLeft, ChevronRight, Eye, EyeOff, Music2, Pause, Play, X } from 'lucide-react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { audioEngine } from '../../audio/AudioEngine';
+import type { VoiceLang } from '../../audio/voice';
 import { loadContent } from '../../content';
 import { DimSchema, DomainSchema, type Dim } from '../../content/schema';
 import { repos } from '../../data/repositories';
 import { tracked } from '../../data/saveStatus';
 import { useSettings } from '../../data/settingsStore';
 import { useDraft } from '../../data/useDraft';
-import {
-  Aurora,
-  Button,
-  Card,
-  DIM_LABEL,
-  DimensionGlyph,
-  EmptyState,
-  IconButton,
-  LayerTag,
-  ProgressDots,
-  RichText,
-  TextArea,
-} from '../../design';
+import { Aurora, Button, Card, DIM_LABEL, DimensionGlyph, EmptyState, IconButton, LayerTag, ProgressDots, RichText, TextArea } from '../../design';
 import type { SessionLog } from '../../domain/records';
 import { countsAsDailyPractice, isoDate } from '../../domain/journey';
 import { findSession, formatClock, remainingSec, waitsForUser, type Session } from '../../domain/session';
 import { cn } from '../../lib/cn';
-import { BreathCircle } from './BreathCircle';
+import { BreathOrb } from './BreathOrb';
+import { useDeviceVoice } from './useDeviceVoice';
 import { useSessionPlayer } from './useSessionPlayer';
 
 const SOURCES: ReadonlyArray<SessionLog['source']> = ['shift', 'journey', 'sos'];
 const DIMS: Dim[] = ['d3', 'd4', 'd5'];
+const VOICE_LANG: VoiceLang = 'he';
 
 interface SessionPageProps {
   /** למסלול קבוע כמו "90 שניות". אחרת המזהה נלקח מהכתובת. */
@@ -62,7 +53,11 @@ function SessionRunner({ session, source, autoStart }: { session: Session; sourc
   const updateSettings = useSettings((s) => s.update);
   const [eyesClosed, setEyesClosed] = useState(settings.eyesClosed ?? false);
   const [ambient, setAmbientOn] = useState(settings.sound.ambientOn);
-  const player = useSessionPlayer(session, { eyesClosed, ambient });
+  // קול ההדרכה פועל כברירת מחדל; כבוי רק אם המשתמש כיבה אותו
+  const [voiceOn, setVoiceOn] = useState((settings.voice?.lang ?? VOICE_LANG) !== 'none');
+  const voiceAvailable = useDeviceVoice(VOICE_LANG);
+  const voice = voiceOn && voiceAvailable ? VOICE_LANG : undefined;
+  const player = useSessionPlayer(session, { eyesClosed, ambient, voice, voiceVolume: settings.voice?.volume ?? 1 });
   const fields = useDraft<Record<string, string>>(`form:${session.id}`, {});
   const startedAt = useRef(0);
   const autoStarted = useRef(false);
@@ -99,62 +94,93 @@ function SessionRunner({ session, source, autoStart }: { session: Session; sourc
     leave();
   };
 
+  const setVoice = (on: boolean) => {
+    setVoiceOn(on);
+    void updateSettings({ voice: { lang: on ? VOICE_LANG : 'none', volume: settings.voice?.volume ?? 1, showText: settings.voice?.showText ?? false } });
+  };
+
   if (state.status === 'finished') {
     return <FinishView session={session} source={logSource} context={context} fields={fields.value} onClearFields={fields.clear} onDone={leave} />;
   }
 
+  // ---------- מסך הפתיחה ----------
   if (state.status === 'idle') {
+    const timed = session.mode === 'timed';
     return (
       <Screen>
-        <header className="flex items-center justify-between">
+        <header className="-mx-2 flex items-center justify-between">
           <IconButton label="חזרה" onClick={leave}>
             <ChevronRight aria-hidden size={24} />
           </IconButton>
         </header>
-        <div className="flex flex-1 flex-col justify-center py-6">
-          <p className="tabular text-muted">
+        <div className="flex flex-1 flex-col justify-center py-4">
+          <BreathOrb elapsedMs={0} running={false} size={140} className="mb-6" />
+          <p className="tabular text-center text-sm text-muted">
             {session.mode === 'form' ? 'כתיבה מודרכת · כ-' : ''}
             {formatClock(session.durationSec)} דקות
             {session.layer && <LayerTag layer={session.layer} className="ms-3" />}
           </p>
-          <h1 className="mt-2 text-2xl">{session.name}</h1>
-          <p className="mt-3 text-lg text-muted">
+          <h1 className="mt-2 text-center text-3xl">{session.name}</h1>
+          <p className="mx-auto mt-4 max-w-[34ch] text-center text-lg text-muted">
             <RichText text={session.summary} />
           </p>
           {session.caution && (
-            <Card tone="raised" elevation={0} className="mt-5 text-sm">
+            <Card tone="raised" elevation={0} className="mt-6 text-sm">
               {session.caution}
             </Card>
           )}
           {session.note && (
-            <p className="mt-4 text-sm text-muted">
+            <p className="mt-4 text-center text-sm text-muted">
               {session.note.layer && <LayerTag layer={session.note.layer} className="me-2" />}
               {session.note.text}
             </p>
           )}
         </div>
+
         <div className="flex flex-col gap-3">
-          {session.mode === 'timed' && (
-            <div className="flex gap-2">
-              <Toggle
-                pressed={eyesClosed}
-                icon={<EyeOff aria-hidden size={20} />}
-                label="עיניים עצומות"
-                onToggle={() => {
-                  setEyesClosed((v) => !v);
-                  void updateSettings({ eyesClosed: !eyesClosed });
-                }}
-              />
-              <Toggle
-                pressed={ambient}
-                icon={<Music2 aria-hidden size={20} />}
-                label="צליל רקע"
-                onToggle={() => {
-                  setAmbientOn((v) => !v);
-                  void updateSettings({ sound: { ambientOn: !ambient } });
-                }}
-              />
-            </div>
+          {timed && (
+            <>
+              <div role="group" aria-label="איך לתרגל" className="grid grid-cols-2 gap-2">
+                <ModeCard
+                  pressed={!eyesClosed}
+                  icon={<Eye aria-hidden size={22} />}
+                  title="עיניים פקוחות"
+                  text="הדמיית נשימה על המסך"
+                  onSelect={() => {
+                    setEyesClosed(false);
+                    void updateSettings({ eyesClosed: false });
+                  }}
+                />
+                <ModeCard
+                  pressed={eyesClosed}
+                  icon={<EyeOff aria-hidden size={22} />}
+                  title="עיניים עצומות"
+                  text={voiceAvailable ? 'קול מדריך, מסך חשוך' : 'צלילים, מסך חשוך'}
+                  onSelect={() => {
+                    setEyesClosed(true);
+                    void updateSettings({ eyesClosed: true });
+                  }}
+                />
+              </div>
+              <div className="flex gap-2">
+                <Toggle
+                  pressed={ambient}
+                  icon={<Music2 aria-hidden size={18} />}
+                  label="צליל רקע"
+                  onToggle={() => {
+                    setAmbientOn((v) => !v);
+                    void updateSettings({ sound: { ambientOn: !ambient } });
+                  }}
+                />
+                <Toggle
+                  pressed={voiceOn && voiceAvailable}
+                  disabled={!voiceAvailable}
+                  icon={<AudioLines aria-hidden size={18} />}
+                  label={voiceAvailable ? 'קול הדרכה' : 'אין קול עברי במכשיר'}
+                  onToggle={() => setVoice(!voiceOn)}
+                />
+              </div>
+            </>
           )}
           <Button variant="primary" size="lg" fullWidth icon={<Play aria-hidden size={22} />} onClick={begin}>
             התחל
@@ -170,29 +196,39 @@ function SessionRunner({ session, source, autoStart }: { session: Session; sourc
   const waiting = waitsForUser(session, state.index);
   const totalMs = session.durationSec * 1000;
   const elapsedMs = totalMs - remainingSec(session, state) * 1000;
+  const pattern = segment.type === 'breath' ? segment.breathPattern : undefined;
+  const spokenText = segment.type === 'instruction' || segment.type === 'prompt' ? segment.text : '';
 
-  // ---- מצב "עיניים עצומות": מסך כהה, צלילים בלבד, הקשה בכל מקום = השהה (SPEC 6.6) ----
+  // ---------- עיניים עצומות: מסך חשוך, הקול והצלילים מובילים, הקשה בכל מקום = השהיה (SPEC 6.6) ----------
   if (eyesClosed && !paused && session.mode === 'timed') {
     return (
       <button
         type="button"
         onClick={player.pause}
         aria-label="השהה"
-        className="fixed inset-0 z-50 flex cursor-default flex-col items-center justify-end bg-night pb-[calc(var(--safe-bottom)+32px)] text-sm text-on-night"
+        className="fixed inset-0 z-50 flex cursor-default flex-col items-center justify-between bg-night pt-[calc(var(--safe-top)+40px)] pb-[calc(var(--safe-bottom)+28px)] text-on-night"
       >
-        הקשה בכל מקום — השהיה
+        <p className="tabular text-sm" dir="ltr">
+          {formatClock(remainingSec(session, state))}
+        </p>
+        <div className="flex flex-col items-center gap-8">
+          <BreathOrb pattern={pattern} elapsedMs={state.segmentMs} running night size={300} />
+          {settings.voice?.showText && spokenText && <p className="max-w-[24ch] px-6 text-center font-display text-lg leading-relaxed">{spokenText}</p>}
+        </div>
+        <p className="text-sm">הקשה בכל מקום — השהיה</p>
       </button>
     );
   }
 
+  // ---------- עיניים פקוחות ----------
   return (
     <Screen onAnyTap={audioEngine.diagnostics().unlocked ? undefined : () => void audioEngine.unlock()}>
-      <header className="flex items-center justify-between gap-2">
+      <header className="-mx-2 flex items-center justify-between gap-2">
         <IconButton label="יציאה מהתרגול" onClick={() => void exitEarly()}>
           <X aria-hidden size={24} />
         </IconButton>
         <p className="truncate text-sm text-muted">{session.name}</p>
-        <p className="tabular min-w-12 text-end text-sm text-muted" dir="ltr" aria-label="הזמן שנותר">
+        <p className="tabular min-w-12 pe-2 text-end text-sm text-muted" dir="ltr" aria-label="הזמן שנותר">
           {session.mode === 'timed' ? formatClock(remainingSec(session, state)) : ''}
         </p>
       </header>
@@ -204,9 +240,9 @@ function SessionRunner({ session, source, autoStart }: { session: Session; sourc
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={Math.round((elapsedMs / totalMs) * 100)}
-          className="mt-2 h-1 overflow-hidden rounded-full bg-border"
+          className="mt-3 h-0.5 overflow-hidden rounded-full bg-border"
         >
-          <div className="h-full bg-accent/70 transition-[width] duration-300 ease-linear" style={{ width: `${(elapsedMs / totalMs) * 100}%` }} />
+          <div className="h-full rounded-full bg-accent shadow-[0_0_8px_var(--accent)] transition-[width] duration-300 ease-linear" style={{ width: `${(elapsedMs / totalMs) * 100}%` }} />
         </div>
       ) : (
         session.form && (
@@ -220,57 +256,64 @@ function SessionRunner({ session, source, autoStart }: { session: Session; sourc
         )
       )}
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-6 py-6 text-center" aria-live="polite">
-        {segment.type === 'breath' && segment.breathPattern ? (
-          <>
-            <BreathCircle pattern={segment.breathPattern} elapsedMs={state.segmentMs} running={!paused} />
-            <p className="text-sm text-muted">{segment.text}</p>
-          </>
-        ) : segment.type === 'silence' ? (
-          <p className="tabular font-display text-xl text-muted">
-            שקט <span dir="ltr">{formatClock(Math.max(0, Math.ceil(segment.durationSec - state.segmentMs / 1000)))}</span>
-          </p>
-        ) : segment.type === 'bell' ? (
-          <Bell aria-hidden size={40} strokeWidth={1.25} className="text-accent" />
-        ) : (
-          <p className={cn('max-w-[22ch] font-display leading-snug', segment.text.length > 70 ? 'text-xl' : 'text-2xl')}>{segment.text}</p>
+      <div className="flex flex-1 flex-col items-center justify-center gap-8 py-6 text-center" aria-live="polite">
+        {session.mode === 'timed' && (
+          <BreathOrb pattern={pattern} elapsedMs={state.segmentMs} running={!paused} size={formStep ? 160 : 272}>
+          </BreathOrb>
         )}
 
-        {formStep && (
-          <div className="w-full text-start">
-            <TextArea
-              label={formStep.label}
-              hint={formStep.optional ? 'לא חובה' : undefined}
-              rows={5}
-              value={fields.value[formStep.fieldId] ?? ''}
-              onChange={(event) => fields.setValue((current) => ({ ...current, [formStep.fieldId]: event.target.value }))}
-            />
-          </div>
-        )}
+        {/* מקטע חדש נכנס בעדינות. אנימציית CSS ולא framer — כדי שתרוץ גם כשהשעון של JS מדומה בבדיקות, ובלי JS בכל פריים */}
+        <div key={segment.id} className="segment-enter flex w-full flex-col items-center gap-6">
+            {segment.type === 'breath' ? (
+              <p className="text-sm text-muted">{segment.text}</p>
+            ) : segment.type === 'silence' ? (
+              <p className="flex items-baseline gap-3 font-display leading-none">
+                <span className="text-2xl text-text">שקט</span>
+                <span className="tabular text-2xl font-light text-muted" dir="ltr">
+                  {formatClock(Math.max(0, Math.ceil(segment.durationSec - state.segmentMs / 1000)))}
+                </span>
+              </p>
+            ) : segment.type === 'bell' ? null : (
+              <p className={cn('max-w-[22ch] font-display leading-snug text-text', segment.text.length > 70 ? 'text-xl' : 'text-2xl')}>{segment.text}</p>
+            )}
+            {formStep && (
+              <div className="w-full text-start">
+                <TextArea
+                  label={formStep.label}
+                  hint={formStep.optional ? 'לא חובה' : undefined}
+                  rows={5}
+                  value={fields.value[formStep.fieldId] ?? ''}
+                  onChange={(event) => fields.setValue((current) => ({ ...current, [formStep.fieldId]: event.target.value }))}
+                />
+              </div>
+            )}
+        </div>
       </div>
 
-      {paused && <p className="pb-3 text-center text-sm text-muted">מושהה</p>}
+      <p className={cn('pb-3 text-center text-sm text-muted transition-opacity', paused ? 'opacity-100' : 'opacity-0')} aria-hidden={!paused}>
+        {paused ? 'מושהה' : ' '}
+      </p>
 
       {waiting ? (
         <Button variant="primary" size="lg" fullWidth onClick={player.next}>
           הבא
         </Button>
       ) : (
-        <div className="flex items-center justify-center gap-6">
-          <IconButton label="המקטע הקודם" onClick={player.previous}>
-            <ChevronRight aria-hidden size={26} />
-          </IconButton>
+        <div className="flex items-center justify-center gap-5">
+          <RoundButton label="המקטע הקודם" onClick={player.previous}>
+            <ChevronRight aria-hidden size={24} />
+          </RoundButton>
           <button
             type="button"
             aria-label={paused ? 'המשך' : 'השהה'}
             onClick={paused ? player.resume : player.pause}
-            className="pressable flex size-20 items-center justify-center rounded-full border border-accent/50 bg-accent-fill text-on-accent shadow-2"
+            className="btn-primary pressable flex size-20 items-center justify-center rounded-full border border-accent/40 text-on-accent"
           >
-            {paused ? <Play aria-hidden size={32} /> : <Pause aria-hidden size={32} />}
+            {paused ? <Play aria-hidden size={32} className="ms-1" /> : <Pause aria-hidden size={32} />}
           </button>
-          <IconButton label="המקטע הבא" onClick={player.next}>
-            <ChevronLeft aria-hidden size={26} />
-          </IconButton>
+          <RoundButton label="המקטע הבא" onClick={player.next}>
+            <ChevronLeft aria-hidden size={24} />
+          </RoundButton>
         </div>
       )}
     </Screen>
@@ -280,7 +323,7 @@ function SessionRunner({ session, source, autoStart }: { session: Session; sourc
 function Screen({ children, onAnyTap }: { children: ReactNode; onAnyTap?: () => void }) {
   return (
     <div className="relative min-h-dvh" onPointerUp={onAnyTap}>
-      <Aurora />
+      <Aurora dim="d5" />
       <div className="relative z-10 mx-auto flex min-h-dvh w-full max-w-[var(--content-max)] flex-col px-4 pt-[calc(var(--safe-top)+8px)] pb-[calc(var(--safe-bottom)+24px)] sm:px-6">
         {children}
       </div>
@@ -288,15 +331,42 @@ function Screen({ children, onAnyTap }: { children: ReactNode; onAnyTap?: () => 
   );
 }
 
-function Toggle({ pressed, icon, label, onToggle }: { pressed: boolean; icon: ReactNode; label: string; onToggle: () => void }) {
+function RoundButton({ label, onClick, children }: { label: string; onClick: () => void; children: ReactNode }) {
+  return (
+    <button type="button" aria-label={label} onClick={onClick} className="surface-raised pressable flex size-14 items-center justify-center rounded-full border border-border-strong text-text">
+      {children}
+    </button>
+  );
+}
+
+function ModeCard({ pressed, icon, title, text, onSelect }: { pressed: boolean; icon: ReactNode; title: string; text: string; onSelect: () => void }) {
   return (
     <button
       type="button"
       aria-pressed={pressed}
+      onClick={onSelect}
+      className={cn(
+        'pressable flex min-h-24 flex-col items-start gap-1.5 rounded-card border p-4 text-start',
+        pressed ? 'surface-hero border-accent/60' : 'surface-raised border-border-strong text-muted',
+      )}
+    >
+      <span className={cn(pressed ? 'text-accent' : 'text-muted')}>{icon}</span>
+      <span className={cn('font-medium', pressed ? 'text-text' : 'text-muted')}>{title}</span>
+      <span className="text-xs text-muted">{text}</span>
+    </button>
+  );
+}
+
+function Toggle({ pressed, disabled, icon, label, onToggle }: { pressed: boolean; disabled?: boolean; icon: ReactNode; label: string; onToggle: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={pressed}
+      disabled={disabled}
       onClick={onToggle}
       className={cn(
-        'pressable flex min-h-12 flex-1 items-center justify-center gap-2 rounded-control border px-3 text-sm',
-        pressed ? 'border-accent bg-accent/15 font-medium text-text' : 'border-border-strong bg-surface-2 text-muted',
+        'pressable flex min-h-12 flex-1 items-center justify-center gap-2 rounded-control border px-3 text-sm disabled:opacity-60',
+        pressed ? 'border-accent bg-accent/15 font-medium text-text' : 'surface-raised border-border-strong text-muted',
       )}
     >
       {icon}
@@ -357,9 +427,10 @@ function FinishView({ session, source, context, fields, onClearFields, onDone }:
   return (
     <Screen>
       <div className="flex flex-1 flex-col justify-center gap-7 py-8">
-        <div>
+        <div className="text-center">
+          <BreathOrb elapsedMs={0} running={false} size={120} className="mb-5" />
           <p className="text-muted">{session.name}</p>
-          <h1 className="mt-1 text-2xl">{tools.afterSession.question}</h1>
+          <h1 className="mt-1 text-3xl">{tools.afterSession.question}</h1>
         </div>
         {!knownBefore && <DimPicker label="איפה הייתי לפני" value={before} onChange={setBefore} />}
         <DimPicker label="איפה אני עכשיו" value={after} onChange={setAfter} />
@@ -385,8 +456,8 @@ function DimPicker({ label, value, onChange }: { label: string; value?: Dim; onC
             aria-label={`${label}: ${DIM_LABEL[dim]}`}
             onClick={() => onChange(value === dim ? undefined : dim)}
             className={cn(
-              'pressable flex min-h-20 flex-col items-center justify-center gap-1 rounded-control border',
-              value === dim ? 'border-accent bg-accent/15' : 'border-border-strong bg-surface-2',
+              'pressable flex min-h-20 flex-col items-center justify-center gap-1 rounded-card border',
+              value === dim ? 'surface-hero border-accent/60' : 'surface-raised border-border-strong',
             )}
           >
             <DimensionGlyph dim={dim} size={32} variant={value === dim ? 'solid' : 'line'} decorative />

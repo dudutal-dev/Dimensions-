@@ -45,6 +45,8 @@
   --text-xl--line-height: 1.3;
   --text-2xl: 2.125rem;
   --text-2xl--line-height: 1.2;
+  --text-3xl: 2.75rem;
+  --text-3xl--line-height: 1.1;
 
   --radius-*: initial;
   --radius-control: var(--r-control);
@@ -56,6 +58,7 @@
   --shadow-1: var(--elev-1);
   --shadow-2: var(--elev-2);
   --shadow-3: var(--elev-3);
+  --shadow-glow: var(--accent-glow);
 
   --ease-out: var(--e-out);
   --ease-in: var(--e-in);
@@ -100,6 +103,11 @@
     font-family: var(--ff-display);
     font-weight: 500;
     text-wrap: balance;
+    letter-spacing: -0.012em;
+  }
+
+  h1 {
+    font-weight: 400;
   }
 
   p {
@@ -128,6 +136,128 @@
 }
 
 @layer components {
+  /* ---- משטחים: מדרגה עדינה של אור מלמעלה למטה, וקו אור דק בקצה העליון ---- */
+  .surface-card {
+    background:
+      linear-gradient(180deg, var(--surface-hi), transparent 38%),
+      linear-gradient(180deg, var(--surface), color-mix(in oklab, var(--surface) 92%, var(--bg)));
+    box-shadow: var(--elev-1);
+  }
+  .surface-raised {
+    background:
+      linear-gradient(180deg, var(--surface-hi), transparent 38%),
+      var(--surface-2);
+  }
+  .surface-hero {
+    background:
+      linear-gradient(180deg, var(--surface-hi), transparent 30%),
+      radial-gradient(120% 90% at 50% -20%, color-mix(in oklab, var(--hero-tint, var(--accent-fill)) 14%, transparent), transparent 60%),
+      linear-gradient(180deg, var(--surface), color-mix(in oklab, var(--surface) 90%, var(--bg)));
+    box-shadow: var(--elev-2);
+  }
+
+  /* ---- הכפתור הראשי: זהב עם מדרגת אור, קו הדגשה פנימי וזוהר רך ---- */
+  .btn-primary {
+    background: linear-gradient(180deg, color-mix(in oklab, var(--accent-fill) 88%, white), var(--accent-fill) 55%, color-mix(in oklab, var(--accent-fill) 86%, black));
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.45),
+      inset 0 -1px 0 rgb(0 0 0 / 0.12),
+      var(--accent-glow);
+  }
+  .btn-primary:hover:not(:disabled) {
+    filter: brightness(1.04);
+  }
+
+  /* ---- האורב: לב הנגן. הנשימה נכתבת פעם אחת למשתנה --b (‎0…1‎) והשכבות נגזרות ממנו ב-calc,
+          כך שרינדור אחד ב-requestAnimationFrame מניע חמש שכבות בלי לגעת ב-DOM שלהן. ---- */
+  .orb {
+    --b: 0;
+    --orb-hue: var(--d5-fill);
+    --orb-hue-2: var(--d4-fill);
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--orb-size, 272px);
+    height: var(--orb-size, 272px);
+  }
+  .orb > * {
+    grid-area: 1 / 1;
+  }
+  /* הילה רחבה — נושמת יותר מהליבה, ומתפזרת אל הרקע */
+  .orb-halo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in oklab, var(--orb-hue) 34%, transparent) 0%, color-mix(in oklab, var(--orb-hue) 10%, transparent) 42%, transparent 70%);
+    transform: scale(calc(0.9 + 0.5 * var(--b)));
+    opacity: calc(0.55 + 0.45 * var(--b));
+    filter: blur(6px);
+    will-change: transform, opacity;
+  }
+  /* טבעות קו דקות בפיגור קל זו אחרי זו — עומק בלי משקל */
+  .orb-ring {
+    width: 74%;
+    height: 74%;
+    border-radius: 50%;
+    border: 1px solid color-mix(in oklab, var(--orb-hue) 55%, transparent);
+    transform: scale(calc(0.72 + 0.34 * var(--b)));
+    opacity: calc(0.35 + 0.4 * var(--b));
+    will-change: transform, opacity;
+  }
+  .orb-ring-2 {
+    border-color: color-mix(in oklab, var(--orb-hue-2) 45%, transparent);
+    transform: scale(calc(0.62 + 0.3 * var(--b)));
+    opacity: calc(0.25 + 0.35 * var(--b));
+  }
+  /* הליבה: כדור עם אור מלמעלה-משמאל, וצל פנימי בקצה — כמו זכוכית מלאה באור */
+  .orb-core {
+    width: 56%;
+    height: 56%;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 36% 30%, rgb(255 255 255 / 0.55), transparent 42%),
+      radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--orb-hue) 85%, white) 0%, var(--orb-hue) 45%, color-mix(in oklab, var(--orb-hue) 70%, var(--orb-hue-2)) 100%);
+    box-shadow:
+      inset 0 -14px 28px rgb(0 0 0 / 0.28),
+      inset 0 2px 6px rgb(255 255 255 / 0.35),
+      0 0 60px color-mix(in oklab, var(--orb-hue) 45%, transparent);
+    transform: scale(calc(0.58 + 0.42 * var(--b)));
+    will-change: transform;
+  }
+  /* בהמתנה (בין הנחיות): נשימה עצמית איטית — כמעט לא מורגשת, רק חיים */
+  .orb[data-mode='idle'] {
+    animation: orb-idle 9s ease-in-out infinite;
+  }
+  .orb[data-mode='idle'] .orb-core {
+    transform: scale(calc(0.62 + 0.14 * var(--b)));
+  }
+  .orb[data-mode='idle'] .orb-halo {
+    transform: scale(calc(0.92 + 0.16 * var(--b)));
+  }
+  /* בעיניים עצומות: אותה נשימה, כמעט חשוכה — מדריך למי שפוקח לרגע, לא מושך את העין */
+  .orb[data-mode='night'] .orb-halo {
+    opacity: calc(0.06 + 0.1 * var(--b));
+    filter: blur(14px);
+  }
+  .orb[data-mode='night'] .orb-core,
+  .orb[data-mode='night'] .orb-ring,
+  .orb[data-mode='night'] .orb-ring-2 {
+    opacity: 0;
+  }
+  .segment-enter {
+    animation: fade-up var(--dur-base) var(--e-out) both;
+  }
+  .orb-arc {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+    pointer-events: none;
+  }
+  .orb-arc circle {
+    fill: none;
+    stroke-linecap: round;
+  }
+
   /* ---- הילת הרקע: נעה לאט (היא התוכן), נעצרת כשהלשונית מוסתרת, סטטית ב-reduced-motion ---- */
   .aurora {
     position: fixed;
@@ -278,6 +408,34 @@
   }
 }
 
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes orb-idle {
+  0%,
+  100% {
+    --b: 0;
+  }
+  50% {
+    --b: 1;
+  }
+}
+
+/* --b חייב להיות מוצהר כמספר כדי שאפשר יהיה להנפיש אותו ב-keyframes */
+@property --b {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
 @utility pt-safe {
   padding-top: var(--safe-top);
 }
@@ -302,6 +460,13 @@
 @media (prefers-reduced-motion: reduce) {
   .aurora::before,
   .aurora::after {
+    animation: none;
+  }
+  .orb[data-mode='idle'] {
+    animation: none;
+    --b: 0.5;
+  }
+  .segment-enter {
     animation: none;
   }
   *,
